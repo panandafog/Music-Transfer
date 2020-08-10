@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5862E224DE9749001C9565 /* VKFacade.swift */; };
+		0B6ED15A24D72B51002A0F21 /* BrowserViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */; };
+		0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9AA30424E1D24400F2644A /* APIManager.swift */; };
 		0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626124CC5C5E00E353FB /* AppDelegate.swift */; };
 		0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626324CC5C5E00E353FB /* ContentView.swift */; };
 		0BB3626624CC5C5F00E353FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626524CC5C5F00E353FB /* Assets.xcassets */; };
@@ -14,6 +17,12 @@
 		0BB3626C24CC5C5F00E353FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626A24CC5C5F00E353FB /* Main.storyboard */; };
 		0BB3627824CC5C5F00E353FB /* Music_TransferTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3627724CC5C5F00E353FB /* Music_TransferTests.swift */; };
 		0BB3628324CC5C5F00E353FB /* Music_TransferUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3628224CC5C5F00E353FB /* Music_TransferUITests.swift */; };
+		0BB3629224CC60F400E353FB /* SpotifyFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629124CC60F400E353FB /* SpotifyFacade.swift */; };
+		0BB3629424CC885700E353FB /* SpotifyBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629324CC885700E353FB /* SpotifyBrowser.swift */; };
+		0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629524CC8B5E00E353FB /* BrowserView.swift */; };
+		0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCE6A4024CCC60C00D7299E /* APIFacade.swift */; };
+		0BDAD22B24DF01FA006CDA9C /* VKBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */; };
+		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B5862E224DE9749001C9565 /* VKFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFacade.swift; sourceTree = "<group>"; };
+		0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewDelegate.swift; sourceTree = "<group>"; };
+		0B9AA30424E1D24400F2644A /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0BB3625E24CC5C5E00E353FB /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB3626124CC5C5E00E353FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BB3626324CC5C5E00E353FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +60,12 @@
 		0BB3627E24CC5C5F00E353FB /* Music TransferUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music TransferUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB3628224CC5C5F00E353FB /* Music_TransferUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferUITests.swift; sourceTree = "<group>"; };
 		0BB3628424CC5C5F00E353FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BB3629124CC60F400E353FB /* SpotifyFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyFacade.swift; sourceTree = "<group>"; };
+		0BB3629324CC885700E353FB /* SpotifyBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyBrowser.swift; sourceTree = "<group>"; };
+		0BB3629524CC8B5E00E353FB /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
+		0BCE6A4024CCC60C00D7299E /* APIFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIFacade.swift; sourceTree = "<group>"; };
+		0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKBrowser.swift; sourceTree = "<group>"; };
+		0BDAD23024E066C6006CDA9C /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +93,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B0D1FEE24DE0A6200E2970D /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				0BB3629124CC60F400E353FB /* SpotifyFacade.swift */,
+				0BB3629324CC885700E353FB /* SpotifyBrowser.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		0B5862E124DE9729001C9565 /* VK */ = {
+			isa = PBXGroup;
+			children = (
+				0B5862E224DE9749001C9565 /* VKFacade.swift */,
+				0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */,
+			);
+			path = VK;
+			sourceTree = "<group>";
+		};
 		0BB3625524CC5C5E00E353FB = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +134,7 @@
 		0BB3626024CC5C5E00E353FB /* Music Transfer */ = {
 			isa = PBXGroup;
 			children = (
+				0BB3629024CC60CB00E353FB /* API */,
 				0BB3626124CC5C5E00E353FB /* AppDelegate.swift */,
 				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
 				0BB3626524CC5C5F00E353FB /* Assets.xcassets */,
@@ -133,6 +170,20 @@
 				0BB3628424CC5C5F00E353FB /* Info.plist */,
 			);
 			path = "Music TransferUITests";
+			sourceTree = "<group>";
+		};
+		0BB3629024CC60CB00E353FB /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0BCE6A4024CCC60C00D7299E /* APIFacade.swift */,
+				0BDAD23024E066C6006CDA9C /* APIBrowser.swift */,
+				0B9AA30424E1D24400F2644A /* APIManager.swift */,
+				0B5862E124DE9729001C9565 /* VK */,
+				0B0D1FEE24DE0A6200E2970D /* Spotify */,
+				0BB3629524CC8B5E00E353FB /* BrowserView.swift */,
+				0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,8 +317,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */,
 				0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */,
+				0B6ED15A24D72B51002A0F21 /* BrowserViewDelegate.swift in Sources */,
+				0BB3629424CC885700E353FB /* SpotifyBrowser.swift in Sources */,
+				0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */,
 				0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */,
+				0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */,
+				0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */,
+				0BB3629224CC60F400E353FB /* SpotifyFacade.swift in Sources */,
+				0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */,
+				0BDAD22B24DF01FA006CDA9C /* VKBrowser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

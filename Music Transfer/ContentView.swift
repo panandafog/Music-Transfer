@@ -9,15 +9,62 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @State private var selectionFrom = 0
+    @State private var selectionTo = 0
+
+    @ObservedObject var manager = APIManager.shared
+
     var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack {
+            HStack {
+                List {
+                    Text("From:")
+                        .font(.headline)
+                    MenuButton(manager.facades[selectionFrom].apiName) {
+                        ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                            Button(action: {
+                                self.selectionFrom = ind
+                            }, label: {
+                                Text(self.manager.facades[ind].apiName)
+                            })
+                        })
+                    }
+                    if manager.facades[selectionFrom].isAuthorised {
+                        Text("Authorization complete")
+                    } else {
+                        Button(action: {
+                            self.manager.facades[self.selectionFrom].authorize()
+                        }, label: {
+                            Text("Authorize")
+                        })
+                    }
+                }
+
+                List {
+                    Text("To:")
+                        .font(.headline)
+                    MenuButton(manager.facades[selectionTo].apiName) {
+                        ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                            Button(action: {
+                                self.selectionTo = ind
+                            }, label: {
+                                Text(self.manager.facades[ind].apiName)
+                            })
+                        })
+                    }
+                    if manager.facades[selectionTo].isAuthorised {
+                        Text("Authorization complete")
+                    } else {
+                        Button(action: {
+                            self.manager.facades[self.selectionTo].authorize()
+                        }, label: {
+                            Text("Authorize")
+                        })
+                    }
+                }
+            }
+        }
     }
 }
 
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
