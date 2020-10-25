@@ -3,12 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B23C8C9253E51470019EC46 /* SharedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8C8253E51470019EC46 /* SharedTrack.swift */; };
+		0B23C8CE253E54750019EC46 /* VKSavedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8CD253E54750019EC46 /* VKSavedTracks.swift */; };
+		0B23C8DF253F0B820019EC46 /* SpotifySearchTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8DE253F0B820019EC46 /* SpotifySearchTracks.swift */; };
+		0B23C8E7253F98340019EC46 /* VKCaptcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8E6253F98340019EC46 /* VKCaptcha.swift */; };
+		0B23C8F5253FA5C80019EC46 /* CaptchaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8F4253FA5C80019EC46 /* CaptchaView.swift */; };
+		0B23C900254032C90019EC46 /* CaptchaViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8FF254032C90019EC46 /* CaptchaViewDelegate.swift */; };
+		0B23C90925403D7B0019EC46 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B23C90825403D7B0019EC46 /* URLImage */; };
+		0B23C90E2540440D0019EC46 /* VKErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C90D2540440D0019EC46 /* VKErrors.swift */; };
 		0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5862E224DE9749001C9565 /* VKFacade.swift */; };
 		0B6ED15A24D72B51002A0F21 /* BrowserViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */; };
+		0B8A192824E8124500CAEFBE /* VKUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8A192724E8124500CAEFBE /* VKUser.swift */; };
+		0B8B8BF425456854004D85E7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B8BF325456854004D85E7 /* LoginView.swift */; };
+		0B8B8BF925456861004D85E7 /* LoginViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B8BF825456861004D85E7 /* LoginViewDelegate.swift */; };
+		0B8B8BFE25457C86004D85E7 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B8BFD25457C86004D85E7 /* VKKeys.swift */; };
+		0B8B8C0725457D31004D85E7 /* SpotifyKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B8C0625457D31004D85E7 /* SpotifyKeys.swift */; };
+		0B94902425416AB30045BA17 /* VKAddTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B94902325416AB30045BA17 /* VKAddTrack.swift */; };
+		0B9903E124E339C60096C69E /* TracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9903E024E339C60096C69E /* TracksView.swift */; };
+		0B9903E424E34C020096C69E /* SpotifySavedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9903E324E34C020096C69E /* SpotifySavedTracks.swift */; };
 		0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9AA30424E1D24400F2644A /* APIManager.swift */; };
 		0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626124CC5C5E00E353FB /* AppDelegate.swift */; };
 		0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626324CC5C5E00E353FB /* ContentView.swift */; };
@@ -21,7 +37,6 @@
 		0BB3629424CC885700E353FB /* SpotifyBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629324CC885700E353FB /* SpotifyBrowser.swift */; };
 		0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629524CC8B5E00E353FB /* BrowserView.swift */; };
 		0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCE6A4024CCC60C00D7299E /* APIFacade.swift */; };
-		0BDAD22B24DF01FA006CDA9C /* VKBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */; };
 		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,8 +58,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B23C8C8253E51470019EC46 /* SharedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTrack.swift; sourceTree = "<group>"; };
+		0B23C8CD253E54750019EC46 /* VKSavedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSavedTracks.swift; sourceTree = "<group>"; };
+		0B23C8DE253F0B820019EC46 /* SpotifySearchTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchTracks.swift; sourceTree = "<group>"; };
+		0B23C8E6253F98340019EC46 /* VKCaptcha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKCaptcha.swift; sourceTree = "<group>"; };
+		0B23C8F4253FA5C80019EC46 /* CaptchaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaView.swift; sourceTree = "<group>"; };
+		0B23C8FF254032C90019EC46 /* CaptchaViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaViewDelegate.swift; sourceTree = "<group>"; };
+		0B23C90D2540440D0019EC46 /* VKErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKErrors.swift; sourceTree = "<group>"; };
 		0B5862E224DE9749001C9565 /* VKFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFacade.swift; sourceTree = "<group>"; };
 		0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewDelegate.swift; sourceTree = "<group>"; };
+		0B8A192724E8124500CAEFBE /* VKUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKUser.swift; sourceTree = "<group>"; };
+		0B8B8BF325456854004D85E7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		0B8B8BF825456861004D85E7 /* LoginViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewDelegate.swift; sourceTree = "<group>"; };
+		0B8B8BFD25457C86004D85E7 /* VKKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKKeys.swift; sourceTree = "<group>"; };
+		0B8B8C0625457D31004D85E7 /* SpotifyKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyKeys.swift; sourceTree = "<group>"; };
+		0B94902325416AB30045BA17 /* VKAddTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTrack.swift; sourceTree = "<group>"; };
+		0B9903E024E339C60096C69E /* TracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksView.swift; sourceTree = "<group>"; };
+		0B9903E324E34C020096C69E /* SpotifySavedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySavedTracks.swift; sourceTree = "<group>"; };
 		0B9AA30424E1D24400F2644A /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0BB3625E24CC5C5E00E353FB /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB3626124CC5C5E00E353FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,7 +94,6 @@
 		0BB3629324CC885700E353FB /* SpotifyBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyBrowser.swift; sourceTree = "<group>"; };
 		0BB3629524CC8B5E00E353FB /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		0BCE6A4024CCC60C00D7299E /* APIFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIFacade.swift; sourceTree = "<group>"; };
-		0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKBrowser.swift; sourceTree = "<group>"; };
 		0BDAD23024E066C6006CDA9C /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B23C90925403D7B0019EC46 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,13 +132,67 @@
 			path = Spotify;
 			sourceTree = "<group>";
 		};
+		0B23C8EB253F99C20019EC46 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
+				0B9903E024E339C60096C69E /* TracksView.swift */,
+				0BB3629524CC8B5E00E353FB /* BrowserView.swift */,
+				0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */,
+				0B23C8F4253FA5C80019EC46 /* CaptchaView.swift */,
+				0B23C8FF254032C90019EC46 /* CaptchaViewDelegate.swift */,
+				0B8B8BF325456854004D85E7 /* LoginView.swift */,
+				0B8B8BF825456861004D85E7 /* LoginViewDelegate.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		0B5862E124DE9729001C9565 /* VK */ = {
 			isa = PBXGroup;
 			children = (
 				0B5862E224DE9749001C9565 /* VKFacade.swift */,
-				0BDAD22A24DF01FA006CDA9C /* VKBrowser.swift */,
 			);
 			path = VK;
+			sourceTree = "<group>";
+		};
+		0B8A192524E8122C00CAEFBE /* VK */ = {
+			isa = PBXGroup;
+			children = (
+				0B8A192724E8124500CAEFBE /* VKUser.swift */,
+				0B23C8CD253E54750019EC46 /* VKSavedTracks.swift */,
+				0B23C8E6253F98340019EC46 /* VKCaptcha.swift */,
+				0B23C90D2540440D0019EC46 /* VKErrors.swift */,
+				0B94902325416AB30045BA17 /* VKAddTrack.swift */,
+			);
+			path = VK;
+			sourceTree = "<group>";
+		};
+		0B8A192624E8123200CAEFBE /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				0B9903E324E34C020096C69E /* SpotifySavedTracks.swift */,
+				0B23C8DE253F0B820019EC46 /* SpotifySearchTracks.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		0B8B8C0225457CDB004D85E7 /* Keys */ = {
+			isa = PBXGroup;
+			children = (
+				0B8B8BFD25457C86004D85E7 /* VKKeys.swift */,
+				0B8B8C0625457D31004D85E7 /* SpotifyKeys.swift */,
+			);
+			path = Keys;
+			sourceTree = "<group>";
+		};
+		0B9903E224E34BD60096C69E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0B8A192624E8123200CAEFBE /* Spotify */,
+				0B8A192524E8122C00CAEFBE /* VK */,
+				0B23C8C8253E51470019EC46 /* SharedTrack.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		0BB3625524CC5C5E00E353FB = {
@@ -135,8 +219,9 @@
 			isa = PBXGroup;
 			children = (
 				0BB3629024CC60CB00E353FB /* API */,
+				0B9903E224E34BD60096C69E /* Models */,
+				0B23C8EB253F99C20019EC46 /* View */,
 				0BB3626124CC5C5E00E353FB /* AppDelegate.swift */,
-				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
 				0BB3626524CC5C5F00E353FB /* Assets.xcassets */,
 				0BB3626A24CC5C5F00E353FB /* Main.storyboard */,
 				0BB3626D24CC5C5F00E353FB /* Info.plist */,
@@ -175,13 +260,12 @@
 		0BB3629024CC60CB00E353FB /* API */ = {
 			isa = PBXGroup;
 			children = (
+				0B8B8C0225457CDB004D85E7 /* Keys */,
 				0BCE6A4024CCC60C00D7299E /* APIFacade.swift */,
 				0BDAD23024E066C6006CDA9C /* APIBrowser.swift */,
 				0B9AA30424E1D24400F2644A /* APIManager.swift */,
 				0B5862E124DE9729001C9565 /* VK */,
 				0B0D1FEE24DE0A6200E2970D /* Spotify */,
-				0BB3629524CC8B5E00E353FB /* BrowserView.swift */,
-				0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -202,6 +286,9 @@
 			dependencies = (
 			);
 			name = "Music Transfer";
+			packageProductDependencies = (
+				0B23C90825403D7B0019EC46 /* URLImage */,
+			);
 			productName = "Music Transfer";
 			productReference = 0BB3625E24CC5C5E00E353FB /* Music Transfer.app */;
 			productType = "com.apple.product-type.application";
@@ -274,6 +361,9 @@
 				Base,
 			);
 			mainGroup = 0BB3625524CC5C5E00E353FB;
+			packageReferences = (
+				0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */,
+			);
 			productRefGroup = 0BB3625F24CC5C5E00E353FB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -317,17 +407,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B23C8E7253F98340019EC46 /* VKCaptcha.swift in Sources */,
+				0B23C8DF253F0B820019EC46 /* SpotifySearchTracks.swift in Sources */,
 				0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */,
 				0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */,
+				0B8B8BF425456854004D85E7 /* LoginView.swift in Sources */,
+				0B23C8CE253E54750019EC46 /* VKSavedTracks.swift in Sources */,
+				0B9903E124E339C60096C69E /* TracksView.swift in Sources */,
+				0B23C900254032C90019EC46 /* CaptchaViewDelegate.swift in Sources */,
+				0B9903E424E34C020096C69E /* SpotifySavedTracks.swift in Sources */,
+				0B8B8BF925456861004D85E7 /* LoginViewDelegate.swift in Sources */,
 				0B6ED15A24D72B51002A0F21 /* BrowserViewDelegate.swift in Sources */,
+				0B8B8BFE25457C86004D85E7 /* VKKeys.swift in Sources */,
 				0BB3629424CC885700E353FB /* SpotifyBrowser.swift in Sources */,
+				0B94902425416AB30045BA17 /* VKAddTrack.swift in Sources */,
+				0B8A192824E8124500CAEFBE /* VKUser.swift in Sources */,
+				0B23C8F5253FA5C80019EC46 /* CaptchaView.swift in Sources */,
 				0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */,
 				0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */,
 				0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */,
 				0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */,
+				0B23C8C9253E51470019EC46 /* SharedTrack.swift in Sources */,
 				0BB3629224CC60F400E353FB /* SpotifyFacade.swift in Sources */,
+				0B8B8C0725457D31004D85E7 /* SpotifyKeys.swift in Sources */,
+				0B23C90E2540440D0019EC46 /* VKErrors.swift in Sources */,
 				0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */,
-				0BDAD22B24DF01FA006CDA9C /* VKBrowser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,6 +761,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0B23C90825403D7B0019EC46 /* URLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0BB3625624CC5C5E00E353FB /* Project object */;
 }

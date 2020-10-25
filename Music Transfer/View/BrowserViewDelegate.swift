@@ -40,7 +40,6 @@ class BrowserViewDelegate {
     }
 
     func closeBrowser() {
-
         BrowserViewDelegate.keyWindow?.close()
         BrowserViewDelegate.keyWindow = nil
     }

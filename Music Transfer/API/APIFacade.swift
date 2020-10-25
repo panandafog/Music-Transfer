@@ -10,7 +10,14 @@ import SwiftUI
 
 protocol APIFacade {
     static var authorizationUrl: URL? { get }
-    func authorize()
-    var isAuthorised: Bool { get }
     var apiName: String { get }
+
+    var isAuthorised: Bool { get }
+    var gotTracks: Bool { get }
+    var savedTracks: [SharedTrack] { get }
+
+    func authorize()
+    func getSavedTracks()
+    func addTracks(_: [SharedTrack])
+    func synchroniseTracks(_: [SharedTrack])
 }

@@ -11,9 +11,6 @@ import SwiftUI
 
 final class SpotifyFacade: APIFacade {
 
-    private static let client_id =
-    private static let client_secret =
-
     static let authorizationRedirectUrl = "https://example.com/callback/"
 
     private static let stateLength = 100
@@ -26,15 +23,16 @@ final class SpotifyFacade: APIFacade {
         tmp.host = "accounts.spotify.com"
         tmp.path = "/authorize"
         tmp.queryItems = [
-            URLQueryItem(name: "client_id", value: self.client_id),
+            URLQueryItem(name: "client_id", value: SpotifyKeys.client_id),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "redirect_uri", value: SpotifyFacade.authorizationRedirectUrl),
-            URLQueryItem(name: "state", value: state)
+            URLQueryItem(name: "state", value: state),
+            URLQueryItem(name: "scope", value: "user-library-read%20user-library-modify")
         ]
         return tmp.url
     }
 
-    static var requestTokensURL: URL? {
+    static private var requestTokensURL: URL? {
 
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -60,6 +58,11 @@ final class SpotifyFacade: APIFacade {
             APIManager.shared.objectWillChange.send()
         }
     }
+    var gotTracks = false {
+        willSet {
+            APIManager.shared.objectWillChange.send()
+        }
+    }
 
     var tokensAreRequested = false
     var tokensInfo: TokensInfo?
@@ -71,6 +74,8 @@ final class SpotifyFacade: APIFacade {
         let expires_in: Int
         let refresh_token: String
     }
+
+    var savedTracks = [SharedTrack]()
 
     func authorize() {
         let browserDelegate = BrowserViewDelegate.shared
@@ -99,10 +104,10 @@ final class SpotifyFacade: APIFacade {
         request.httpMethod = "POST"
 
         let postString = "grant_type=" + "authorization_code" + "&" +
-            "client_id=" + SpotifyFacade.client_id + "&" +
+            "client_id=" + SpotifyKeys.client_id + "&" +
             "code=" + code + "&" +
             "redirect_uri=" + SpotifyFacade.authorizationRedirectUrl + "&" +
-            "&client_secret=" + SpotifyFacade.client_secret
+            "&client_secret=" + SpotifyKeys.client_secret
 
         request.httpBody = postString.data(using: String.Encoding.utf8)
 
@@ -119,17 +124,207 @@ final class SpotifyFacade: APIFacade {
                 return
             }
 
-            print("Response data string:\n \(dataString)")
-
             guard let tokensInfo = try? JSONDecoder().decode(TokensInfo.self, from: data) else {
                 return
             }
             self.tokensInfo = tokensInfo
+        }
+        task.resume()
+    }
 
-            //run timer for token expiring
-            //create refresh tokens method (look https://www.appsdeveloperblog.com/http-post-request-example-in-swift/)
+    func getSavedTracks() {
+        self.gotTracks = false
+        savedTracks = [SharedTrack]()
+        requestTracks(offset: 0)
+        print(savedTracks.count)
+        print()
+    }
 
-            print("Response data string:\n \(dataString)")
+    private func requestTracks(offset: Int) {
+        let limit = 50
+
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "api.spotify.com"
+        tmp.path = "/v1/me/tracks"
+        tmp.queryItems = [
+            URLQueryItem(name: "limit", value: "50"),
+            URLQueryItem(name: "offset", value: String(offset))
+        ]
+
+        guard let url = tmp.url else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        guard let access_token = self.tokensInfo?.access_token else {
+            return
+        }
+        print("Bearer " + access_token)
+        request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+
+            guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+                return
+            }
+
+            guard let tracksList = try? JSONDecoder().decode(SpotifySavedTracks.TracksList.self, from: data) else {
+                return
+            }
+
+            let tracks = SharedTrack.makeArray(from: tracksList)
+            self.savedTracks.append(contentsOf: tracks)
+
+            if tracksList.next != nil {
+                print(String(offset + limit))
+                self.requestTracks(offset: offset + limit)
+            } else {
+                self.gotTracks = true
+            }
+        }
+        task.resume()
+    }
+
+    func addTracks(_ tracks: [SharedTrack]) {
+        var savedTracks = [SharedTrack]()
+        var globalFoundTracks = [[SpotifySearchTracks.Item]]()
+
+        for track in tracks {
+            let currentTrack = track
+            searchTrack(currentTrack,
+                        completion: { (foundTracks: [SpotifySearchTracks.Item]) in
+                            savedTracks.append(currentTrack)
+                            globalFoundTracks.append(foundTracks)
+
+                            print(String(savedTracks.count))
+                            print(String(tracks.count))
+                            print("––––")
+
+                            if savedTracks.count == tracks.count {
+                                print("filter")
+                                let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
+                                self.likeTracks(filtered)
+                            }
+                        })
+            usleep(1000)
+        }
+    }
+
+    func synchroniseTracks(_ tracks: [SharedTrack]) {
+        addTracks(tracks)
+    }
+
+    private func searchTrack(_ track: SharedTrack, completion: @escaping ((_ foundTracks: [SpotifySearchTracks.Item]) -> Void)) {
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "api.spotify.com"
+        tmp.path = "/v1/search"
+        tmp.queryItems = [
+            URLQueryItem(name: "q", value: String(track.strArtists()) + " - " + String(track.title)),
+            URLQueryItem(name: "type", value: "track")
+        ]
+
+        guard let url = tmp.url else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        guard let access_token = self.tokensInfo?.access_token else {
+            return
+        }
+        print("Bearer " + access_token)
+        request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+
+            guard let data = data, let _ = String(data: data, encoding: .utf8) else {
+                return
+            }
+
+            let tracksList = try? JSONDecoder().decode(SpotifySearchTracks.TracksList.self, from: data).tracks.items
+
+            if tracksList != nil {
+                completion(tracksList!)
+            } else {
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode == 429 {
+                        print(httpResponse.value(forHTTPHeaderField: "Retry-After"))
+                    }
+                }
+            }
+        }
+        task.resume()
+    }
+
+    private func filterTracks(commonTracks: [SharedTrack], currentTracks: [[SpotifySearchTracks.Item]]) -> [SpotifySearchTracks.Item] {
+        var res = [SpotifySearchTracks.Item]()
+        for index in 0...commonTracks.count - 1 {
+            if !currentTracks[index].isEmpty {
+                res.append(currentTracks[index][0])
+            }
+        }
+        return res
+    }
+
+    private func likeTracks(_ tracks: [SpotifySearchTracks.Item]) {
+
+        var ids = ""
+        var ind = 0
+        for track in tracks {
+            ind += 1
+            if track.id != tracks.last?.id {
+                ids += String(track.id) + ","
+            } else {
+                ids += String(track.id)
+            }
+        }
+
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "api.spotify.com"
+        tmp.path = "/v1/me/tracks"
+        tmp.queryItems = [
+            URLQueryItem(name: "ids", value: String(ids))
+        ]
+
+        guard let url = tmp.url else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+
+        guard let access_token = self.tokensInfo?.access_token else {
+            return
+        }
+        print("Bearer " + access_token)
+        request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+
+            guard let data = data, let _ = String(data: data, encoding: .utf8) else {
+                return
+            }
         }
         task.resume()
     }

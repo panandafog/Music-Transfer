@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     @State private var selectionFrom = 0
     @State private var selectionTo = 0
-
+    
     @ObservedObject var manager = APIManager.shared
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -30,17 +30,16 @@ struct ContentView: View {
                             })
                         })
                     }
+                    Button(action: {
+                        self.manager.facades[self.selectionFrom].authorize()
+                    }, label: {
+                        Text("Authorize")
+                    })
                     if manager.facades[selectionFrom].isAuthorised {
                         Text("Authorization complete")
-                    } else {
-                        Button(action: {
-                            self.manager.facades[self.selectionFrom].authorize()
-                        }, label: {
-                            Text("Authorize")
-                        })
                     }
                 }
-
+                
                 List {
                     Text("To:")
                         .font(.headline)
@@ -53,17 +52,17 @@ struct ContentView: View {
                             })
                         })
                     }
+                    Button(action: {
+                        self.manager.facades[self.selectionTo].authorize()
+                    }, label: {
+                        Text("Authorize")
+                    })
                     if manager.facades[selectionTo].isAuthorised {
                         Text("Authorization complete")
-                    } else {
-                        Button(action: {
-                            self.manager.facades[self.selectionTo].authorize()
-                        }, label: {
-                            Text("Authorize")
-                        })
                     }
                 }
             }
+            TracksView(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
         }
     }
 }
