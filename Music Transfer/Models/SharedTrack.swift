@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct SharedTrack {
-    
+struct SharedTrack: Identifiable {
+    var id: String
     let artists: [String]
     let title: String
     let durationS: Int
@@ -17,9 +17,9 @@ struct SharedTrack {
     func strArtists() -> String {
         var res = ""
         if artists.count > 1 {
-            artists.forEach({
-                res.append($0 + ", ")
-            })
+            for index in 0...artists.count - 2 {
+                res.append(artists[index] + ", ")
+            }
         }
         if !artists.isEmpty {
             res.append(artists.last!)
@@ -34,11 +34,12 @@ struct SharedTrack {
             let track = $0.track
             var artists = [String]()
             for artist in $0.track.artists {
-                artists.append(artist.name.lowercased())
+                artists.append(artist.name)
             }
             
-            res.append(SharedTrack(artists: artists,
-                                   title: track.name.lowercased(),
+            res.append(SharedTrack(id: track.id,
+                                   artists: artists,
+                                   title: track.name,
                                    durationS: track.duration_ms / 1000))
         })
         
@@ -66,10 +67,11 @@ struct SharedTrack {
                 print("Matching failed")
             }
             
-            let artistsArray = artistsStr.lowercased().components(separatedBy: ", ")
+            let artistsArray = artistsStr.components(separatedBy: ", ")
             
-            res.append(SharedTrack(artists: artistsArray,
-                                   title: track.title.lowercased(),
+            res.append(SharedTrack(id: String(track.id),
+                                   artists: artistsArray,
+                                   title: track.title,
                                    durationS: track.duration))
         }
         return res
@@ -83,32 +85,42 @@ extension SharedTrack: Equatable {
             return false
         }
         
-        var equalArtists_l = true
-        for artist_l in lhs.artists {
+        var lhsArtists = [String]()
+        lhs.artists.forEach({
+            lhsArtists.append($0.lowercased())
+        })
+        
+        var rhsArtists = [String]()
+        rhs.artists.forEach({
+            rhsArtists.append($0.lowercased())
+        })
+        
+        var equalArtistsL = true
+        for artistL in lhsArtists {
             var contains = false
-            if rhs.artists.contains(artist_l) {
+            if rhsArtists.contains(artistL) {
                 contains = true
             } else {
-                for artist_r in rhs.artists {
-                    if artist_r.contains(artist_l) {
+                for artistR in rhsArtists {
+                    if artistR.contains(artistL) {
                         contains = true
                     }
                 }
             }
             if !contains {
-                equalArtists_l = false
+                equalArtistsL = false
                 break
             }
         }
         
         var equalArtists_r = true
-        for artist_r in lhs.artists {
+        for artistR in lhsArtists {
             var contains = false
-            if rhs.artists.contains(artist_r) {
+            if rhsArtists.contains(artistR) {
                 contains = true
             } else {
-                for artist_l in rhs.artists {
-                    if artist_l.contains(artist_r) {
+                for artistL in rhsArtists {
+                    if artistL.contains(artistR) {
                         contains = true
                     }
                 }
@@ -119,7 +131,7 @@ extension SharedTrack: Equatable {
             }
         }
         
-        let equalArtists = equalArtists_l || equalArtists_r
+        let equalArtists = equalArtistsL || equalArtists_r
         
         var clearTitle = lhs.title
         
@@ -147,41 +159,49 @@ extension SharedTrack: Equatable {
             return false
         }
         
-        var equalArtists_l = true
-        let artist_l = lhs.artists[0]
+        var lhsArtists = [String]()
+        lhs.artists.forEach({
+            lhsArtists.append($0.lowercased())
+        })
+        
+        var rhsArtists = [String]()
+        rhs.artists.forEach({
+            rhsArtists.append($0.lowercased())
+        })
+        
+        var equalArtistsL = true
+        let artistL = lhsArtists[0]
         var contains = false
-        if rhs.artists.contains(artist_l) {
+        if rhsArtists.contains(artistL) {
             contains = true
         } else {
-            for artist_r in rhs.artists {
-                if artist_r.contains(artist_l) {
+            for artistR in rhsArtists {
+                if artistR.contains(artistL) {
                     contains = true
                 }
             }
         }
         if !contains {
-            equalArtists_l = false
+            equalArtistsL = false
         }
         
-        
-        var equalArtists_r = true
-        let artist_r = rhs.artists[0]
+        var equalArtistsR = true
+        let artistR = rhsArtists[0]
         contains = false
-        if lhs.artists.contains(artist_r) {
+        if lhsArtists.contains(artistR) {
             contains = true
         } else {
-            for artist_l in lhs.artists {
-                if artist_l.contains(artist_r) {
+            for artistL in lhsArtists {
+                if artistL.contains(artistR) {
                     contains = true
                 }
             }
         }
         if !contains {
-            equalArtists_r = false
+            equalArtistsR = false
         }
         
-        
-        let equalArtists = equalArtists_l || equalArtists_r
+        let equalArtists = equalArtistsL || equalArtistsR
         
         var clearTitle = lhs.title
         

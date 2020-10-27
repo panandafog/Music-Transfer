@@ -18,7 +18,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             HStack {
-                List {
+                VStack {
                     Text("From:")
                         .font(.headline)
                     MenuButton(manager.facades[selectionFrom].apiName) {
@@ -31,16 +31,26 @@ struct ContentView: View {
                         })
                     }
                     Button(action: {
-                        self.manager.facades[self.selectionFrom].authorize()
+                        let facade = self.manager.facades[self.selectionFrom]
+                        facade.authorize()
                     }, label: {
                         Text("Authorize")
+                    })
+                    Button(action: {
+                        let facade = self.manager.facades[self.selectionFrom]
+                        facade.getSavedTracks()
+                    }, label: {
+                        Text("Get saved tracks")
                     })
                     if manager.facades[selectionFrom].isAuthorised {
                         Text("Authorization complete")
                     }
+                    if manager.facades[selectionFrom].gotTracks {
+                        Text("Got saved tracks")
+                    }
                 }
                 
-                List {
+                VStack {
                     Text("To:")
                         .font(.headline)
                     MenuButton(manager.facades[selectionTo].apiName) {
@@ -53,16 +63,27 @@ struct ContentView: View {
                         })
                     }
                     Button(action: {
-                        self.manager.facades[self.selectionTo].authorize()
+                        let facade = self.manager.facades[self.selectionTo]
+                        facade.authorize()
                     }, label: {
                         Text("Authorize")
+                    })
+                    Button(action: {
+                        let facade = self.manager.facades[self.selectionTo]
+                        facade.getSavedTracks()
+                    }, label: {
+                        Text("Get saved tracks")
                     })
                     if manager.facades[selectionTo].isAuthorised {
                         Text("Authorization complete")
                     }
+                    if manager.facades[selectionTo].gotTracks {
+                        Text("Got saved tracks")
+                    }
                 }
             }
-            TracksView(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
+            TracksTable(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
+            ToolsView(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
         }
     }
 }

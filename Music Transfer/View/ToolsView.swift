@@ -1,5 +1,5 @@
 //
-//  TracksView.swift
+//  ToolsView.swift
 //  Music Transfer
 //
 //  Created by panandafog on 11.08.2020.
@@ -8,27 +8,14 @@
 
 import SwiftUI
 
-struct TracksView: View {
+struct ToolsView: View {
 
     @Binding var selectionFrom: Int
     @Binding var selectionTo: Int
     @ObservedObject var manager: APIManager
 
     var body: some View {
-        List {
-            Button(action: {
-                self.manager.facades[self.selectionFrom].getSavedTracks()
-            }, label: {
-                Text("Get all tracks")
-            }).disabled(!self.manager.facades[self.selectionFrom].isAuthorised)
-
-            Button(action: {
-                self.manager.facades[self.selectionFrom].getSavedTracks()
-                self.manager.facades[self.selectionTo].getSavedTracks()
-            }, label: {
-                Text("Compare tracks")
-            }).disabled(!self.manager.facades[self.selectionFrom].isAuthorised ||
-                            !self.manager.facades[self.selectionTo].isAuthorised)
+        VStack {
 
             Button(action: {
                 self.manager.facades[self.selectionTo].addTracks(self.manager.facades[self.selectionFrom].savedTracks)
