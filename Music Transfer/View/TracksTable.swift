@@ -10,16 +10,14 @@ import SwiftUI
 
 struct TracksTable: View {
     
-    @Binding var selectionFrom: Int
-    @Binding var selectionTo: Int
-    @ObservedObject var manager: APIManager
+    @Binding var tracks: [SharedTrack]
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Text("Saved tracks:")
                 .font(.body)
             ZStack {
-                List(manager.facades[selectionFrom].savedTracks) { track in
+                List(tracks) { track in
                     TracksTableRow(track: track)
                 }
                 .padding([.top, .horizontal])

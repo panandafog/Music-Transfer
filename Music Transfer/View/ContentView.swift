@@ -92,7 +92,9 @@ struct ContentView: View {
                 })
                 .padding()
             }
-            TracksTable(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
+            TracksTable(tracks: .init(get: {
+                manager.facades[selectionFrom].savedTracks
+            }, set: { _ in }))
             ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
         }
     }
