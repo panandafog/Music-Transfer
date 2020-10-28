@@ -15,8 +15,7 @@ struct ToolsView: View {
     @ObservedObject var manager: APIManager
 
     var body: some View {
-        VStack {
-
+        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
             Button(action: {
                 self.manager.facades[self.selectionTo].addTracks(self.manager.facades[self.selectionFrom].savedTracks)
             }, label: {
@@ -28,6 +27,7 @@ struct ToolsView: View {
             }, label: {
                 Text("Synchronise")
             }).disabled(!self.manager.facades[self.selectionFrom].gotTracks || !self.manager.facades[self.selectionTo].gotTracks)
-        }
+        })
+        .padding(.bottom)
     }
 }

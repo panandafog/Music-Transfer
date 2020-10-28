@@ -11,79 +11,89 @@ import SwiftUI
 struct ContentView: View {
     
     @State private var selectionFrom = 0
-    @State private var selectionTo = 0
+    @State private var selectionTo = 1
     
     @ObservedObject var manager = APIManager.shared
     
     var body: some View {
         VStack {
             HStack {
-                VStack {
-                    Text("From:")
-                        .font(.headline)
-                    MenuButton(manager.facades[selectionFrom].apiName) {
-                        ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
-                            Button(action: {
-                                self.selectionFrom = ind
-                            }, label: {
-                                Text(self.manager.facades[ind].apiName)
-                            })
+                VStack(alignment: .leading,
+                       spacing: nil,
+                       content: {
+                        Text("From:")
+                            .font(.title)
+                        HStack {
+                            MenuButton(manager.facades[selectionFrom].apiName) {
+                                ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                                    Button(action: {
+                                        selectionFrom = ind
+                                        if selectionTo == ind {
+                                            if selectionTo == manager.facades.count - 1 {
+                                                selectionTo = 0
+                                            } else {
+                                                selectionTo += 1
+                                            }
+                                        }
+                                    }, label: {
+                                        Text(manager.facades[ind].apiName)
+                                    })
+                                })
+                            }
+                            .frame(width: 100)
+                            Spacer()
+                        }
+                        Button(action: {
+                            let facade = manager.facades[selectionFrom]
+                            facade.authorize()
+                        }, label: {
+                            Text("Authorize")
                         })
-                    }
-                    Button(action: {
-                        let facade = self.manager.facades[self.selectionFrom]
-                        facade.authorize()
-                    }, label: {
-                        Text("Authorize")
-                    })
-                    Button(action: {
-                        let facade = self.manager.facades[self.selectionFrom]
-                        facade.getSavedTracks()
-                    }, label: {
-                        Text("Get saved tracks")
-                    })
-                    if manager.facades[selectionFrom].isAuthorised {
-                        Text("Authorization complete")
-                    }
-                    if manager.facades[selectionFrom].gotTracks {
-                        Text("Got saved tracks")
-                    }
-                }
+                        Button(action: {
+                            let facade = manager.facades[selectionFrom]
+                            facade.getSavedTracks()
+                        }, label: {
+                            Text("Get saved tracks")
+                        })
+                        .disabled(!manager.facades[selectionFrom].isAuthorised)
+                       })
+                    .padding()
                 
-                VStack {
+                VStack(alignment: .leading, spacing: nil, content: {
                     Text("To:")
-                        .font(.headline)
-                    MenuButton(manager.facades[selectionTo].apiName) {
-                        ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
-                            Button(action: {
-                                self.selectionTo = ind
-                            }, label: {
-                                Text(self.manager.facades[ind].apiName)
+                        .font(.title)
+                    HStack {
+                        MenuButton(manager.facades[selectionTo].apiName) {
+                            ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                                Button(action: {
+                                    selectionTo = ind
+                                }, label: {
+                                    Text(manager.facades[ind].apiName)
+                                })
+                                .disabled(selectionFrom == ind)
                             })
-                        })
+                        }
+                        .frame(width: 100)
+                        Spacer()
                     }
                     Button(action: {
-                        let facade = self.manager.facades[self.selectionTo]
+                        let facade = manager.facades[selectionTo]
                         facade.authorize()
                     }, label: {
                         Text("Authorize")
                     })
                     Button(action: {
-                        let facade = self.manager.facades[self.selectionTo]
+                        let facade = manager.facades[selectionTo]
                         facade.getSavedTracks()
                     }, label: {
                         Text("Get saved tracks")
                     })
-                    if manager.facades[selectionTo].isAuthorised {
-                        Text("Authorization complete")
-                    }
-                    if manager.facades[selectionTo].gotTracks {
-                        Text("Got saved tracks")
-                    }
-                }
+                    .disabled(!manager.facades[selectionTo].isAuthorised)
+                })
+                .padding()
             }
-            TracksTable(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
-            ToolsView(selectionFrom: self.$selectionFrom, selectionTo: self.$selectionTo, manager: self.manager)
+            TracksTable(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
+            ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
         }
     }
 }
