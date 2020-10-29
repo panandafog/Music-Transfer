@@ -40,6 +40,7 @@
 		0BD5E6822548994C007EDF2A /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E6812548994C007EDF2A /* TracksTableRow.swift */; };
 		0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E68C25489D8E007EDF2A /* TracksTable.swift */; };
 		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
+		0BFD71512549EB7900E46CDF /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,7 @@
 		0BD5E6812548994C007EDF2A /* TracksTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableRow.swift; sourceTree = "<group>"; };
 		0BD5E68C25489D8E007EDF2A /* TracksTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTable.swift; sourceTree = "<group>"; };
 		0BDAD23024E066C6006CDA9C /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
+		0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +143,6 @@
 			children = (
 				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
 				0B9903E024E339C60096C69E /* ToolsView.swift */,
-				0BD5E68C25489D8E007EDF2A /* TracksTable.swift */,
 				0BD5E6812548994C007EDF2A /* TracksTableRow.swift */,
 				0BD5E69525489EA1007EDF2A /* SupportingViews */,
 			);
@@ -280,6 +281,8 @@
 				0B23C8FF254032C90019EC46 /* CaptchaViewDelegate.swift */,
 				0B8B8BF325456854004D85E7 /* LoginView.swift */,
 				0B8B8BF825456861004D85E7 /* LoginViewDelegate.swift */,
+				0BD5E68C25489D8E007EDF2A /* TracksTable.swift */,
+				0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */,
 			);
 			path = SupportingViews;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */,
 				0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */,
 				0B23C8C9253E51470019EC46 /* SharedTrack.swift in Sources */,
+				0BFD71512549EB7900E46CDF /* TracksTableViewDelegate.swift in Sources */,
 				0BB3629224CC60F400E353FB /* SpotifyFacade.swift in Sources */,
 				0B8B8C0725457D31004D85E7 /* SpotifyKeys.swift in Sources */,
 				0B23C90E2540440D0019EC46 /* VKErrors.swift in Sources */,

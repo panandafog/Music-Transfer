@@ -268,7 +268,7 @@ final class VKFacade: APIFacade {
                     globalCompletion: {
                         let tracksToAdd = self.filterTracks(commonTracks: commonTracks, currentTracks: globalFoundTracks)
                         self.likeTracks(tracksToAdd, captcha: nil, completion: {}, globalCompletion: {
-                            print("global completion")
+                            TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks:")
                         })
                     })
     }

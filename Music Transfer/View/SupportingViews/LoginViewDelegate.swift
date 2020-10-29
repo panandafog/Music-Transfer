@@ -30,7 +30,8 @@ class LoginViewDelegate {
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)
             window.center()
-            window.setFrameAutosaveName("Captcha Window")
+            window.title = "Log in"
+            window.setFrameAutosaveName("Log in Window")
             window.contentView = NSHostingView(rootView: loginView)
             window.makeKeyAndOrderFront(nil)
 

@@ -90,11 +90,11 @@ struct ContentView: View {
                     })
                     .disabled(!manager.facades[selectionTo].isAuthorised)
                 })
-                .padding()
+                .padding([.top, .horizontal])
             }
             TracksTable(tracks: .init(get: {
                 manager.facades[selectionFrom].savedTracks
-            }, set: { _ in }))
+            }, set: { _ in }), name: "Saved tracks:")
             ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
         }
     }

@@ -11,10 +11,11 @@ import SwiftUI
 struct TracksTable: View {
     
     @Binding var tracks: [SharedTrack]
+    let name: String
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-            Text("Saved tracks:")
+            Text(name)
                 .font(.body)
             ZStack {
                 List(tracks) { track in
@@ -23,6 +24,6 @@ struct TracksTable: View {
                 .padding([.top, .horizontal])
             }
         })
-        .padding([.bottom, .horizontal])
+        .padding()
     }
 }

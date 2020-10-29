@@ -33,6 +33,7 @@ class CaptchaViewDelegate {
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)
             window.center()
+            window.title = "Captcha"
             window.setFrameAutosaveName("Captcha Window")
             window.contentView = NSHostingView(rootView: captchaView)
             window.makeKeyAndOrderFront(nil)

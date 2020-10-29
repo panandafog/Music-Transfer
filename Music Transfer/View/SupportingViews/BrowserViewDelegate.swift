@@ -30,7 +30,8 @@ class BrowserViewDelegate {
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)
         window.center()
-        window.setFrameAutosaveName("Browser Window")
+        window.title = "Log in"
+        window.setFrameAutosaveName("Log in Window")
         window.contentView = NSHostingView(rootView: browserView)
         window.makeKeyAndOrderFront(nil)
 
