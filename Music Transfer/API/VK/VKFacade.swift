@@ -47,20 +47,20 @@ final class VKFacade: APIFacade {
     
     var tokensInfo: TokensInfo?
     
-    // MARK: - TokensInfo
+    // MARK: TokensInfo
     struct TokensInfo: Decodable {
         let access_token: String
         let expires_in: Int
         let user_id: Int
     }
     
-    // MARK: - ErrorInfo
+    // MARK: ErrorInfo
     struct ErrorInfo: Decodable {
         let error: String
         let error_description: String
     }
     
-    // MARK: - UserInfo
+    // MARK: UserInfo
     struct UserInfo: Codable {
         let id: Int
         let first_name, last_name: String
@@ -92,6 +92,7 @@ final class VKFacade: APIFacade {
         return String((0..<length).map{ _ in letters.randomElement()! })
     }
     
+    // MARK: requestTokens
     func requestTokens(username: String, password: String, code: String?, captcha: VKCaptcha.Solved?) {
         
         var tmp = URLComponents()
@@ -182,12 +183,14 @@ final class VKFacade: APIFacade {
         task.resume()
     }
     
+    // MARK: getSavedTracks
     func getSavedTracks() {
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
         requestTracks(offset: 0)
     }
     
+    // MARK: requestTracks
     private func requestTracks(offset: Int) {
         let count = 5000
         
@@ -243,12 +246,13 @@ final class VKFacade: APIFacade {
         task.resume()
     }
     
+    // MARK: addTracks
     func addTracks(_ tracks: [SharedTrack]) {
         var savedTracks = [SharedTrack]()
         for index in 0...tracks.count - 1 {
             savedTracks.append(tracks[index])
         }
-        var commonTracks = savedTracks
+        let commonTracks = savedTracks
         var globalFoundTracks = [[VKSavedTracks.Item]]()
         var notFoundTracks = [SharedTrack]()
         
@@ -263,16 +267,17 @@ final class VKFacade: APIFacade {
                         print(String(savedTracks.count))
                         print(String(tracks.count))
                         print(!foundTracks.isEmpty)
-                        print("––––")
+                        print("––––––––––––––––––––––––––––––––––––––––")
                     },
                     globalCompletion: {
                         let tracksToAdd = self.filterTracks(commonTracks: commonTracks, currentTracks: globalFoundTracks)
                         self.likeTracks(tracksToAdd, captcha: nil, completion: {}, globalCompletion: {
-                            TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks:")
+                            TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
                         })
                     })
     }
     
+    // MARK: synchroniseTracks
     func synchroniseTracks(_ tracks: [SharedTrack]) {
         var filteredTracks = [SharedTrack]()
         for index in 0...29 {
@@ -280,8 +285,6 @@ final class VKFacade: APIFacade {
             savedTracks.forEach({
                 if $0 ~= tracks[index] {
                     contains = true
-                } else {
-                    let _ = 0
                 }
             })
             if !contains {
@@ -291,6 +294,7 @@ final class VKFacade: APIFacade {
         addTracks(filteredTracks)
     }
     
+    // MARK: searchTrack
     private func searchTrack(_ tracks: [SharedTrack],
                              attempt: Int,
                              own: Bool,
@@ -342,6 +346,8 @@ final class VKFacade: APIFacade {
             return
         }
         
+        print("url: \(url)")
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -362,13 +368,15 @@ final class VKFacade: APIFacade {
             
             if tracksList != nil {
                 if tracksList!.response.items.isEmpty && attempt < 5 {
-                    usleep(1000000)
+                    //                    usleep(1000000)
+                    sleep(1)
                     searchTrack(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, globalCompletion: globalCompletion)
                 } else {
                     completion(tracksList!.response.items)
                     var remaining = tracks
                     remaining.remove(at: 0)
-                    usleep(100000)
+                    //                    usleep(100000)
+                    sleep(1)
                     searchTrack(remaining, attempt: 0, own: own, captcha: nil, completion: completion, globalCompletion: globalCompletion)
                 }
             } else {
@@ -387,7 +395,7 @@ final class VKFacade: APIFacade {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
-                                sleep(1)
+                                sleep(2)
                                 searchTrack(tracks, attempt: attempt, own: own, captcha: captcha, completion: completion, globalCompletion: globalCompletion)
                             }
                         }
@@ -398,18 +406,47 @@ final class VKFacade: APIFacade {
         task.resume()
     }
     
+    // MARK: filterTracks
     private func filterTracks(commonTracks: [SharedTrack], currentTracks: [[VKSavedTracks.Item]]) -> [VKSavedTracks.Item] {
-        var res = [VKSavedTracks.Item]()
+        var result = [VKSavedTracks.Item]()
+        
         if !commonTracks.isEmpty {
             for index in 0...commonTracks.count - 1 {
                 if !currentTracks[index].isEmpty {
-                    res.append(currentTracks[index][0])
+                    let chosenTrack = currentTracks[index][0]
+                    var isDuplicate = false
+                    
+                    // Search for duplicates in saved tracks
+                    
+                    for track in savedTracks {
+                        if track ~= SharedTrack(from: chosenTrack) {
+                            isDuplicate = true
+                            break
+                        }
+                    }
+                    
+                    if !isDuplicate {
+                        
+                        // Search for duplicates in added tracks
+                        
+                        for track in result {
+                            if SharedTrack(from: chosenTrack) ~= SharedTrack(from: track) {
+                                isDuplicate = true
+                                break
+                            }
+                        }
+                        if !isDuplicate {
+                            result.append(chosenTrack)
+                        }
+                    }
                 }
             }
+            
         }
-        return res
+        return result
     }
     
+    // MARK: likeTracks
     private func likeTracks(_ tracks: [VKSavedTracks.Item],
                             captcha: VKCaptcha.Solved?,
                             completion: @escaping (() -> Void),

@@ -14,6 +14,56 @@ struct SharedTrack: Identifiable {
     let title: String
     let durationS: Int
     
+    init(id: String, artists: [String], title: String, durationS: Int) {
+        self.id = id
+        self.artists = artists
+        self.title = title
+        self.durationS = durationS
+    }
+    
+    init(from track: VKSavedTracks.Item) {
+        var artistsStr = track.artist
+        
+        let patterns = [" feat. ", " ft. "]
+        do {
+            for pattern in patterns {
+                let regEx = try NSRegularExpression (pattern: pattern, options: [])
+                let nsString = artistsStr as NSString
+                let range = NSMakeRange(0, nsString.length)
+                artistsStr = regEx.stringByReplacingMatches(in: artistsStr,
+                                                            options: .withTransparentBounds,
+                                                            range: range,
+                                                            withTemplate: ", ")
+            }
+        } catch _ as NSError {
+            print("Matching failed")
+        }
+        
+        let artistsArray = artistsStr.components(separatedBy: ", ")
+        
+        self.id = String(track.id)
+        self.artists = artistsArray
+        self.title = track.title
+        self.durationS = track.duration
+    }
+    
+    init(from track: SpotifySavedTracks.Track) {
+        var artists = [String]()
+        for artist in track.artists {
+            artists.append(artist.name)
+        }
+        
+        self.id = track.id
+        self.artists = artists
+        self.title = track.name
+        self.durationS = track.duration_ms / 1000
+    }
+    
+    init(from item: SpotifySavedTracks.Item) {
+        let track = item.track
+        self.init(from: track)
+    }
+    
     func strArtists() -> String {
         var res = ""
         if artists.count > 1 {
@@ -31,16 +81,7 @@ struct SharedTrack: Identifiable {
         var res = [SharedTrack]()
         
         list.items.forEach({
-            let track = $0.track
-            var artists = [String]()
-            for artist in $0.track.artists {
-                artists.append(artist.name)
-            }
-            
-            res.append(SharedTrack(id: track.id,
-                                   artists: artists,
-                                   title: track.name,
-                                   durationS: track.duration_ms / 1000))
+            res.append(SharedTrack(from: $0))
         })
         
         return res
@@ -49,31 +90,10 @@ struct SharedTrack: Identifiable {
     static func makeArray(from list: VKSavedTracks.TracksList) -> [SharedTrack] {
         var res = [SharedTrack]()
         
-        for track in list.response.items {
-            var artistsStr = track.artist
-            
-            let patterns = [" feat. ", " ft. "]
-            do {
-                for pattern in patterns {
-                    let regEx = try NSRegularExpression (pattern: pattern, options: [])
-                    let nsString = artistsStr as NSString
-                    let range = NSMakeRange(0, nsString.length)
-                    artistsStr = regEx.stringByReplacingMatches(in: artistsStr,
-                                                                options: .withTransparentBounds,
-                                                                range: range,
-                                                                withTemplate: ", ")
-                }
-            } catch _ as NSError {
-                print("Matching failed")
-            }
-            
-            let artistsArray = artistsStr.components(separatedBy: ", ")
-            
-            res.append(SharedTrack(id: String(track.id),
-                                   artists: artistsArray,
-                                   title: track.title,
-                                   durationS: track.duration))
-        }
+        list.response.items.forEach({
+            res.append(SharedTrack(from: $0))
+        })
+        
         return res
     }
 }
@@ -133,24 +153,7 @@ extension SharedTrack: Equatable {
         
         let equalArtists = equalArtistsL || equalArtists_r
         
-        var clearTitle = lhs.title
-        
-        let patterns = ["\\ *\\(.*\\)\\ *"]
-        do {
-            for pattern in patterns {
-                let regEx = try NSRegularExpression (pattern: pattern, options: [])
-                let nsString = clearTitle as NSString
-                let range = NSMakeRange(0, nsString.length)
-                clearTitle = regEx.stringByReplacingMatches(in: clearTitle,
-                                                            options: .withTransparentBounds,
-                                                            range: range,
-                                                            withTemplate: "")
-            }
-        } catch _ as NSError {
-            print("Matching failed")
-        }
-        
-        return equalArtists && rhs.title.contains(clearTitle)
+        return equalArtists && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
     }
     
     static func ~= (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
@@ -203,23 +206,32 @@ extension SharedTrack: Equatable {
         
         let equalArtists = equalArtistsL || equalArtistsR
         
-        var clearTitle = lhs.title
+        return equalArtists && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
+    }
+    
+    static func titlesAreEqual(lhs: String, rhs: String) -> Bool {
+        let clearLhs = clearTitle(lhs)
+        let clearRhs = clearTitle(rhs)
         
-        let patterns = ["\\ *\\(.*\\)\\ *"]
+        return rhs.contains(clearLhs) || lhs.contains(clearRhs) || lhs == rhs
+    }
+    
+    static func clearTitle(_ title: String) -> String {
+        var title = title
+        let patterns = ["\\ *\\(.*\\)", "\\ *\\[.*\\]"]
         do {
             for pattern in patterns {
                 let regEx = try NSRegularExpression (pattern: pattern, options: [])
-                let nsString = clearTitle as NSString
+                let nsString = title as NSString
                 let range = NSMakeRange(0, nsString.length)
-                clearTitle = regEx.stringByReplacingMatches(in: clearTitle,
-                                                            options: .withTransparentBounds,
-                                                            range: range,
-                                                            withTemplate: "")
+                title = regEx.stringByReplacingMatches(in: title,
+                                                       options: .withTransparentBounds,
+                                                       range: range,
+                                                       withTemplate: "")
             }
         } catch _ as NSError {
-            print("Matching failed")
         }
         
-        return equalArtists && rhs.title.contains(clearTitle)
+        return title
     }
 }

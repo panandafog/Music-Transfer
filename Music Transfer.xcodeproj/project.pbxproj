@@ -31,7 +31,7 @@
 		0BB3626624CC5C5F00E353FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626524CC5C5F00E353FB /* Assets.xcassets */; };
 		0BB3626924CC5C5F00E353FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626824CC5C5F00E353FB /* Preview Assets.xcassets */; };
 		0BB3626C24CC5C5F00E353FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626A24CC5C5F00E353FB /* Main.storyboard */; };
-		0BB3627824CC5C5F00E353FB /* Music_TransferTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3627724CC5C5F00E353FB /* Music_TransferTests.swift */; };
+		0BB3627824CC5C5F00E353FB /* SharedTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3627724CC5C5F00E353FB /* SharedTrackTests.swift */; };
 		0BB3628324CC5C5F00E353FB /* Music_TransferUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3628224CC5C5F00E353FB /* Music_TransferUITests.swift */; };
 		0BB3629224CC60F400E353FB /* SpotifyFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629124CC60F400E353FB /* SpotifyFacade.swift */; };
 		0BB3629424CC885700E353FB /* SpotifyBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3629324CC885700E353FB /* SpotifyBrowser.swift */; };
@@ -88,7 +88,7 @@
 		0BB3626D24CC5C5F00E353FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BB3626E24CC5C5F00E353FB /* Music_Transfer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Music_Transfer.entitlements; sourceTree = "<group>"; };
 		0BB3627324CC5C5F00E353FB /* Music TransferTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music TransferTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BB3627724CC5C5F00E353FB /* Music_TransferTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferTests.swift; sourceTree = "<group>"; };
+		0BB3627724CC5C5F00E353FB /* SharedTrackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTrackTests.swift; sourceTree = "<group>"; };
 		0BB3627924CC5C5F00E353FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BB3627E24CC5C5F00E353FB /* Music TransferUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music TransferUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB3628224CC5C5F00E353FB /* Music_TransferUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferUITests.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 		0BB3627624CC5C5F00E353FB /* Music TransferTests */ = {
 			isa = PBXGroup;
 			children = (
-				0BB3627724CC5C5F00E353FB /* Music_TransferTests.swift */,
+				0BB3627724CC5C5F00E353FB /* SharedTrackTests.swift */,
 				0BB3627924CC5C5F00E353FB /* Info.plist */,
 			);
 			path = "Music TransferTests";
@@ -459,7 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BB3627824CC5C5F00E353FB /* Music_TransferTests.swift in Sources */,
+				0BB3627824CC5C5F00E353FB /* SharedTrackTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +616,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Music Transfer/Music_Transfer.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Music Transfer/Preview Content\"";
@@ -630,6 +631,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -639,6 +641,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Music Transfer/Music_Transfer.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Music Transfer/Preview Content\"";
@@ -653,6 +656,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
