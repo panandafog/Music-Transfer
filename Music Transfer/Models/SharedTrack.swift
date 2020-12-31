@@ -133,7 +133,7 @@ extension SharedTrack: Equatable {
             }
         }
         
-        var equalArtists_r = true
+        var equalArtistsR = true
         for artistR in lhsArtists {
             var contains = false
             if rhsArtists.contains(artistR) {
@@ -146,12 +146,12 @@ extension SharedTrack: Equatable {
                 }
             }
             if !contains {
-                equalArtists_r = false
+                equalArtistsR = false
                 break
             }
         }
         
-        let equalArtists = equalArtistsL || equalArtists_r
+        let equalArtists = equalArtistsL || equalArtistsR
         
         return equalArtists && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
     }
@@ -178,9 +178,13 @@ extension SharedTrack: Equatable {
         if rhsArtists.contains(artistL) {
             contains = true
         } else {
-            for artistR in rhsArtists {
-                if artistR.contains(artistL) {
-                    contains = true
+            if rhs.title.lowercased().contains(artistL) {
+                contains = true
+            } else {
+                for artistR in rhsArtists {
+                    if artistR.contains(artistL) {
+                        contains = true
+                    }
                 }
             }
         }
@@ -194,9 +198,13 @@ extension SharedTrack: Equatable {
         if lhsArtists.contains(artistR) {
             contains = true
         } else {
-            for artistL in lhsArtists {
-                if artistL.contains(artistR) {
-                    contains = true
+            if lhs.title.lowercased().contains(artistR) {
+                contains = true
+            } else {
+                for artistL in lhsArtists {
+                    if artistL.contains(artistR) {
+                        contains = true
+                    }
                 }
             }
         }

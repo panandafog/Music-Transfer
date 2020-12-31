@@ -20,7 +20,7 @@ class SharedTrackTests: XCTestCase {
     }
 
     func testSharedTracksComparison() throws {
-        let lhs = SharedTrack(id: "456246001", artists: ["Boris Brejcha"], title: "Never Look Back (Radio Edit) #2 [REALTONES™]", durationS: 22)
+        var lhs = SharedTrack(id: "456246001", artists: ["Boris Brejcha"], title: "Never Look Back (Radio Edit) #2 [REALTONES™]", durationS: 22)
         
         var rhs = lhs
         XCTAssertTrue(lhs ~= rhs)
@@ -33,6 +33,17 @@ class SharedTrackTests: XCTestCase {
         
         rhs = SharedTrack(id: "456246001", artists: ["Boris Brejcha"], title: "Never Look Back", durationS: 22)
         XCTAssertTrue(lhs ~= rhs)
+        
+        
+        lhs = SharedTrack(id: "722tgOgdIbNe3BEyLnejw4", artists: ["Kanye West"], title: "Black Skinhead", durationS: 188)
+        
+        rhs = SharedTrack(id: "722tgOgdIbNe3BEyLnejw4", artists: ["Разные исполнители"], title: "Black Skinhead (explicit) (Complete version originally performed by Kanye West)", durationS: 188)
+        
+        XCTAssertTrue(lhs ~= rhs)
+        
+        lhs = SharedTrack(id: "722tgOgdIbNe3BEyLnejw4", artists: ["Kanye East"], title: "Black Skinhead", durationS: 188)
+        
+        XCTAssertFalse(lhs ~= rhs)
     }
     
     func testSharedTrackTitleClearing() throws {
