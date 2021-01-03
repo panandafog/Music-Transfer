@@ -18,11 +18,6 @@ final class VKFacade: APIFacade {
     private static let lang = "en"
     private static let stateLength = 100
     
-    private var searchAttemptCount = 2
-    private var searchReattemptDelay: UInt32 = 1000000
-    private var requestRepeatDelay: UInt32 = 1000000
-    private var addingErrorDataString = "{\"response\":0}"
-    
     static var state = randomString(length: stateLength)
     
     static var baseURL: URLComponents {
@@ -82,6 +77,11 @@ final class VKFacade: APIFacade {
     func authorize() {
         LoginViewDelegate.shared.open(twoFactor: false, captcha: nil, completion: requestTokens(username:password:code:captcha:))
     }
+    
+    private let searchAttemptCount = 2
+    private let searchReattemptDelay: UInt32 = 1000000
+    private let requestRepeatDelay: UInt32 = 1000000
+    private let addingErrorDataString = "{\"response\":0}"
     
     private init() {
         

@@ -75,6 +75,20 @@ struct SharedTrack: Identifiable {
         self.init(from: track)
     }
     
+    init(from item: SpotifySearchTracks.Item) {
+        var artists = [String]()
+        for artist in item.artists {
+            artists.append(artist.name)
+        }
+        
+        self.id = item.id
+        self.artists = artists
+        self.title = item.name
+        self.durationS = item.duration_ms / 1000
+        
+        self.ownerID = nil
+    }
+    
     func strArtists() -> String {
         var res = ""
         if artists.count > 1 {

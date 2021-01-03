@@ -65,7 +65,7 @@ public struct SpotifyBrowser: APIBrowser {
             let currentUrlComponents = URLComponents(string: url.absoluteString)
             let redirectUrlComponents = URLComponents(string: SpotifyFacade.authorizationRedirectUrl)
 
-            if !spotifyFacade.isAuthorised && currentUrlComponents?.host == redirectUrlComponents?.host {
+            if currentUrlComponents?.host == redirectUrlComponents?.host {
                 let queryItems = currentUrlComponents?.queryItems
 
                 let code = queryItems?.filter({$0.name == "code"}).first
