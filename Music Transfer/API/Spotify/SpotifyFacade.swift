@@ -145,7 +145,7 @@ final class SpotifyFacade: APIFacade {
     // MARK: getSavedTracks
     func getSavedTracks() {
         self.gotTracks = false
-        savedTracks = [SharedTrack]()
+        self.savedTracks = [SharedTrack]()
         requestTracks(offset: 0)
         print(savedTracks.count)
         print()
@@ -227,20 +227,20 @@ final class SpotifyFacade: APIFacade {
                                 print("filter")
                                 let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
                                 if filtered.tracksToAdd.count <= 50 {
-                                    self.likeTracks(filtered.tracksToAdd)
+                                    self.likeTracks(filtered.tracksToAdd, completion: {})
                                 } else {
                                     var package = [SpotifySearchTracks.Item]()
                                     
                                     for track in filtered.tracksToAdd {
                                         package.append(track)
                                         if package.count == 50 {
-                                            self.likeTracks(package)
+                                            self.likeTracks(package, completion: {})
                                             package.removeAll()
                                             usleep(self.requestRepeatDelay)
                                         }
                                     }
                                     if !package.isEmpty {
-                                        self.likeTracks(package)
+                                        self.likeTracks(package, completion: {})
                                     }
                                 }
                                 if !filtered.notFoundTracks.isEmpty {
@@ -270,16 +270,19 @@ final class SpotifyFacade: APIFacade {
         for track in savedTracks {
             package.append(track)
             if package.count == 50 {
-                deleteTracks(package)
+                deleteTracks(package, completion: {})
                 package.removeAll()
                 usleep(self.requestRepeatDelay)
             }
         }
         if !package.isEmpty {
-            deleteTracks(package)
+            deleteTracks(package, completion: {})
         }
-        getSavedTracks()
+        
+        usleep(self.requestRepeatDelay)
+        self.getSavedTracks()
         print("end")
+        
     }
     
     // MARK: searchTrack
@@ -364,7 +367,8 @@ final class SpotifyFacade: APIFacade {
     }
     
     // MARK: likeTracks
-    private func likeTracks(_ tracks: [SpotifySearchTracks.Item]) {
+    private func likeTracks(_ tracks: [SpotifySearchTracks.Item],
+                            completion: @escaping (() -> Void)) {
         var ids = ""
         var ind = 0
         for track in tracks {
@@ -402,19 +406,22 @@ final class SpotifyFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                self.likeTracks(tracks)
+                self.likeTracks(tracks, completion: completion)
                 return
             }
             
             guard let data = data, let _ = String(data: data, encoding: .utf8) else {
                 return
             }
+            
+            completion()
         }
         task.resume()
     }
     
     // MARK: deleteTracks
-    private func deleteTracks(_ tracks: [SharedTrack]) {
+    private func deleteTracks(_ tracks: [SharedTrack],
+                              completion: @escaping (() -> Void)) {
         var ids = ""
         var ind = 0
         for track in tracks {
@@ -452,13 +459,15 @@ final class SpotifyFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                self.deleteTracks(tracks)
+                self.deleteTracks(tracks, completion: completion)
                 return
             }
             
             guard let data = data, let _ = String(data: data, encoding: .utf8) else {
                 return
             }
+            
+            completion()
         }
         task.resume()
     }
