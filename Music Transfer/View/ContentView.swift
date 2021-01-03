@@ -13,6 +13,9 @@ struct ContentView: View {
     @State private var selectionFrom = 0
     @State private var selectionTo = 1
     
+    @State private var showingAlert1 = false
+    @State private var showingAlert2 = false
+    
     @ObservedObject var manager = APIManager.shared
     
     var body: some View {
@@ -59,10 +62,18 @@ struct ContentView: View {
                             })
                             .disabled(!manager.facades[selectionFrom].isAuthorised)
                             Button(action: {
-                                let facade = manager.facades[selectionFrom]
-                                facade.deleteAllTracks()
+                                self.showingAlert1 = true
                             }, label: {
                                 Text("Delete all tracks")
+                            })
+                            .alert(isPresented: $showingAlert1, content: {
+                                Alert(title: Text("Are you sure you want to delete all tracks?"),
+                                      message: Text("There is no undo"),
+                                      primaryButton: .destructive(Text("Delete")) {
+                                        let facade = manager.facades[selectionFrom]
+                                        facade.deleteAllTracks()
+                                      },
+                                      secondaryButton: .cancel())
                             })
                             .disabled(!manager.facades[selectionFrom].gotTracks)
                             Spacer()
@@ -71,7 +82,7 @@ struct ContentView: View {
                         TracksTable(tracks: .init(get: {
                             manager.facades[selectionFrom].savedTracks
                         }, set: { _ in }), name: "Saved tracks:")
-                    })
+                       })
                 
                 VStack(alignment: .leading, spacing: nil, content: {
                     HStack {
@@ -106,21 +117,28 @@ struct ContentView: View {
                         })
                         .disabled(!manager.facades[selectionTo].isAuthorised)
                         Button(action: {
-                            let facade = manager.facades[selectionTo]
-                            facade.deleteAllTracks()
+                            self.showingAlert2 = true
                         }, label: {
                             Text("Delete all tracks")
+                        })
+                        .alert(isPresented: $showingAlert2, content: {
+                            Alert(title: Text("Are you sure you want to delete all tracks?"),
+                                  message: Text("There is no undo"),
+                                  primaryButton: .destructive(Text("Delete")) {
+                                    let facade = manager.facades[selectionTo]
+                                    facade.deleteAllTracks()
+                                  },
+                                  secondaryButton: .cancel())
                         })
                         .disabled(!manager.facades[selectionTo].gotTracks)
                     }
                     .padding(.horizontal)
                     TracksTable(tracks: .init(get: {
                         manager.facades[selectionTo].savedTracks
-                    }, set: { _ in }), name: "")
+                    }, set: { _ in }), name: " ")
                 })
             }
         }
         ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
     }
 }
-
