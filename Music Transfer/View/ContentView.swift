@@ -21,9 +21,9 @@ struct ContentView: View {
                 VStack(alignment: .leading,
                        spacing: nil,
                        content: {
-                        Text("From:")
-                            .font(.title)
                         HStack {
+                            Text("From:")
+                                .font(.title)
                             MenuButton(manager.facades[selectionFrom].apiName) {
                                 ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
                                     Button(action: {
@@ -41,35 +41,42 @@ struct ContentView: View {
                                 })
                             }
                             .frame(width: 100)
+                            .padding(.leading)
+                        }
+                        .padding([.top, .leading, .trailing])
+                        HStack {
+                            Button(action: {
+                                let facade = manager.facades[selectionFrom]
+                                facade.authorize()
+                            }, label: {
+                                Text("Authorize")
+                            })
+                            Button(action: {
+                                let facade = manager.facades[selectionFrom]
+                                facade.getSavedTracks()
+                            }, label: {
+                                Text("Get saved tracks")
+                            })
+                            .disabled(!manager.facades[selectionFrom].isAuthorised)
+                            Button(action: {
+                                let facade = manager.facades[selectionFrom]
+                                facade.deleteAllTracks()
+                            }, label: {
+                                Text("Delete all tracks")
+                            })
+                            .disabled(!manager.facades[selectionFrom].gotTracks)
                             Spacer()
                         }
-                        Button(action: {
-                            let facade = manager.facades[selectionFrom]
-                            facade.authorize()
-                        }, label: {
-                            Text("Authorize")
-                        })
-                        Button(action: {
-                            let facade = manager.facades[selectionFrom]
-                            facade.getSavedTracks()
-                        }, label: {
-                            Text("Get saved tracks")
-                        })
-                        .disabled(!manager.facades[selectionFrom].isAuthorised)
-                        Button(action: {
-                            let facade = manager.facades[selectionFrom]
-                            facade.deleteAllTracks()
-                        }, label: {
-                            Text("Delete all tracks")
-                        })
-                        .disabled(!manager.facades[selectionFrom].gotTracks)
-                       })
-                    .padding()
+                        .padding(.horizontal)
+                        TracksTable(tracks: .init(get: {
+                            manager.facades[selectionFrom].savedTracks
+                        }, set: { _ in }), name: "Saved tracks:")
+                    })
                 
                 VStack(alignment: .leading, spacing: nil, content: {
-                    Text("To:")
-                        .font(.title)
                     HStack {
+                        Text("To:")
+                            .font(.title)
                         MenuButton(manager.facades[selectionTo].apiName) {
                             ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
                                 Button(action: {
@@ -81,36 +88,39 @@ struct ContentView: View {
                             })
                         }
                         .frame(width: 100)
-                        Spacer()
+                        .padding(.leading)
                     }
-                    Button(action: {
-                        let facade = manager.facades[selectionTo]
-                        facade.authorize()
-                    }, label: {
-                        Text("Authorize")
-                    })
-                    Button(action: {
-                        let facade = manager.facades[selectionTo]
-                        facade.getSavedTracks()
-                    }, label: {
-                        Text("Get saved tracks")
-                    })
-                    .disabled(!manager.facades[selectionTo].isAuthorised)
-                    Button(action: {
-                        let facade = manager.facades[selectionTo]
-                        facade.deleteAllTracks()
-                    }, label: {
-                        Text("Delete all tracks")
-                    })
-                    .disabled(!manager.facades[selectionTo].gotTracks)
+                    .padding([.top, .leading, .trailing])
+                    HStack {
+                        Button(action: {
+                            let facade = manager.facades[selectionTo]
+                            facade.authorize()
+                        }, label: {
+                            Text("Authorize")
+                        })
+                        Button(action: {
+                            let facade = manager.facades[selectionTo]
+                            facade.getSavedTracks()
+                        }, label: {
+                            Text("Get saved tracks")
+                        })
+                        .disabled(!manager.facades[selectionTo].isAuthorised)
+                        Button(action: {
+                            let facade = manager.facades[selectionTo]
+                            facade.deleteAllTracks()
+                        }, label: {
+                            Text("Delete all tracks")
+                        })
+                        .disabled(!manager.facades[selectionTo].gotTracks)
+                    }
+                    .padding(.horizontal)
+                    TracksTable(tracks: .init(get: {
+                        manager.facades[selectionTo].savedTracks
+                    }, set: { _ in }), name: "")
                 })
-                .padding()
             }
-            TracksTable(tracks: .init(get: {
-                manager.facades[selectionFrom].savedTracks
-            }, set: { _ in }), name: "Saved tracks:")
-            ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
         }
+        ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
     }
 }
 

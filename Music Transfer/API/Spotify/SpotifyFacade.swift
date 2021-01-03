@@ -246,6 +246,8 @@ final class SpotifyFacade: APIFacade {
                                 if !filtered.notFoundTracks.isEmpty {
                                     TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
                                 }
+                                usleep(self.requestRepeatDelay)
+                                self.getSavedTracks()
                             }
                         })
             usleep(requestRepeatDelay)

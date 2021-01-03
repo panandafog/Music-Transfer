@@ -21,7 +21,6 @@ struct TracksTable: View {
                 List(tracks) { track in
                     TracksTableRow(track: track)
                 }
-                .padding([.top, .horizontal])
             }
         })
         .padding()

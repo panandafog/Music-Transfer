@@ -145,7 +145,6 @@
 			children = (
 				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
 				0B9903E024E339C60096C69E /* ToolsView.swift */,
-				0BD5E6812548994C007EDF2A /* TracksTableRow.swift */,
 				0BD5E69525489EA1007EDF2A /* SupportingViews */,
 			);
 			path = View;
@@ -285,6 +284,7 @@
 				0B8B8BF325456854004D85E7 /* LoginView.swift */,
 				0B8B8BF825456861004D85E7 /* LoginViewDelegate.swift */,
 				0BD5E68C25489D8E007EDF2A /* TracksTable.swift */,
+				0BD5E6812548994C007EDF2A /* TracksTableRow.swift */,
 				0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */,
 			);
 			path = SupportingViews;
