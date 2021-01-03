@@ -20,4 +20,5 @@ protocol APIFacade {
     func getSavedTracks()
     func addTracks(_: [SharedTrack])
     func synchroniseTracks(_: [SharedTrack])
+    func deleteAllTracks()
 }

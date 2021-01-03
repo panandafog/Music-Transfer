@@ -23,7 +23,7 @@ struct TracksTableRow: View {
     
     var body: some View {
         HStack {
-            TextField("", text: .constant(track.title + " – " + track.strArtists()))
+            TextField("", text: .constant(track.strArtists() + " – " + track.title))
                 .padding(.leading)
             Spacer()
         

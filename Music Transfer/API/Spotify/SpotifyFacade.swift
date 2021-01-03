@@ -221,6 +221,9 @@ final class SpotifyFacade: APIFacade {
     func synchroniseTracks(_ tracks: [SharedTrack]) {
         addTracks(tracks)
     }
+    
+    func deleteAllTracks() {
+    }
 
     private func searchTrack(_ track: SharedTrack, completion: @escaping ((_ foundTracks: [SpotifySearchTracks.Item]) -> Void)) {
         var tmp = URLComponents()

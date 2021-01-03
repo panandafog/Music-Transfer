@@ -9,16 +9,23 @@
 import Foundation
 
 struct SharedTrack: Identifiable {
+    
+    static let durationComparisonInaccuracy = 10 // percents
+    
     var id: String
     let artists: [String]
     let title: String
     let durationS: Int
+    
+    let ownerID: Int?
     
     init(id: String, artists: [String], title: String, durationS: Int) {
         self.id = id
         self.artists = artists
         self.title = title
         self.durationS = durationS
+        
+        self.ownerID = nil
     }
     
     init(from track: VKSavedTracks.Item) {
@@ -45,6 +52,8 @@ struct SharedTrack: Identifiable {
         self.artists = artistsArray
         self.title = track.title
         self.durationS = track.duration
+        
+        self.ownerID = track.owner_id
     }
     
     init(from track: SpotifySavedTracks.Track) {
@@ -57,6 +66,8 @@ struct SharedTrack: Identifiable {
         self.artists = artists
         self.title = track.name
         self.durationS = track.duration_ms / 1000
+        
+        self.ownerID = nil
     }
     
     init(from item: SpotifySavedTracks.Item) {
@@ -101,7 +112,7 @@ struct SharedTrack: Identifiable {
 extension SharedTrack: Equatable {
     static func == (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
         
-        guard !lhs.artists.isEmpty && !rhs.artists.isEmpty else {
+        guard lhs ~= rhs else {
             return false
         }
         
@@ -116,44 +127,38 @@ extension SharedTrack: Equatable {
         })
         
         var equalArtistsL = true
-        for artistL in lhsArtists {
-            var contains = false
-            if rhsArtists.contains(artistL) {
-                contains = true
-            } else {
-                for artistR in rhsArtists {
-                    if artistR.contains(artistL) {
-                        contains = true
-                    }
+        let artistL = lhsArtists[0]
+        var contains = false
+        if rhsArtists.contains(artistL) {
+            contains = true
+        } else {
+            for artistR in rhsArtists {
+                if artistR.contains(artistL) {
+                    contains = true
                 }
             }
-            if !contains {
-                equalArtistsL = false
-                break
-            }
+        }
+        if !contains {
+            equalArtistsL = false
         }
         
         var equalArtistsR = true
-        for artistR in lhsArtists {
-            var contains = false
-            if rhsArtists.contains(artistR) {
-                contains = true
-            } else {
-                for artistL in rhsArtists {
-                    if artistL.contains(artistR) {
-                        contains = true
-                    }
+        let artistR = rhsArtists[0]
+        contains = false
+        if lhsArtists.contains(artistR) {
+            contains = true
+        } else {
+            for artistL in lhsArtists {
+                if artistL.contains(artistR) {
+                    contains = true
                 }
             }
-            if !contains {
-                equalArtistsR = false
-                break
-            }
+        }
+        if !contains {
+            equalArtistsR = false
         }
         
-        let equalArtists = equalArtistsL || equalArtistsR
-        
-        return equalArtists && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
+        return equalArtistsL || equalArtistsR
     }
     
     static func ~= (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
@@ -214,14 +219,23 @@ extension SharedTrack: Equatable {
         
         let equalArtists = equalArtistsL || equalArtistsR
         
-        return equalArtists && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
+        return equalArtists
+            && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
+            && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
+    }
+    
+    static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {
+        Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
+            && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
     }
     
     static func titlesAreEqual(lhs: String, rhs: String) -> Bool {
-        let clearLhs = clearTitle(lhs)
-        let clearRhs = clearTitle(rhs)
+        let clearLhs = clearTitle(lhs).lowercased()
+        let clearRhs = clearTitle(rhs).lowercased()
         
-        return rhs.contains(clearLhs) || lhs.contains(clearRhs) || lhs == rhs
+        return rhs.lowercased().contains(clearLhs)
+            || lhs.lowercased().contains(clearRhs)
+            || lhs.lowercased() == rhs.lowercased()
     }
     
     static func clearTitle(_ title: String) -> String {

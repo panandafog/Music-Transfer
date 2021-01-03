@@ -40,6 +40,7 @@
 		0BD5E6822548994C007EDF2A /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E6812548994C007EDF2A /* TracksTableRow.swift */; };
 		0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E68C25489D8E007EDF2A /* TracksTable.swift */; };
 		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
+		0BDEC3D225A1EB6A00FB20FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDEC3D125A1EB6A00FB20FE /* Constants.swift */; };
 		0BFD71512549EB7900E46CDF /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +101,7 @@
 		0BD5E6812548994C007EDF2A /* TracksTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableRow.swift; sourceTree = "<group>"; };
 		0BD5E68C25489D8E007EDF2A /* TracksTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTable.swift; sourceTree = "<group>"; };
 		0BDAD23024E066C6006CDA9C /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
+		0BDEC3D125A1EB6A00FB20FE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -224,6 +226,7 @@
 				0B9903E224E34BD60096C69E /* Models */,
 				0B23C8EB253F99C20019EC46 /* View */,
 				0BB3626124CC5C5E00E353FB /* AppDelegate.swift */,
+				0BDEC3D125A1EB6A00FB20FE /* Constants.swift */,
 				0BB3626524CC5C5F00E353FB /* Assets.xcassets */,
 				0BB3626A24CC5C5F00E353FB /* Main.storyboard */,
 				0BB3626D24CC5C5F00E353FB /* Info.plist */,
@@ -429,6 +432,7 @@
 				0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */,
 				0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */,
 				0B8B8BF425456854004D85E7 /* LoginView.swift in Sources */,
+				0BDEC3D225A1EB6A00FB20FE /* Constants.swift in Sources */,
 				0B23C8CE253E54750019EC46 /* VKSavedTracks.swift in Sources */,
 				0B9903E124E339C60096C69E /* ToolsView.swift in Sources */,
 				0B23C900254032C90019EC46 /* CaptchaViewDelegate.swift in Sources */,

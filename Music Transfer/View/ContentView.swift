@@ -56,6 +56,13 @@ struct ContentView: View {
                             Text("Get saved tracks")
                         })
                         .disabled(!manager.facades[selectionFrom].isAuthorised)
+                        Button(action: {
+                            let facade = manager.facades[selectionFrom]
+                            facade.deleteAllTracks()
+                        }, label: {
+                            Text("Delete all tracks")
+                        })
+                        .disabled(!manager.facades[selectionFrom].gotTracks)
                        })
                     .padding()
                 
@@ -89,8 +96,15 @@ struct ContentView: View {
                         Text("Get saved tracks")
                     })
                     .disabled(!manager.facades[selectionTo].isAuthorised)
+                    Button(action: {
+                        let facade = manager.facades[selectionTo]
+                        facade.deleteAllTracks()
+                    }, label: {
+                        Text("Delete all tracks")
+                    })
+                    .disabled(!manager.facades[selectionTo].gotTracks)
                 })
-                .padding([.top, .horizontal])
+                .padding()
             }
             TracksTable(tracks: .init(get: {
                 manager.facades[selectionFrom].savedTracks

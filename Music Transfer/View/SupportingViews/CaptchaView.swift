@@ -10,7 +10,7 @@ import SwiftUI
 import URLImage
 
 struct CaptchaView: View {
-
+    
     @State private var key = ""
     let errorInfo: VKCaptcha.ErrorMessage
     let url: URL
@@ -19,7 +19,12 @@ struct CaptchaView: View {
     var body: some View {
         VStack {
             URLImage(url)
-            TextField("Captcha", text: $key)
+            HStack {
+                Spacer()
+                TextField("Captcha", text: $key)
+                    .frame(width: 150)
+                Spacer()
+            }
             Button("Apply", action: {
                 completion(VKCaptcha.Solved(captcha_sid: errorInfo.error.captcha_sid,
                                             captcha_key: key))
