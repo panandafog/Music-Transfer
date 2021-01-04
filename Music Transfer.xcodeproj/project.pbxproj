@@ -39,6 +39,7 @@
 		0BCE6A4124CCC60C00D7299E /* APIFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCE6A4024CCC60C00D7299E /* APIFacade.swift */; };
 		0BD5E6822548994C007EDF2A /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E6812548994C007EDF2A /* TracksTableRow.swift */; };
 		0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E68C25489D8E007EDF2A /* TracksTable.swift */; };
+		0BD9E7E925A2842800AAEA26 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9E7E825A2842800AAEA26 /* ProgressView.swift */; };
 		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
 		0BDEC3D225A1EB6A00FB20FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDEC3D125A1EB6A00FB20FE /* Constants.swift */; };
 		0BFD71512549EB7900E46CDF /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */; };
@@ -100,6 +101,7 @@
 		0BCE6A4024CCC60C00D7299E /* APIFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIFacade.swift; sourceTree = "<group>"; };
 		0BD5E6812548994C007EDF2A /* TracksTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableRow.swift; sourceTree = "<group>"; };
 		0BD5E68C25489D8E007EDF2A /* TracksTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTable.swift; sourceTree = "<group>"; };
+		0BD9E7E825A2842800AAEA26 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		0BDAD23024E066C6006CDA9C /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
 		0BDEC3D125A1EB6A00FB20FE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableViewDelegate.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				0BB3626324CC5C5E00E353FB /* ContentView.swift */,
 				0B9903E024E339C60096C69E /* ToolsView.swift */,
+				0BD9E7E825A2842800AAEA26 /* ProgressView.swift */,
 				0BD5E69525489EA1007EDF2A /* SupportingViews */,
 			);
 			path = View;
@@ -444,6 +447,7 @@
 				0B94902425416AB30045BA17 /* VKAddTrack.swift in Sources */,
 				0B8A192824E8124500CAEFBE /* VKUser.swift in Sources */,
 				0B23C8F5253FA5C80019EC46 /* CaptchaView.swift in Sources */,
+				0BD9E7E925A2842800AAEA26 /* ProgressView.swift in Sources */,
 				0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */,
 				0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */,
 				0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */,
@@ -552,7 +556,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -606,7 +610,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -632,7 +636,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -657,7 +661,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

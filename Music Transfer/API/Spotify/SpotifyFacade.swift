@@ -84,6 +84,8 @@ final class SpotifyFacade: APIFacade {
     
     private let requestRepeatDelay: UInt32 = 1000000
     
+    private let progressViewModel = MainProgressView.MainProgressViewModel.shared
+    
     private init() {}
     
     func authorize() {
@@ -146,12 +148,22 @@ final class SpotifyFacade: APIFacade {
     func getSavedTracks() {
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
-        requestTracks(offset: 0)
-        print(savedTracks.count)
-        print()
+        
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Receiving saved tracks from \(self.apiName)"
+            self.progressViewModel.determinate = false
+            self.progressViewModel.active = true
+        }
+        
+        requestTracks(offset: 0, completion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+        })
     }
     
-    private func requestTracks(offset: Int) {
+    private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
         let limit = 50
         
         var tmp = URLComponents()
@@ -181,7 +193,7 @@ final class SpotifyFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                self.requestTracks(offset: offset)
+                self.requestTracks(offset: offset, completion: completion)
                 return
             }
             
@@ -199,9 +211,10 @@ final class SpotifyFacade: APIFacade {
             if tracksList.next != nil {
                 print(String(offset + limit))
                 usleep(self.requestRepeatDelay)
-                self.requestTracks(offset: offset + limit)
+                self.requestTracks(offset: offset + limit, completion: completion)
             } else {
                 self.gotTracks = true
+                completion()
             }
         }
         task.resume()
@@ -212,6 +225,13 @@ final class SpotifyFacade: APIFacade {
         var savedTracks = [SharedTrack]()
         var globalFoundTracks = [[SpotifySearchTracks.Item]]()
         
+        DispatchQueue.main.async {
+            self.progressViewModel.determinate = tracks.count > 10
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
+            self.progressViewModel.active = true
+        }
+        
         for track in tracks {
             let currentTrack = track
             searchTrack(currentTrack,
@@ -219,41 +239,71 @@ final class SpotifyFacade: APIFacade {
                             savedTracks.append(currentTrack)
                             globalFoundTracks.append(foundTracks)
                             
+                            DispatchQueue.main.async {
+                                self.progressViewModel.progressPercentage
+                                    = Double(tracks.count - savedTracks.count) / Double(tracks.count) * 100.0
+                            }
+                            
                             print(String(savedTracks.count))
                             print(String(tracks.count))
                             print("––––")
                             
                             if savedTracks.count == tracks.count {
                                 print("filter")
+                                if savedTracks.count > 1000 {
+                                    DispatchQueue.main.async {
+                                        self.progressViewModel.progressPercentage = 0.0
+                                        self.progressViewModel.determinate = false
+                                        self.progressViewModel.processName = "Processing search results"
+                                        self.progressViewModel.active = true
+                                    }
+                                }
                                 let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
-                                if filtered.tracksToAdd.count <= 50 {
-                                    self.likeTracks(filtered.tracksToAdd, completion: {})
-                                } else {
-                                    var package = [SpotifySearchTracks.Item]()
-                                    
-                                    for track in filtered.tracksToAdd {
-                                        package.append(track)
-                                        if package.count == 50 {
-                                            self.likeTracks(package, completion: {})
-                                            package.removeAll()
-                                            usleep(self.requestRepeatDelay)
+                                DispatchQueue.main.async {
+                                    self.progressViewModel.progressPercentage = 0.0
+                                    self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
+                                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                                }
+                                
+                                var packages = [[SpotifySearchTracks.Item]]()
+                                
+                                var package = [SpotifySearchTracks.Item]()
+                                for track in filtered.tracksToAdd {
+                                    package.append(track)
+                                    if package.count == 50 {
+                                        packages.append(package)
+                                        package.removeAll()
+                                    }
+                                }
+                                if !package.isEmpty {
+                                    packages.append(package)
+                                }
+                                
+                                if packages.count > 1 {
+                                    for index in 0...packages.count - 2 {
+                                        self.likeTracks(packages[index], completion: {})
+                                        usleep(self.requestRepeatDelay)
+                                        DispatchQueue.main.async {
+                                            self.progressViewModel.progressPercentage = Double(index) / Double(packages.count - 1)
                                         }
                                     }
-                                    if !package.isEmpty {
-                                        self.likeTracks(package, completion: {})
-                                    }
                                 }
-                                if !filtered.notFoundTracks.isEmpty {
-                                    TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
+                                
+                                if !packages.isEmpty {
+                                    self.likeTracks(packages.last!, completion: {
+                                        if !filtered.notFoundTracks.isEmpty {
+                                            TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
+                                        }
+                                        DispatchQueue.main.async {
+                                            self.progressViewModel.off()
+                                        }
+                                        usleep(self.requestRepeatDelay)
+                                        self.getSavedTracks()
+                                    })
                                 }
-                                usleep(self.requestRepeatDelay)
-                                self.getSavedTracks()
                             }
                         })
-            usleep(requestRepeatDelay)
         }
-        getSavedTracks()
-        print("end")
     }
     
     // MARK: synchroniseTracks
@@ -267,24 +317,48 @@ final class SpotifyFacade: APIFacade {
             return
         }
         
-        var package = [SharedTrack]()
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.determinate = self.savedTracks.count > 400
+            print(self.savedTracks.count)
+            self.progressViewModel.active = true
+        }
         
+        var packages = [[SharedTrack]]()
+        
+        var package = [SharedTrack]()
         for track in savedTracks {
             package.append(track)
             if package.count == 50 {
-                deleteTracks(package, completion: {})
+                packages.append(package)
                 package.removeAll()
-                usleep(self.requestRepeatDelay)
             }
         }
         if !package.isEmpty {
-            deleteTracks(package, completion: {})
+            packages.append(package)
         }
         
-        usleep(self.requestRepeatDelay)
-        self.getSavedTracks()
-        print("end")
+        if packages.count > 1 {
+            for index in 0...packages.count - 2 {
+                self.deleteTracks(packages[index], completion: {})
+                usleep(self.requestRepeatDelay)
+                DispatchQueue.main.async {
+                    self.progressViewModel.progressPercentage = Double(index) / Double(packages.count - 1)
+                }
+            }
+        }
         
+        if !packages.isEmpty {
+            self.deleteTracks(packages.last!, completion: {
+                DispatchQueue.main.async {
+                    self.progressViewModel.off()
+                }
+                usleep(self.requestRepeatDelay)
+                self.getSavedTracks()
+            })
+        }
     }
     
     // MARK: searchTrack

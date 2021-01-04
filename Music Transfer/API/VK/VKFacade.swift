@@ -83,6 +83,8 @@ final class VKFacade: APIFacade {
     private let requestRepeatDelay: UInt32 = 1000000
     private let addingErrorDataString = "{\"response\":0}"
     
+    private let progressViewModel = MainProgressView.MainProgressViewModel.shared
+    
     private init() {
         
         let defaults = UserDefaults.standard
@@ -199,11 +201,23 @@ final class VKFacade: APIFacade {
     func getSavedTracks() {
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
-        requestTracks(offset: 0)
+        
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Receiving saved tracks from \(self.apiName)"
+            self.progressViewModel.determinate = false
+            self.progressViewModel.active = true
+        }
+        
+        requestTracks(offset: 0, completion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+        })
     }
     
     // MARK: requestTracks
-    private func requestTracks(offset: Int) {
+    private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
         let count = 5000
         
         guard let access_token = self.tokensInfo?.access_token else {
@@ -235,7 +249,7 @@ final class VKFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                requestTracks(offset: offset)
+                requestTracks(offset: offset, completion: completion)
                 return
             }
             
@@ -252,9 +266,10 @@ final class VKFacade: APIFacade {
             
             if tracksList.response.count > offset + count {
                 print(String(offset + count))
-                self.requestTracks(offset: offset + count)
+                self.requestTracks(offset: offset + count, completion: completion)
             } else {
                 self.gotTracks = true
+                completion()
             }
         }
         task.resume()
@@ -269,26 +284,64 @@ final class VKFacade: APIFacade {
         var notFoundTracks = [SharedTrack]()
         var duplicates = [SharedTrack]()
         
+        DispatchQueue.main.async {
+            self.progressViewModel.determinate = true
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
+            self.progressViewModel.active = true
+        }
+        
         searchTrack(tmpTracks, attempt: 0, own: false, captcha: nil,
                     completion: { (currentFoundTracks: [VKSavedTracks.Item]) in
                         tmpTracks.remove(at: 0)
                         foundTracks.append(currentFoundTracks)
                         
+                        DispatchQueue.main.async {
+                            self.progressViewModel.progressPercentage
+                                = Double(tracks.count - tmpTracks.count) / Double(tracks.count) * 100.0
+                        }
                         print(String(tmpTracks.count))
                         print(String(tracks.count))
                         print(!currentFoundTracks.isEmpty)
                         print("––––––––––––––––––––––––––––––––––––––––")
                     },
-                    globalCompletion: {
+                    finalCompletion: {
+                        if reversedTracks.count > 500 {
+                            DispatchQueue.main.async {
+                                self.progressViewModel.progressPercentage = 0.0
+                                self.progressViewModel.determinate = false
+                                self.progressViewModel.processName = "Processing search results"
+                                self.progressViewModel.active = true
+                            }
+                        }
+                        
                         let filtered = self.filterTracks(commonTracks: reversedTracks, currentTracks: foundTracks)
                         notFoundTracks.append(contentsOf: filtered.notFoundTracks)
                         duplicates.append(contentsOf: filtered.duplicates)
-                        self.likeTracks(filtered.tracksToAdd, captcha: nil, completion: {(notLikedTrack: VKSavedTracks.Item?) in
+                        
+                        DispatchQueue.main.async {
+                            self.progressViewModel.determinate = true
+                            self.progressViewModel.progressPercentage = 0.0
+                            self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                            self.progressViewModel.active = true
+                        }
+                        
+                        self.likeTracks(filtered.tracksToAdd, captcha: nil, completion: {(notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
+                            
+                            DispatchQueue.main.async {
+                                self.progressViewModel.progressPercentage
+                                    = Double(filtered.tracksToAdd.count - remaining) / Double(filtered.tracksToAdd.count) * 100
+                            }
+                            
                             guard let notLikedTrack = notLikedTrack else {
                                 return
                             }
                             notFoundTracks.append(SharedTrack(from: notLikedTrack))
-                        }, globalCompletion: {
+                        }, finalCompletion: {
+                            DispatchQueue.main.async {
+                                self.progressViewModel.off()
+                            }
+                            
                             if !notFoundTracks.isEmpty {
                                 TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks: \(notFoundTracks.count)")
                             }
@@ -302,17 +355,39 @@ final class VKFacade: APIFacade {
     
     // MARK: deleteAllTracks
     func deleteAllTracks() {
+        
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.determinate = true
+            self.progressViewModel.active = true
+        }
+        
         deleteTracks(savedTracks,
                      captcha: nil,
-                     completion: {
-                     }, globalCompletion: {
+                     completion: {(remaining: Int) in
+                        DispatchQueue.main.async {
+                            self.progressViewModel.progressPercentage
+                                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
+                        }
+                     }, finalCompletion: {
+                        DispatchQueue.main.async {
+                            self.progressViewModel.off()
+                        }
                         self.getSavedTracks()
-                        print("done")
                      })
     }
     
     // MARK: synchroniseTracks
     func synchroniseTracks(_ tracksToAdd: [SharedTrack]) {
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.determinate = false
+            self.progressViewModel.processName = "Looking for already added tracks"
+            self.progressViewModel.active = true
+        }
+        
         var filteredTracks = [SharedTrack]()
         for index in 0...tracksToAdd.count - 1 {
             var contains = false
@@ -334,12 +409,12 @@ final class VKFacade: APIFacade {
                              own: Bool,
                              captcha: VKCaptcha.Solved?,
                              completion: @escaping ((_ foundTracks: [VKSavedTracks.Item]) -> Void),
-                             globalCompletion: @escaping (() -> Void)) {
+                             finalCompletion: @escaping (() -> Void)) {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
         guard !tracks.isEmpty else {
-            globalCompletion()
+            finalCompletion()
             return
         }
         print("attempt: \(attempt)")
@@ -392,7 +467,7 @@ final class VKFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                searchTrack(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                searchTrack(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
@@ -405,13 +480,13 @@ final class VKFacade: APIFacade {
             if tracksList != nil {
                 if tracksList!.response.items.isEmpty && attempt < searchAttemptCount {
                     usleep(searchReattemptDelay)
-                    searchTrack(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                    searchTrack(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 } else {
                     completion(tracksList!.response.items)
                     var remaining = tracks
                     remaining.remove(at: 0)
                     usleep(requestRepeatDelay)
-                    searchTrack(remaining, attempt: 0, own: own, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                    searchTrack(remaining, attempt: 0, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 }
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
@@ -422,7 +497,7 @@ final class VKFacade: APIFacade {
                         print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
-                            searchTrack(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, globalCompletion: globalCompletion)
+                            searchTrack(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                     } else {
                         print("!!!!!!!!")
@@ -430,7 +505,7 @@ final class VKFacade: APIFacade {
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
                                 sleep(2)
-                                searchTrack(tracks, attempt: attempt, own: own, captcha: captcha, completion: completion, globalCompletion: globalCompletion)
+                                searchTrack(tracks, attempt: attempt, own: own, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                             }
                         }
                     }
@@ -500,15 +575,16 @@ final class VKFacade: APIFacade {
     // MARK: likeTracks
     private func likeTracks(_ tracks: [VKSavedTracks.Item],
                             captcha: VKCaptcha.Solved?,
-                            completion: @escaping ((_ notLikedTrack: VKSavedTracks.Item?) -> Void),
-                            globalCompletion: @escaping (() -> Void)) {
+                            completion: @escaping ((_ notLikedTrack: VKSavedTracks.Item?,
+                                                    _ remaining: Int) -> Void),
+                            finalCompletion: @escaping (() -> Void)) {
         guard let access_token = self.tokensInfo?.access_token,
               let tokensInfo = self.tokensInfo else {
             return
         }
         
         guard !tracks.isEmpty else {
-            globalCompletion()
+            finalCompletion()
             return
         }
         
@@ -544,7 +620,7 @@ final class VKFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                likeTracks(tracks, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                likeTracks(tracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
@@ -557,15 +633,16 @@ final class VKFacade: APIFacade {
             print("like: \(dataString)")
             
             if addResponse != nil {
-                if dataString != addingErrorDataString {
-                    completion(nil)
-                } else {
-                    completion(tracks[0])
-                }
                 var remainingTracks = tracks
                 remainingTracks.remove(at: 0)
+                
+                if dataString != addingErrorDataString {
+                    completion(nil, remainingTracks.count)
+                } else {
+                    completion(tracks[0], remainingTracks.count)
+                }
                 usleep(requestRepeatDelay)
-                likeTracks(remainingTracks, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                likeTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
                     print(dataString)
@@ -575,14 +652,14 @@ final class VKFacade: APIFacade {
                         print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
-                            likeTracks(tracks, captcha: solvedCaptcha, completion: completion, globalCompletion: globalCompletion)
+                            likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
                                 sleep(1)
-                                likeTracks(tracks, captcha: captcha, completion: completion, globalCompletion: globalCompletion)
+                                likeTracks(tracks, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                             }
                         }
                     }
@@ -595,23 +672,23 @@ final class VKFacade: APIFacade {
     // MARK: deleteTrack
     private func deleteTracks(_ tracks: [SharedTrack],
                               captcha: VKCaptcha.Solved?,
-                              completion: @escaping (() -> Void),
-                              globalCompletion: @escaping (() -> Void)) {
+                              completion: @escaping ((_ remaining: Int) -> Void),
+                              finalCompletion: @escaping (() -> Void)) {
         guard let access_token = self.tokensInfo?.access_token,
               let tokensInfo = self.tokensInfo else {
             return
         }
         
         guard !tracks.isEmpty else {
-            globalCompletion()
+            finalCompletion()
             return
         }
         
         guard let ownerID = tracks[0].ownerID else {
             var remainingTracks = tracks
             remainingTracks.remove(at: 0)
-            completion()
-            deleteTracks(remainingTracks, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+            completion(remainingTracks.count)
+            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             return
         }
         
@@ -647,7 +724,7 @@ final class VKFacade: APIFacade {
             if let error = error {
                 print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
-                deleteTracks(tracks, captcha: captcha, completion: completion, globalCompletion: globalCompletion)
+                deleteTracks(tracks, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
@@ -660,9 +737,9 @@ final class VKFacade: APIFacade {
             if addResponse != nil {
                 var remainingTracks = tracks
                 remainingTracks.remove(at: 0)
-                completion()
+                completion(remainingTracks.count)
                 usleep(requestRepeatDelay)
-                deleteTracks(remainingTracks, captcha: nil, completion: completion, globalCompletion: globalCompletion)
+                deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
                     print(dataString)
@@ -672,14 +749,14 @@ final class VKFacade: APIFacade {
                         print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
-                            deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, globalCompletion: globalCompletion)
+                            deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
                                 sleep(1)
-                                deleteTracks(tracks, captcha: captcha, completion: completion, globalCompletion: globalCompletion)
+                                deleteTracks(tracks, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                             }
                         }
                     }

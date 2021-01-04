@@ -56,7 +56,9 @@ struct ContentView: View {
                             })
                             Button(action: {
                                 let facade = manager.facades[selectionFrom]
-                                facade.getSavedTracks()
+                                DispatchQueue.global(qos: .background).async {
+                                    facade.getSavedTracks()
+                                }
                             }, label: {
                                 Text("Get saved tracks")
                             })
@@ -71,7 +73,9 @@ struct ContentView: View {
                                       message: Text("There is no undo"),
                                       primaryButton: .destructive(Text("Delete")) {
                                         let facade = manager.facades[selectionFrom]
-                                        facade.deleteAllTracks()
+                                        DispatchQueue.global(qos: .background).async {
+                                            facade.deleteAllTracks()
+                                        }
                                       },
                                       secondaryButton: .cancel())
                             })
@@ -111,7 +115,9 @@ struct ContentView: View {
                         })
                         Button(action: {
                             let facade = manager.facades[selectionTo]
-                            facade.getSavedTracks()
+                            DispatchQueue.global(qos: .background).async {
+                                facade.getSavedTracks()
+                            }
                         }, label: {
                             Text("Get saved tracks")
                         })
@@ -126,7 +132,9 @@ struct ContentView: View {
                                   message: Text("There is no undo"),
                                   primaryButton: .destructive(Text("Delete")) {
                                     let facade = manager.facades[selectionTo]
-                                    facade.deleteAllTracks()
+                                    DispatchQueue.global(qos: .background).async {
+                                        facade.deleteAllTracks()
+                                    }
                                   },
                                   secondaryButton: .cancel())
                         })
@@ -139,6 +147,12 @@ struct ContentView: View {
                 })
             }
         }
-        ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
+        HStack {
+            MainProgressView()
+                .padding(.trailing)
+            Spacer()
+            ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
+        }
+        .padding([.horizontal, .bottom])
     }
 }
