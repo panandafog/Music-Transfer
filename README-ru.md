@@ -11,7 +11,7 @@
 
 ## Установка
 
-- Сскачать [образ диска](https://github.com/panandafog/Music-Transfer/raw/master/Product/Music%20Transfer.dmg)
+- Скачать [образ диска](https://github.com/panandafog/Music-Transfer/raw/master/Product/Music%20Transfer.dmg)
 - Извлечь образ диска
 - Скопировать файл с расширением .app в папку с программами
 - Дважды кликнуть по иконке приложения
