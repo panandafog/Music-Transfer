@@ -173,7 +173,6 @@ extension ContentView {
         
         @Published var operationInProgress = false {
             willSet {
-                print("operationInProgress: \(operationInProgress)")
                 DispatchQueue.main.async {
                     ContentView.ContentViewModel.shared.objectWillChange.send()
                 }
