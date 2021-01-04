@@ -168,7 +168,11 @@ final class VKFacade: APIFacade {
                 let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data)
                 
                 if twoFactorError != nil && twoFactorError!.validate() {
-                    LoginViewDelegate.shared.open(twoFactor: true, captcha: captcha, completion: self.requestTokens(username:password:code:captcha:))
+                    LoginViewDelegate.shared.open(twoFactor: true,
+                                                  captcha: captcha,
+                                                  login: username,
+                                                  password: password,
+                                                  completion: self.requestTokens(username:password:code:captcha:))
                 } else {
                     let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if capthcaError != nil {
@@ -180,7 +184,11 @@ final class VKFacade: APIFacade {
                         let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
                         
                         if commonError != nil && commonError!.isWrongCredentialsError() {
-                            LoginViewDelegate.shared.open(twoFactor: code != nil, captcha: captcha, completion: self.requestTokens(username:password:code:captcha:))
+                            LoginViewDelegate.shared.open(twoFactor: code != nil,
+                                                          captcha: captcha,
+                                                          login: username,
+                                                          password: password,
+                                                          completion: self.requestTokens(username:password:code:captcha:))
                         } else {
                             print("unknown error")
                         }
