@@ -35,3 +35,16 @@ struct CaptchaView: View {
         .padding()
     }
 }
+
+struct CaptchaView_Preview: PreviewProvider {
+    static var previews: some View {
+        CaptchaView(errorInfo: VKCaptcha.ErrorMessage(
+                        error: VKCaptcha.Error(error_code: 123,
+                                               error_msg: "Captcha needed",
+                                               request_params: [VKCaptcha.RequestParam](),
+                                               captcha_sid: "149876991953",
+                                               captcha_img: "https://api.vk.com/captcha.php?sid=149876991953&s=1")),
+                    url: URL(string: "https://api.vk.com/captcha.php?sid=149876991953&s=1")!,
+                    completion: {_ in })
+    }
+}
