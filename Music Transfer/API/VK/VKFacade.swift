@@ -291,7 +291,7 @@ final class VKFacade: APIFacade {
             self.progressViewModel.active = true
         }
         
-        searchTrack(tmpTracks, attempt: 0, own: false, captcha: nil,
+        searchTracks(tmpTracks, attempt: 0, own: false, captcha: nil,
                     completion: { (currentFoundTracks: [VKSavedTracks.Item]) in
                         tmpTracks.remove(at: 0)
                         foundTracks.append(currentFoundTracks)
@@ -401,8 +401,8 @@ final class VKFacade: APIFacade {
         addTracks(filteredTracks)
     }
     
-    // MARK: searchTrack
-    private func searchTrack(_ tracks: [SharedTrack],
+    // MARK: searchTracks
+    private func searchTracks(_ tracks: [SharedTrack],
                              attempt: Int,
                              own: Bool,
                              captcha: VKCaptcha.Solved?,
@@ -462,7 +462,7 @@ final class VKFacade: APIFacade {
             
             guard error == nil else {
                 sleep(failedRequestReattemptDelay)
-                searchTrack(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+                searchTracks(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
@@ -475,13 +475,13 @@ final class VKFacade: APIFacade {
             if tracksList != nil {
                 if tracksList!.response.items.isEmpty && attempt < searchAttemptCount {
                     usleep(searchReattemptDelay)
-                    searchTrack(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+                    searchTracks(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 } else {
                     completion(tracksList!.response.items)
                     var remaining = tracks
                     remaining.remove(at: 0)
                     usleep(requestRepeatDelay)
-                    searchTrack(remaining, attempt: 0, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+                    searchTracks(remaining, attempt: 0, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 }
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
@@ -490,14 +490,14 @@ final class VKFacade: APIFacade {
                     if error != nil {
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
-                            searchTrack(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
+                            searchTracks(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
                                 sleep(2)
-                                searchTrack(tracks, attempt: attempt, own: own, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
+                                searchTracks(tracks, attempt: attempt, own: own, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                             }
                         }
                     }

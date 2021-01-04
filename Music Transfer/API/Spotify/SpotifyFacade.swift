@@ -201,6 +201,14 @@ final class SpotifyFacade: APIFacade {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 429 {
+                    sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
+                    self.requestTracks(offset: offset, completion: completion)
+                    return
+                }
+            }
+            
             let tracks = SharedTrack.makeArray(from: tracksList)
             self.savedTracks.append(contentsOf: tracks)
             
@@ -217,6 +225,7 @@ final class SpotifyFacade: APIFacade {
     
     // MARK: addTracks
     func addTracks(_ tracks: [SharedTrack]) {
+        var tracksToAdd = tracks
         var savedTracks = [SharedTrack]()
         var globalFoundTracks = [[SpotifySearchTracks.Item]]()
         
@@ -227,73 +236,66 @@ final class SpotifyFacade: APIFacade {
             self.progressViewModel.active = true
         }
         
-        for track in tracks {
-            let currentTrack = track
-            searchTrack(currentTrack,
-                        completion: { (foundTracks: [SpotifySearchTracks.Item]) in
-                            savedTracks.append(currentTrack)
-                            globalFoundTracks.append(foundTracks)
-                            
-                            DispatchQueue.main.async {
-                                self.progressViewModel.progressPercentage
-                                    = Double(savedTracks.count) / Double(tracks.count) * 100.0
-                            }
-                            
-                            if savedTracks.count == tracks.count {
-                                if savedTracks.count > 1000 {
-                                    DispatchQueue.main.async {
-                                        self.progressViewModel.progressPercentage = 0.0
-                                        self.progressViewModel.determinate = false
-                                        self.progressViewModel.processName = "Processing search results"
-                                        self.progressViewModel.active = true
-                                    }
-                                }
-                                let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
+        searchTracks(tracks,
+                     completion: { (foundTracks: [SpotifySearchTracks.Item]) in
+                        let currentTrack = tracksToAdd[0]
+                        savedTracks.append(currentTrack)
+                        globalFoundTracks.append(foundTracks)
+                        
+                        DispatchQueue.main.async {
+                            self.progressViewModel.progressPercentage
+                                = Double(savedTracks.count) / Double(tracks.count) * 100.0
+                        }
+                        
+                        tracksToAdd.remove(at: 0)
+                        
+                        if savedTracks.count == tracks.count {
+                            if savedTracks.count > 1000 {
                                 DispatchQueue.main.async {
                                     self.progressViewModel.progressPercentage = 0.0
-                                    self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
-                                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
-                                }
-                                
-                                var packages = [[SpotifySearchTracks.Item]]()
-                                
-                                var package = [SpotifySearchTracks.Item]()
-                                for track in filtered.tracksToAdd {
-                                    package.append(track)
-                                    if package.count == 50 {
-                                        packages.append(package)
-                                        package.removeAll()
-                                    }
-                                }
-                                if !package.isEmpty {
-                                    packages.append(package)
-                                }
-                                
-                                if packages.count > 1 {
-                                    for index in 0...packages.count - 2 {
-                                        self.likeTracks(packages[index], completion: {})
-                                        usleep(self.requestRepeatDelay)
-                                        DispatchQueue.main.async {
-                                            self.progressViewModel.progressPercentage = Double(index) / Double(packages.count - 1)
-                                        }
-                                    }
-                                }
-                                
-                                if !packages.isEmpty {
-                                    self.likeTracks(packages.last!, completion: {
-                                        if !filtered.notFoundTracks.isEmpty {
-                                            TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
-                                        }
-                                        DispatchQueue.main.async {
-                                            self.progressViewModel.off()
-                                        }
-                                        usleep(self.requestRepeatDelay)
-                                        self.getSavedTracks()
-                                    })
+                                    self.progressViewModel.determinate = false
+                                    self.progressViewModel.processName = "Processing search results"
+                                    self.progressViewModel.active = true
                                 }
                             }
-                        })
-        }
+                            let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
+                            DispatchQueue.main.async {
+                                self.progressViewModel.progressPercentage = 0.0
+                                self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
+                                self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                            }
+                            
+                            var packages = [[SpotifySearchTracks.Item]]()
+                            
+                            var package = [SpotifySearchTracks.Item]()
+                            for track in filtered.tracksToAdd {
+                                package.append(track)
+                                if package.count == 50 {
+                                    packages.append(package)
+                                    package.removeAll()
+                                }
+                            }
+                            if !package.isEmpty {
+                                packages.append(package)
+                            }
+                            
+                            self.likeTracks(packages, completion: { (remaining: Int) in
+                                DispatchQueue.main.async {
+                                    self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
+                                }
+                            }, finalCompletion: {
+                                if !filtered.notFoundTracks.isEmpty {
+                                    TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
+                                }
+                                DispatchQueue.main.async {
+                                    self.progressViewModel.off()
+                                }
+                                usleep(self.requestRepeatDelay)
+                                self.getSavedTracks()
+                            })
+                        }
+                     })
+        
     }
     
     // MARK: synchroniseTracks
@@ -329,29 +331,30 @@ final class SpotifyFacade: APIFacade {
             packages.append(package)
         }
         
-        if packages.count > 1 {
-            for index in 0...packages.count - 2 {
-                self.deleteTracks(packages[index], completion: {})
-                usleep(self.requestRepeatDelay)
-                DispatchQueue.main.async {
-                    self.progressViewModel.progressPercentage = Double(index) / Double(packages.count - 1)
-                }
+        self.deleteTracks(packages, completion: { (remaining: Int) in
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
             }
-        }
-        
-        if !packages.isEmpty {
-            self.deleteTracks(packages.last!, completion: {
-                DispatchQueue.main.async {
-                    self.progressViewModel.off()
-                }
-                usleep(self.requestRepeatDelay)
-                self.getSavedTracks()
-            })
-        }
+        }, finalCompletion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+            usleep(self.requestRepeatDelay)
+            self.getSavedTracks()
+        })
     }
     
     // MARK: searchTrack
-    private func searchTrack(_ track: SharedTrack, completion: @escaping ((_ foundTracks: [SpotifySearchTracks.Item]) -> Void)) {
+    private func searchTracks(_ tracks: [SharedTrack],
+                              completion: @escaping ((_ foundTracks: [SpotifySearchTracks.Item]) -> Void),
+                              finalCompletion: @escaping (() -> Void) = {}) {
+        guard !tracks.isEmpty else {
+            finalCompletion()
+            return
+        }
+        
+        let track = tracks[0]
+        
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "api.spotify.com"
@@ -377,7 +380,7 @@ final class SpotifyFacade: APIFacade {
             
             guard error == nil else {
                 sleep(failedRequestReattemptDelay)
-                self.searchTrack(track, completion: completion)
+                self.searchTracks(tracks, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
@@ -389,10 +392,14 @@ final class SpotifyFacade: APIFacade {
             
             if tracksList != nil {
                 completion(tracksList!)
+                var remaining = tracks
+                remaining.remove(at: 0)
+                self.searchTracks(remaining, completion: completion, finalCompletion: finalCompletion)
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 429 {
-                        print(httpResponse.value(forHTTPHeaderField: "Retry-After"))
+                        sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
+                        self.searchTracks(tracks, completion: completion, finalCompletion: finalCompletion)
                     }
                 }
             }
@@ -430,8 +437,16 @@ final class SpotifyFacade: APIFacade {
     }
     
     // MARK: likeTracks
-    private func likeTracks(_ tracks: [SpotifySearchTracks.Item],
-                            completion: @escaping (() -> Void)) {
+    private func likeTracks(_ packages: [[SpotifySearchTracks.Item]],
+                            completion: @escaping ((_: Int) -> Void),
+                            finalCompletion: @escaping (() -> Void)) {
+        guard !packages.isEmpty else {
+            finalCompletion()
+            return
+        }
+        
+        let tracks = packages[0]
+        
         var ids = ""
         var ind = 0
         for track in tracks {
@@ -468,22 +483,42 @@ final class SpotifyFacade: APIFacade {
             
             guard error == nil else {
                 sleep(failedRequestReattemptDelay)
-                self.likeTracks(tracks, completion: completion)
+                self.likeTracks(packages, completion: completion, finalCompletion: finalCompletion)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 429 {
+                    sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
+                    self.likeTracks(packages, completion: completion, finalCompletion: finalCompletion)
+                    return
+                } else {
+                    var remaining = packages
+                    remaining.remove(at: 0)
+                    completion(remaining.count)
+                    self.likeTracks(remaining, completion: completion, finalCompletion: finalCompletion)
+                    return
+                }
             }
             
             guard let data = data, let _ = String(data: data, encoding: .utf8) else {
                 return
             }
-            
-            completion()
         }
         task.resume()
     }
     
     // MARK: deleteTracks
-    private func deleteTracks(_ tracks: [SharedTrack],
-                              completion: @escaping (() -> Void)) {
+    private func deleteTracks(_ packages: [[SharedTrack]],
+                              completion: @escaping ((_: Int) -> Void),
+                              finalCompletion: @escaping (() -> Void)) {
+        guard !packages.isEmpty else {
+            finalCompletion()
+            return
+        }
+        
+        let tracks = packages[0]
+        
         var ids = ""
         var ind = 0
         for track in tracks {
@@ -520,15 +555,27 @@ final class SpotifyFacade: APIFacade {
             
             if let error = error {
                 sleep(failedRequestReattemptDelay)
-                self.deleteTracks(tracks, completion: completion)
+                self.deleteTracks(packages, completion: completion, finalCompletion: finalCompletion)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 429 {
+                    sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
+                    self.deleteTracks(packages, completion: completion, finalCompletion: finalCompletion)
+                    return
+                } else {
+                    var remaining = packages
+                    remaining.remove(at: 0)
+                    completion(remaining.count)
+                    self.deleteTracks(remaining, completion: completion, finalCompletion: finalCompletion)
+                    return
+                }
             }
             
             guard let data = data, let _ = String(data: data, encoding: .utf8) else {
                 return
             }
-            
-            completion()
         }
         task.resume()
     }
