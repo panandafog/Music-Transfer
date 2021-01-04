@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     
@@ -16,7 +17,7 @@ struct ContentView: View {
     @State private var showingAlert1 = false
     @State private var showingAlert2 = false
     
-    @ObservedObject var manager = APIManager.shared
+    @ObservedObject var model = ContentViewModel.shared
     
     var body: some View {
         VStack {
@@ -27,19 +28,19 @@ struct ContentView: View {
                         HStack {
                             Text("From:")
                                 .font(.title)
-                            MenuButton(manager.facades[selectionFrom].apiName) {
-                                ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                            MenuButton(model.facades[selectionFrom].apiName) {
+                                ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
                                     Button(action: {
                                         selectionFrom = ind
                                         if selectionTo == ind {
-                                            if selectionTo == manager.facades.count - 1 {
+                                            if selectionTo == model.facades.count - 1 {
                                                 selectionTo = 0
                                             } else {
                                                 selectionTo += 1
                                             }
                                         }
                                     }, label: {
-                                        Text(manager.facades[ind].apiName)
+                                        Text(model.facades[ind].apiName)
                                     })
                                 })
                             }
@@ -49,20 +50,20 @@ struct ContentView: View {
                         .padding([.top, .leading, .trailing])
                         HStack {
                             Button(action: {
-                                let facade = manager.facades[selectionFrom]
+                                let facade = model.facades[selectionFrom]
                                 facade.authorize()
                             }, label: {
                                 Text("Authorize")
                             })
                             Button(action: {
-                                let facade = manager.facades[selectionFrom]
+                                let facade = model.facades[selectionFrom]
                                 DispatchQueue.global(qos: .background).async {
                                     facade.getSavedTracks()
                                 }
                             }, label: {
                                 Text("Get saved tracks")
                             })
-                            .disabled(!manager.facades[selectionFrom].isAuthorised)
+                            .disabled(!model.facades[selectionFrom].isAuthorised)
                             Button(action: {
                                 self.showingAlert1 = true
                             }, label: {
@@ -72,19 +73,19 @@ struct ContentView: View {
                                 Alert(title: Text("Are you sure you want to delete all tracks?"),
                                       message: Text("There is no undo"),
                                       primaryButton: .destructive(Text("Delete")) {
-                                        let facade = manager.facades[selectionFrom]
+                                        let facade = model.facades[selectionFrom]
                                         DispatchQueue.global(qos: .background).async {
                                             facade.deleteAllTracks()
                                         }
                                       },
                                       secondaryButton: .cancel())
                             })
-                            .disabled(!manager.facades[selectionFrom].gotTracks)
+                            .disabled(!model.facades[selectionFrom].gotTracks)
                             Spacer()
                         }
                         .padding(.horizontal)
                         TracksTable(tracks: .init(get: {
-                            manager.facades[selectionFrom].savedTracks
+                            model.facades[selectionFrom].savedTracks
                         }, set: { _ in }), name: "Saved tracks:")
                        })
                 
@@ -92,12 +93,12 @@ struct ContentView: View {
                     HStack {
                         Text("To:")
                             .font(.title)
-                        MenuButton(manager.facades[selectionTo].apiName) {
-                            ForEach(0...(manager.facades.count - 1), id: \.self, content: { ind in
+                        MenuButton(model.facades[selectionTo].apiName) {
+                            ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
                                 Button(action: {
                                     selectionTo = ind
                                 }, label: {
-                                    Text(manager.facades[ind].apiName)
+                                    Text(model.facades[ind].apiName)
                                 })
                                 .disabled(selectionFrom == ind)
                             })
@@ -108,20 +109,20 @@ struct ContentView: View {
                     .padding([.top, .leading, .trailing])
                     HStack {
                         Button(action: {
-                            let facade = manager.facades[selectionTo]
+                            let facade = model.facades[selectionTo]
                             facade.authorize()
                         }, label: {
                             Text("Authorize")
                         })
                         Button(action: {
-                            let facade = manager.facades[selectionTo]
+                            let facade = model.facades[selectionTo]
                             DispatchQueue.global(qos: .background).async {
                                 facade.getSavedTracks()
                             }
                         }, label: {
                             Text("Get saved tracks")
                         })
-                        .disabled(!manager.facades[selectionTo].isAuthorised)
+                        .disabled(!model.facades[selectionTo].isAuthorised)
                         Button(action: {
                             self.showingAlert2 = true
                         }, label: {
@@ -131,18 +132,18 @@ struct ContentView: View {
                             Alert(title: Text("Are you sure you want to delete all tracks?"),
                                   message: Text("There is no undo"),
                                   primaryButton: .destructive(Text("Delete")) {
-                                    let facade = manager.facades[selectionTo]
+                                    let facade = model.facades[selectionTo]
                                     DispatchQueue.global(qos: .background).async {
                                         facade.deleteAllTracks()
                                     }
                                   },
                                   secondaryButton: .cancel())
                         })
-                        .disabled(!manager.facades[selectionTo].gotTracks)
+                        .disabled(!model.facades[selectionTo].gotTracks)
                     }
                     .padding(.horizontal)
                     TracksTable(tracks: .init(get: {
-                        manager.facades[selectionTo].savedTracks
+                        model.facades[selectionTo].savedTracks
                     }, set: { _ in }), name: " ")
                 })
             }
@@ -151,8 +152,20 @@ struct ContentView: View {
             MainProgressView()
                 .padding(.trailing)
             Spacer()
-            ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, manager: manager)
+            ToolsView(selectionFrom: $selectionFrom, selectionTo: $selectionTo, model: model)
         }
         .padding([.horizontal, .bottom])
+    }
+}
+
+extension ContentView {
+    class ContentViewModel: ObservableObject {
+        
+        static var shared = ContentViewModel()
+        
+        private init() {}
+        
+        var facades: [APIFacade] = [SpotifyFacade.shared, VKFacade.shared]
+        let objectWillChange = ObservableObjectPublisher()
     }
 }

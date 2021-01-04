@@ -35,7 +35,7 @@ final class VKFacade: APIFacade {
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
-                APIManager.shared.objectWillChange.send()
+                ContentView.ContentViewModel.shared.objectWillChange.send()
             }
         }
     }
@@ -43,7 +43,7 @@ final class VKFacade: APIFacade {
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {
-                APIManager.shared.objectWillChange.send()
+                ContentView.ContentViewModel.shared.objectWillChange.send()
             }
         }
     }

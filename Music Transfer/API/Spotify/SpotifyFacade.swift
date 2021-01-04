@@ -57,14 +57,14 @@ final class SpotifyFacade: APIFacade {
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
-                APIManager.shared.objectWillChange.send()
+                ContentView.ContentViewModel.shared.objectWillChange.send()
             }
         }
     }
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {
-                APIManager.shared.objectWillChange.send()
+                ContentView.ContentViewModel.shared.objectWillChange.send()
             }
         }
     }

@@ -25,7 +25,6 @@
 		0B94902425416AB30045BA17 /* VKAddTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B94902325416AB30045BA17 /* VKAddTrack.swift */; };
 		0B9903E124E339C60096C69E /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9903E024E339C60096C69E /* ToolsView.swift */; };
 		0B9903E424E34C020096C69E /* SpotifySavedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9903E324E34C020096C69E /* SpotifySavedTracks.swift */; };
-		0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9AA30424E1D24400F2644A /* APIManager.swift */; };
 		0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626124CC5C5E00E353FB /* AppDelegate.swift */; };
 		0BB3626424CC5C5E00E353FB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB3626324CC5C5E00E353FB /* ContentView.swift */; };
 		0BB3626624CC5C5F00E353FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BB3626524CC5C5F00E353FB /* Assets.xcassets */; };
@@ -80,7 +79,6 @@
 		0B94902325416AB30045BA17 /* VKAddTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTrack.swift; sourceTree = "<group>"; };
 		0B9903E024E339C60096C69E /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
 		0B9903E324E34C020096C69E /* SpotifySavedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySavedTracks.swift; sourceTree = "<group>"; };
-		0B9AA30424E1D24400F2644A /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0BB3625E24CC5C5E00E353FB /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB3626124CC5C5E00E353FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BB3626324CC5C5E00E353FB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				0B8B8C0225457CDB004D85E7 /* Keys */,
 				0BCE6A4024CCC60C00D7299E /* APIFacade.swift */,
 				0BDAD23024E066C6006CDA9C /* APIBrowser.swift */,
-				0B9AA30424E1D24400F2644A /* APIManager.swift */,
 				0B5862E124DE9729001C9565 /* VK */,
 				0B0D1FEE24DE0A6200E2970D /* Spotify */,
 			);
@@ -448,7 +445,6 @@
 				0B8A192824E8124500CAEFBE /* VKUser.swift in Sources */,
 				0B23C8F5253FA5C80019EC46 /* CaptchaView.swift in Sources */,
 				0BD9E7E925A2842800AAEA26 /* ProgressView.swift in Sources */,
-				0B9AA30524E1D24400F2644A /* APIManager.swift in Sources */,
 				0BB3626224CC5C5E00E353FB /* AppDelegate.swift in Sources */,
 				0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */,
 				0BB3629624CC8B5E00E353FB /* BrowserView.swift in Sources */,
