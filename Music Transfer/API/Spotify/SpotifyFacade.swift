@@ -236,7 +236,7 @@ final class SpotifyFacade: APIFacade {
                             
                             DispatchQueue.main.async {
                                 self.progressViewModel.progressPercentage
-                                    = Double(tracks.count - savedTracks.count) / Double(tracks.count) * 100.0
+                                    = Double(savedTracks.count) / Double(tracks.count) * 100.0
                             }
                             
                             if savedTracks.count == tracks.count {
