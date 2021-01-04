@@ -102,7 +102,6 @@ final class SpotifyFacade: APIFacade {
     func requestTokens(code: String) {
         DispatchQueue.main.async {
             ContentView.ContentViewModel.shared.operationInProgress = true
-            print("start")
         }
         
         var tmp = URLComponents()
@@ -143,7 +142,6 @@ final class SpotifyFacade: APIFacade {
             self.tokensInfo = tokensInfo
             DispatchQueue.main.async {
                 ContentView.ContentViewModel.shared.operationInProgress = false
-                print("done")
             }
         }
         task.resume()

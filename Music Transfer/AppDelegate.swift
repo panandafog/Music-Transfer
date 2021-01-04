@@ -28,9 +28,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
     }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+    
+    func applicationShouldTerminateAfterLastWindowClosed (_ theApplication: NSApplication) -> Bool {
+        true
     }
 }
 
