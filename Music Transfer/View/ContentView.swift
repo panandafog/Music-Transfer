@@ -63,12 +63,15 @@ struct ContentView: View {
                             }, label: {
                                 Text("Get saved tracks")
                             })
-                            .disabled(!model.facades[selectionFrom].isAuthorised)
+                            .disabled(!model.facades[selectionFrom].isAuthorised
+                                        || model.operationInProgress)
                             Button(action: {
                                 self.showingAlert1 = true
                             }, label: {
                                 Text("Delete all tracks")
                             })
+                            .disabled(!model.facades[selectionFrom].gotTracks
+                                        || model.operationInProgress)
                             .alert(isPresented: $showingAlert1, content: {
                                 Alert(title: Text("Are you sure you want to delete all tracks?"),
                                       message: Text("There is no undo"),
@@ -122,12 +125,15 @@ struct ContentView: View {
                         }, label: {
                             Text("Get saved tracks")
                         })
-                        .disabled(!model.facades[selectionTo].isAuthorised)
+                        .disabled(!model.facades[selectionTo].isAuthorised
+                                    || model.operationInProgress)
                         Button(action: {
                             self.showingAlert2 = true
                         }, label: {
                             Text("Delete all tracks")
                         })
+                        .disabled(!model.facades[selectionTo].gotTracks
+                                    || model.operationInProgress)
                         .alert(isPresented: $showingAlert2, content: {
                             Alert(title: Text("Are you sure you want to delete all tracks?"),
                                   message: Text("There is no undo"),
@@ -163,9 +169,19 @@ extension ContentView {
         
         static var shared = ContentViewModel()
         
-        private init() {}
-        
-        var facades: [APIFacade] = [SpotifyFacade.shared, VKFacade.shared]
         let objectWillChange = ObservableObjectPublisher()
+        
+        @Published var operationInProgress = false {
+            willSet {
+                print("operationInProgress: \(operationInProgress)")
+                DispatchQueue.main.async {
+                    ContentView.ContentViewModel.shared.objectWillChange.send()
+                }
+            }
+        }
+        
+        private(set) var facades: [APIFacade] = [SpotifyFacade.shared, VKFacade.shared]
+        
+        private init() {}
     }
 }

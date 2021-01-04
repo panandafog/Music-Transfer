@@ -24,7 +24,8 @@ struct ToolsView: View {
             }, label: {
                 Text("Transfer")
             }).disabled(!self.model.facades[self.selectionFrom].gotTracks
-                            || !self.model.facades[self.selectionTo].isAuthorised)
+                            || !self.model.facades[self.selectionTo].isAuthorised
+                            || model.operationInProgress)
             
             Button(action: {
                 DispatchQueue.global(qos: .background).async {
@@ -34,7 +35,8 @@ struct ToolsView: View {
             }, label: {
                 Text("Synchronise")
             }).disabled(!self.model.facades[self.selectionFrom].gotTracks
-                            || !self.model.facades[self.selectionTo].gotTracks)
+                            || !self.model.facades[self.selectionTo].gotTracks
+                            || model.operationInProgress)
         })
         .padding(.bottom)
     }

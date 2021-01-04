@@ -100,6 +100,10 @@ final class SpotifyFacade: APIFacade {
     
     // MARK: requestTokens
     func requestTokens(code: String) {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+            print("start")
+        }
         
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -137,12 +141,20 @@ final class SpotifyFacade: APIFacade {
                 return
             }
             self.tokensInfo = tokensInfo
+            DispatchQueue.main.async {
+                ContentView.ContentViewModel.shared.operationInProgress = false
+                print("done")
+            }
         }
         task.resume()
     }
     
     // MARK: getSavedTracks
     func getSavedTracks() {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
+        
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
         
@@ -156,6 +168,7 @@ final class SpotifyFacade: APIFacade {
         requestTracks(offset: 0, completion: {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
+                ContentView.ContentViewModel.shared.operationInProgress = false
             }
         })
     }
@@ -225,6 +238,10 @@ final class SpotifyFacade: APIFacade {
     
     // MARK: addTracks
     func addTracks(_ tracks: [SharedTrack]) {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
+        
         var tracksToAdd = tracks
         var savedTracks = [SharedTrack]()
         var globalFoundTracks = [[SpotifySearchTracks.Item]]()
@@ -310,6 +327,7 @@ final class SpotifyFacade: APIFacade {
         }
         
         DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
             self.progressViewModel.off()
             self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
@@ -338,6 +356,7 @@ final class SpotifyFacade: APIFacade {
         }, finalCompletion: {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
+                ContentView.ContentViewModel.shared.operationInProgress = false
             }
             usleep(self.requestRepeatDelay)
             self.getSavedTracks()

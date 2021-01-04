@@ -105,6 +105,10 @@ final class VKFacade: APIFacade {
     
     // MARK: requestTokens
     func requestTokens(username: String, password: String, code: String?, captcha: VKCaptcha.Solved?) {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
+        
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "oauth.vk.com"
@@ -145,6 +149,9 @@ final class VKFacade: APIFacade {
             }
             
             guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+                DispatchQueue.main.async {
+                    ContentView.ContentViewModel.shared.operationInProgress = false
+                }
                 return
             }
             
@@ -153,6 +160,9 @@ final class VKFacade: APIFacade {
             if tokensInfo != nil {
                 
                 guard let tokensInfo = tokensInfo else {
+                    DispatchQueue.main.async {
+                        ContentView.ContentViewModel.shared.operationInProgress = false
+                    }
                     return
                 }
                 
@@ -163,6 +173,10 @@ final class VKFacade: APIFacade {
                 defaults.setValue(tokensInfo.access_token, forKey: "vk_access_token")
                 defaults.setValue(tokensInfo.expires_in, forKey: "vk_token_expires_in")
                 defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
+                
+                DispatchQueue.main.async {
+                    ContentView.ContentViewModel.shared.operationInProgress = false
+                }
             } else {
                 
                 let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data)
@@ -201,6 +215,9 @@ final class VKFacade: APIFacade {
     
     // MARK: getSavedTracks
     func getSavedTracks() {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
         
@@ -214,6 +231,7 @@ final class VKFacade: APIFacade {
         requestTracks(offset: 0, completion: {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
+                ContentView.ContentViewModel.shared.operationInProgress = false
             }
         })
     }
@@ -277,6 +295,10 @@ final class VKFacade: APIFacade {
     
     // MARK: addTracks
     func addTracks(_ tracks: [SharedTrack]) {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
+        
         var reversedTracks = tracks
         reversedTracks.reverse()
         var tmpTracks = reversedTracks
@@ -353,6 +375,9 @@ final class VKFacade: APIFacade {
     
     // MARK: deleteAllTracks
     func deleteAllTracks() {
+        DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
+        }
         
         DispatchQueue.main.async {
             self.progressViewModel.off()
@@ -380,6 +405,7 @@ final class VKFacade: APIFacade {
     // MARK: synchroniseTracks
     func synchroniseTracks(_ tracksToAdd: [SharedTrack]) {
         DispatchQueue.main.async {
+            ContentView.ContentViewModel.shared.operationInProgress = true
             self.progressViewModel.off()
             self.progressViewModel.determinate = false
             self.progressViewModel.processName = "Looking for already added tracks"
