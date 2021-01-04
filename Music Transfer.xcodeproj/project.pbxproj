@@ -13,7 +13,6 @@
 		0B23C8E7253F98340019EC46 /* VKCaptcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8E6253F98340019EC46 /* VKCaptcha.swift */; };
 		0B23C8F5253FA5C80019EC46 /* CaptchaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8F4253FA5C80019EC46 /* CaptchaView.swift */; };
 		0B23C900254032C90019EC46 /* CaptchaViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C8FF254032C90019EC46 /* CaptchaViewDelegate.swift */; };
-		0B23C90925403D7B0019EC46 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B23C90825403D7B0019EC46 /* URLImage */; };
 		0B23C90E2540440D0019EC46 /* VKErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B23C90D2540440D0019EC46 /* VKErrors.swift */; };
 		0B5862E324DE9749001C9565 /* VKFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5862E224DE9749001C9565 /* VKFacade.swift */; };
 		0B6ED15A24D72B51002A0F21 /* BrowserViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6ED15924D72B51002A0F21 /* BrowserViewDelegate.swift */; };
@@ -39,6 +38,7 @@
 		0BD5E6822548994C007EDF2A /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E6812548994C007EDF2A /* TracksTableRow.swift */; };
 		0BD5E68D25489D8E007EDF2A /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD5E68C25489D8E007EDF2A /* TracksTable.swift */; };
 		0BD9E7E925A2842800AAEA26 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD9E7E825A2842800AAEA26 /* ProgressView.swift */; };
+		0BD9E80125A3602B00AAEA26 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0BD9E80025A3602B00AAEA26 /* URLImage */; };
 		0BDAD23124E066C6006CDA9C /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDAD23024E066C6006CDA9C /* APIBrowser.swift */; };
 		0BDEC3D225A1EB6A00FB20FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDEC3D125A1EB6A00FB20FE /* Constants.swift */; };
 		0BFD71512549EB7900E46CDF /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFD71502549EB7900E46CDF /* TracksTableViewDelegate.swift */; };
@@ -110,7 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B23C90925403D7B0019EC46 /* URLImage in Frameworks */,
+				0BD9E80125A3602B00AAEA26 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +307,7 @@
 			);
 			name = "Music Transfer";
 			packageProductDependencies = (
-				0B23C90825403D7B0019EC46 /* URLImage */,
+				0BD9E80025A3602B00AAEA26 /* URLImage */,
 			);
 			productName = "Music Transfer";
 			productReference = 0BB3625E24CC5C5E00E353FB /* Music Transfer.app */;
@@ -382,7 +382,7 @@
 			);
 			mainGroup = 0BB3625524CC5C5E00E353FB;
 			packageReferences = (
-				0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */,
+				0BD9E7FF25A3602B00AAEA26 /* XCRemoteSwiftPackageReference "url-image" */,
 			);
 			productRefGroup = 0BB3625F24CC5C5E00E353FB /* Products */;
 			projectDirPath = "";
@@ -633,6 +633,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -658,6 +659,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -791,20 +793,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */ = {
+		0BD9E7FF25A3602B00AAEA26 /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
+				minimumVersion = 2.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0B23C90825403D7B0019EC46 /* URLImage */ = {
+		0BD9E80025A3602B00AAEA26 /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0B23C90725403D7B0019EC46 /* XCRemoteSwiftPackageReference "url-image" */;
+			package = 0BD9E7FF25A3602B00AAEA26 /* XCRemoteSwiftPackageReference "url-image" */;
 			productName = URLImage;
 		};
 /* End XCSwiftPackageProductDependency section */

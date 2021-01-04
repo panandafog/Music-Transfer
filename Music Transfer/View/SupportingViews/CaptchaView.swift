@@ -18,18 +18,25 @@ struct CaptchaView: View {
     
     var body: some View {
         VStack {
-            URLImage(url)
+            URLImage(url: url) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            }
+            .frame(width: 180, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             HStack {
                 Spacer()
-                TextField("Captcha", text: $key)
-                    .frame(width: 150)
+                HStack {
+                    TextField("Captcha", text: $key)
+                    Button("Apply", action: {
+                        completion(VKCaptcha.Solved(captcha_sid: errorInfo.error.captcha_sid,
+                                                    captcha_key: key))
+                        CaptchaViewDelegate.shared.close()
+                    })
+                }
+                .frame(width: 180)
                 Spacer()
             }
-            Button("Apply", action: {
-                completion(VKCaptcha.Solved(captcha_sid: errorInfo.error.captcha_sid,
-                                            captcha_key: key))
-                CaptchaViewDelegate.shared.close()
-            })
             Spacer()
         }
         .padding()

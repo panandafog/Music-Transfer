@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "URLImage",
-        "repositoryURL": "https://github.com/dmytro-anokhin/url-image",
+        "repositoryURL": "https://github.com/dmytro-anokhin/url-image.git",
         "state": {
           "branch": null,
-          "revision": "22eca5ee4f317e0283da75426849ee23f0516022",
-          "version": "0.9.19"
+          "revision": "2f499e1b568b04ec0ad0a92179e3d7b44bd20676",
+          "version": "2.2.0"
         }
       }
     ]
