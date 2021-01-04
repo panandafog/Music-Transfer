@@ -32,19 +32,15 @@ public struct SpotifyBrowser: APIBrowser {
         }
 
         public func webView(_: WKWebView, didFail: WKNavigation!, withError: Error) {
-                        print("fail 1")
         }
 
         public func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) {
-                        print("fail 2")
         }
 
         public func webView(_: WKWebView, didFinish: WKNavigation!) {
-                        print("finish")
         }
 
         public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-                       print(4)
         }
 
         public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -55,8 +51,6 @@ public struct SpotifyBrowser: APIBrowser {
         }
 
         public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-
-            print("redirect")
 
             guard let url = navigationResponse.response.url else {
                 return
@@ -72,19 +66,11 @@ public struct SpotifyBrowser: APIBrowser {
                 let error = queryItems?.filter({$0.name == "error"}).first
                 let state = queryItems?.filter({$0.name == "state"}).first
 
-                if state?.value != SpotifyFacade.state {
-                    print("incorrect state")
+                guard state?.value == SpotifyFacade.state else {
                     return
                 }
 
-                if error?.value != nil {
-                    print("error: ")
-                    print(error?.value)
-                    return
-                }
-
-                if code?.value == nil {
-                    print("no code")
+                guard error?.value == nil else {
                     return
                 }
 
@@ -117,7 +103,6 @@ extension SpotifyBrowser: NSViewRepresentable {
     public func makeNSView(context: NSViewRepresentableContext<SpotifyBrowser>) -> WKWebView {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
-        print("make")
         return webView
     }
 
@@ -125,7 +110,6 @@ extension SpotifyBrowser: NSViewRepresentable {
         guard let url = self.url else {
             return
         }
-        print("update")
         nsView.load(URLRequest(url: url))
     }
 }

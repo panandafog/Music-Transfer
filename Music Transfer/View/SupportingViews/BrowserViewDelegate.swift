@@ -25,7 +25,7 @@ class BrowserViewDelegate {
         let browserView = BrowserView<Browser>(browser: browser)
 
         // Create the window and set the content view.
-        var window = NSWindow(
+        let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 810, height: 850),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false)

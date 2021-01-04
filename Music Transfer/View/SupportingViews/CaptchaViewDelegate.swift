@@ -28,7 +28,7 @@ class CaptchaViewDelegate {
 
             let captchaView = CaptchaView(errorInfo: errorMsg, url: url, completion: completion)
 
-            var window = NSWindow(
+            let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 810, height: 850),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
                 backing: .buffered, defer: false)

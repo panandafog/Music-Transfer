@@ -121,12 +121,9 @@ final class SpotifyFacade: APIFacade {
         
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
-        print(url.absoluteString)
-        
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 self.requestTokens(code: code)
                 return
@@ -185,13 +182,12 @@ final class SpotifyFacade: APIFacade {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
-        print("Bearer " + access_token)
+        
         request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 self.requestTracks(offset: offset, completion: completion)
                 return
@@ -209,7 +205,6 @@ final class SpotifyFacade: APIFacade {
             self.savedTracks.append(contentsOf: tracks)
             
             if tracksList.next != nil {
-                print(String(offset + limit))
                 usleep(self.requestRepeatDelay)
                 self.requestTracks(offset: offset + limit, completion: completion)
             } else {
@@ -244,12 +239,7 @@ final class SpotifyFacade: APIFacade {
                                     = Double(tracks.count - savedTracks.count) / Double(tracks.count) * 100.0
                             }
                             
-                            print(String(savedTracks.count))
-                            print(String(tracks.count))
-                            print("––––")
-                            
                             if savedTracks.count == tracks.count {
-                                print("filter")
                                 if savedTracks.count > 1000 {
                                     DispatchQueue.main.async {
                                         self.progressViewModel.progressPercentage = 0.0
@@ -322,7 +312,6 @@ final class SpotifyFacade: APIFacade {
             self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.determinate = self.savedTracks.count > 400
-            print(self.savedTracks.count)
             self.progressViewModel.active = true
         }
         
@@ -382,13 +371,11 @@ final class SpotifyFacade: APIFacade {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
-        print("Bearer " + access_token)
         request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 self.searchTrack(track, completion: completion)
                 return
@@ -474,13 +461,12 @@ final class SpotifyFacade: APIFacade {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
-        print("Bearer " + access_token)
+        
         request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 self.likeTracks(tracks, completion: completion)
                 return
@@ -527,13 +513,12 @@ final class SpotifyFacade: APIFacade {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
-        print("Bearer " + access_token)
+        
         request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             if let error = error {
-                print("Error took place \(error)")
                 sleep(failedRequestReattemptDelay)
                 self.deleteTracks(tracks, completion: completion)
                 return

@@ -86,7 +86,6 @@ final class VKFacade: APIFacade {
     private let progressViewModel = MainProgressView.MainProgressViewModel.shared
     
     private init() {
-        
         let defaults = UserDefaults.standard
         
         if let access_token = defaults.string(forKey: "vk_access_token"),
@@ -106,7 +105,6 @@ final class VKFacade: APIFacade {
     
     // MARK: requestTokens
     func requestTokens(username: String, password: String, code: String?, captcha: VKCaptcha.Solved?) {
-        
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "oauth.vk.com"
@@ -139,9 +137,8 @@ final class VKFacade: APIFacade {
         request.httpMethod = "GET"
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            if let error = error {
-                print("Error took place \(error)")
+
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 self.requestTokens(username: username, password: password, code: code, captcha: captcha)
                 return
@@ -150,8 +147,6 @@ final class VKFacade: APIFacade {
             guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
                 return
             }
-            
-            print(dataString)
             
             let tokensInfo = try? JSONDecoder().decode(TokensInfo.self, from: data)
             
@@ -177,7 +172,6 @@ final class VKFacade: APIFacade {
                 } else {
                     let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if capthcaError != nil {
-                        print(capthcaError?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: capthcaError!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
                             self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
@@ -246,8 +240,7 @@ final class VKFacade: APIFacade {
         
         let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            if let _ = error {
                 sleep(failedRequestReattemptDelay)
                 requestTracks(offset: offset, completion: completion)
                 return
@@ -265,7 +258,6 @@ final class VKFacade: APIFacade {
             self.savedTracks.append(contentsOf: tracks)
             
             if tracksList.response.count > offset + count {
-                print(String(offset + count))
                 self.requestTracks(offset: offset + count, completion: completion)
             } else {
                 self.gotTracks = true
@@ -300,10 +292,6 @@ final class VKFacade: APIFacade {
                             self.progressViewModel.progressPercentage
                                 = Double(tracks.count - tmpTracks.count) / Double(tracks.count) * 100.0
                         }
-                        print(String(tmpTracks.count))
-                        print(String(tracks.count))
-                        print(!currentFoundTracks.isEmpty)
-                        print("––––––––––––––––––––––––––––––––––––––––")
                     },
                     finalCompletion: {
                         if reversedTracks.count > 500 {
@@ -337,7 +325,9 @@ final class VKFacade: APIFacade {
                                 return
                             }
                             notFoundTracks.append(SharedTrack(from: notLikedTrack))
+                            
                         }, finalCompletion: {
+                            
                             DispatchQueue.main.async {
                                 self.progressViewModel.off()
                             }
@@ -417,7 +407,7 @@ final class VKFacade: APIFacade {
             finalCompletion()
             return
         }
-        print("attempt: \(attempt)")
+        
         let track = tracks[0]
         
         var search_own = "0"
@@ -455,8 +445,6 @@ final class VKFacade: APIFacade {
             return
         }
         
-        print("url: \(url)")
-        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -464,8 +452,7 @@ final class VKFacade: APIFacade {
         
         let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 searchTrack(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
@@ -490,17 +477,14 @@ final class VKFacade: APIFacade {
                 }
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
-                    print(dataString)
                     
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
                             searchTrack(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                     } else {
-                        print("!!!!!!!!")
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
                             if error?.error.error_code == 6 { // Too many requests per second
@@ -578,8 +562,7 @@ final class VKFacade: APIFacade {
                             completion: @escaping ((_ notLikedTrack: VKSavedTracks.Item?,
                                                     _ remaining: Int) -> Void),
                             finalCompletion: @escaping (() -> Void)) {
-        guard let access_token = self.tokensInfo?.access_token,
-              let tokensInfo = self.tokensInfo else {
+        guard let access_token = self.tokensInfo?.access_token else {
             return
         }
         
@@ -617,8 +600,7 @@ final class VKFacade: APIFacade {
         
         let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 likeTracks(tracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
@@ -629,8 +611,6 @@ final class VKFacade: APIFacade {
             }
             
             let addResponse = try? JSONDecoder().decode(VKAddTrack.Response.self, from: data)
-            
-            print("like: \(dataString)")
             
             if addResponse != nil {
                 var remainingTracks = tracks
@@ -645,11 +625,8 @@ final class VKFacade: APIFacade {
                 likeTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
-                    print(dataString)
-                    
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
                             likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
@@ -674,8 +651,7 @@ final class VKFacade: APIFacade {
                               captcha: VKCaptcha.Solved?,
                               completion: @escaping ((_ remaining: Int) -> Void),
                               finalCompletion: @escaping (() -> Void)) {
-        guard let access_token = self.tokensInfo?.access_token,
-              let tokensInfo = self.tokensInfo else {
+        guard let access_token = self.tokensInfo?.access_token else {
             return
         }
         
@@ -721,8 +697,7 @@ final class VKFacade: APIFacade {
         
         let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
             
-            if let error = error {
-                print("Error took place \(error)")
+            guard error == nil else {
                 sleep(failedRequestReattemptDelay)
                 deleteTracks(tracks, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                 return
@@ -742,11 +717,8 @@ final class VKFacade: APIFacade {
                 deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
                 if let httpResponse = response as? HTTPURLResponse {
-                    print(dataString)
-                    
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        print(error?.error.captcha_img as Any)
                         let captchaDelegate = CaptchaViewDelegate.shared
                         captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: VKCaptcha.Solved) in
                             deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
