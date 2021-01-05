@@ -15,8 +15,12 @@ struct TracksTable: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-            Text(name)
-                .font(.body)
+            HStack {
+                Text(name)
+                    .font(.body)
+                Spacer()
+                Text("count: \(tracks.count)")
+            }
             ZStack {
                 List(tracks) { track in
                     TracksTableRow(track: track)

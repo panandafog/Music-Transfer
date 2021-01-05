@@ -300,7 +300,7 @@ final class SpotifyFacade: APIFacade {
                                 }
                             }, finalCompletion: {
                                 if !filtered.notFoundTracks.isEmpty {
-                                    TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks: \(filtered.notFoundTracks.count)")
+                                    TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
                                 }
                                 DispatchQueue.main.async {
                                     self.progressViewModel.off()

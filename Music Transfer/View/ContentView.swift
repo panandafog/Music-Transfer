@@ -83,7 +83,6 @@ struct ContentView: View {
                                       },
                                       secondaryButton: .cancel())
                             })
-                            .disabled(!model.facades[selectionFrom].gotTracks)
                             Spacer()
                         }
                         .padding(.horizontal)
@@ -145,7 +144,6 @@ struct ContentView: View {
                                   },
                                   secondaryButton: .cancel())
                         })
-                        .disabled(!model.facades[selectionTo].gotTracks)
                     }
                     .padding(.horizontal)
                     TracksTable(tracks: .init(get: {

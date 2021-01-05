@@ -363,10 +363,10 @@ final class VKFacade: APIFacade {
                             }
                             
                             if !notFoundTracks.isEmpty {
-                                TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks: \(notFoundTracks.count)")
+                                TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
                             }
                             if !duplicates.isEmpty {
-                                TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates: \(duplicates.count)")
+                                TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
                             }
                             self.getSavedTracks()
                         })
