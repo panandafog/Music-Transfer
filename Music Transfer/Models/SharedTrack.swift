@@ -19,6 +19,7 @@ struct SharedTrack: Identifiable {
     
     let ownerID: Int?
     
+    // MARK: init
     init(id: String, artists: [String], title: String, durationS: Int) {
         self.id = id
         self.artists = artists
@@ -89,6 +90,7 @@ struct SharedTrack: Identifiable {
         self.ownerID = nil
     }
     
+    // MARK: strArtists
     func strArtists() -> String {
         var res = ""
         if artists.count > 1 {
@@ -102,6 +104,7 @@ struct SharedTrack: Identifiable {
         return res
     }
     
+    // MARK: makeArray
     static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {
         var res = [SharedTrack]()
         
@@ -123,7 +126,10 @@ struct SharedTrack: Identifiable {
     }
 }
 
+// MARK: - Equatable
 extension SharedTrack: Equatable {
+    
+    // MARK: ==
     static func == (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
         
         guard lhs ~= rhs else {
@@ -175,6 +181,7 @@ extension SharedTrack: Equatable {
         return equalArtistsL || equalArtistsR
     }
     
+    // MARK: ~=
     static func ~= (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
         
         guard !lhs.artists.isEmpty && !rhs.artists.isEmpty else {
@@ -238,11 +245,13 @@ extension SharedTrack: Equatable {
             && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
     }
     
+    // MARK: durationsAreEqual
     static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {
         Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
             && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
     }
     
+    // MARK: titlesAreEqual
     static func titlesAreEqual(lhs: String, rhs: String) -> Bool {
         let clearLhs = clearTitle(lhs).lowercased()
         let clearRhs = clearTitle(rhs).lowercased()
@@ -252,6 +261,7 @@ extension SharedTrack: Equatable {
             || lhs.lowercased() == rhs.lowercased()
     }
     
+    // MARK: clearTitle
     static func clearTitle(_ title: String) -> String {
         var title = title
         let patterns = ["\\ *\\(.*\\)", "\\ *\\[.*\\]"]
