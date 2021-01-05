@@ -41,6 +41,8 @@ class CaptchaViewDelegate {
             window.isReleasedWhenClosed = false
 
             CaptchaViewDelegate.keyWindow = window
+            
+            NSApp.requestUserAttention(.criticalRequest)
         }
     }
 

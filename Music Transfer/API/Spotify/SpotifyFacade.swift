@@ -167,6 +167,7 @@ final class SpotifyFacade: APIFacade {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
                 ContentView.ContentViewModel.shared.operationInProgress = false
+                NSApp.requestUserAttention(.informationalRequest)
             }
         })
     }
