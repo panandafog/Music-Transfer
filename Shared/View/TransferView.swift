@@ -317,7 +317,10 @@ struct TransferView: View {
                 })
                 .padding()
                 .sheet(isPresented: $model.solvingCaptcha) {
-                    CaptchaView(captcha: model.captcha!)
+                    CaptchaView(captcha: model.captcha!) {
+                        model.solvingCaptcha = false
+                        model.captcha = nil
+                    }
                 }
             } else {
                 if model.active {

@@ -11,8 +11,10 @@ import URLImage
 
 struct CaptchaView: View {
     
-    @State private var key = ""
     let captcha: Captcha
+    var solveAction: (() -> Void)?
+    
+    @State private var key = ""
     
     var body: some View {
         VStack {
@@ -38,6 +40,7 @@ struct CaptchaView: View {
                         #if os(macOS)
                             CaptchaViewDelegate.shared.close()
                         #endif
+                        solveAction?()
                     })
                 }
                 .frame(width: 180)
