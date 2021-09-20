@@ -74,17 +74,11 @@ final class VKFacade: APIFacade {
     
     var savedTracks = [SharedTrack]()
     
-    #if !os(macOS)
     var loginViewModel: LoginViewModel?
     var captchaViewModel: CaptchaViewModel?
-    #endif
     
     // MARK: authorize
-    #if os(macOS)
-    func authorize() {
-        LoginViewDelegate.shared.open(twoFactor: false, captcha: nil, completion: requestTokens(username:password:code:captcha:))
-    }
-    #else
+    
     func authorize() -> AnyView {
         let model = LoginViewModel(twoFactor: false,
                                    captcha: nil,
@@ -92,7 +86,6 @@ final class VKFacade: APIFacade {
         self.loginViewModel = model
         return AnyView(LoginView(model: model))
     }
-    #endif
     
     private let searchAttemptCount = 2
     private let searchReattemptDelay: UInt32 = 1000000
@@ -208,18 +201,10 @@ final class VKFacade: APIFacade {
                 let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data)
                 
                 if twoFactorError != nil && twoFactorError!.validate() {
-                    #if os(macOS)
-                    LoginViewDelegate.shared.open(twoFactor: true,
-                                                  captcha: captcha,
-                                                  login: username,
-                                                  password: password,
-                                                  completion: self.requestTokens(username:password:code:captcha:))
-                    #else
                     DispatchQueue.main.async {
                         self.loginViewModel?.twoFactor = true
                         self.loginViewModel?.captcha = captcha
                     }
-                    #endif
                 } else {
                     let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if capthcaError != nil {
@@ -241,18 +226,10 @@ final class VKFacade: APIFacade {
                         let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
                         
                         if commonError != nil && commonError!.isWrongCredentialsError() {
-                            #if os(macOS)
-                            LoginViewDelegate.shared.open(twoFactor: code != nil,
-                                                          captcha: captcha,
-                                                          login: username,
-                                                          password: password,
-                                                          completion: self.requestTokens(username:password:code:captcha:))
-                            #else
                             DispatchQueue.main.async {
                                 self.loginViewModel?.twoFactor = code != nil
                                 self.loginViewModel?.captcha = captcha
                             }
-                            #endif
                         } else {
                             print("unknown error")
                         }

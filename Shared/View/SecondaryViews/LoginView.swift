@@ -11,42 +11,10 @@ import URLImage
 
 struct LoginView: View {
     
-    #if os(macOS)
-    @State private(set) var login = ""
-    @State private(set) var password = ""
-    @State private var code = ""
-    let twoFactor: Bool
-    let captcha: Captcha.Solved?
-    let completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
-    
-    #else
     @ObservedObject var model: LoginViewModel
     @Environment(\.presentationMode) private var presentationMode
-    #endif
     
     var body: some View {
-        #if os(macOS)
-        ZStack(alignment: Alignment(horizontal: .center, vertical: .center)) {
-            VStack {
-                TextField("login", text: $login)
-                SecureField("password", text: $password)
-                if twoFactor {
-                    TextField("code", text: $code)
-                }
-                Button("Apply", action: {
-                    if !twoFactor {
-                        completion(login, password, nil, captcha)
-                    } else {
-                        completion(login, password, code, captcha)
-                    }
-                    LoginViewDelegate.shared.close()
-                })
-            }
-            .frame(width: 180, height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            .padding()
-            Spacer()
-        }
-        #else
         ZStack(alignment: Alignment(horizontal: .center, vertical: .center)) {
             VStack {
                 TextField("login", text: $model.login)
@@ -70,6 +38,5 @@ struct LoginView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
-        #endif
     }
 }

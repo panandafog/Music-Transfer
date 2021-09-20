@@ -91,18 +91,12 @@ final class SpotifyFacade: APIFacade {
     private init() {}
     
     // MARK: authorize
-    #if os(macOS)
-    func authorize() {
-        let browserDelegate = BrowserViewDelegate.shared
-        browserDelegate.openBrowser(browser: SpotifyBrowser(url: SpotifyFacade.authorizationUrl))
-    }
-    #else
+    
     func authorize() -> AnyView {
         return AnyView(
             BrowserView<SpotifyBrowser>(browser: SpotifyBrowser(url: SpotifyFacade.authorizationUrl))
         )
     }
-    #endif
     
     private static func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

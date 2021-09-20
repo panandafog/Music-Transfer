@@ -16,11 +16,7 @@ protocol APIFacade {
     var gotTracks: Bool { get }
     var savedTracks: [SharedTrack] { get }
 
-    #if os(macOS)
-    func authorize()
-    #else
     func authorize() -> AnyView
-    #endif
     
     func getSavedTracks()
     func addTracks(_: [SharedTrack])
