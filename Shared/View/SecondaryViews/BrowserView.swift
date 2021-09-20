@@ -10,21 +10,11 @@ import SwiftUI
 
 struct BrowserView<Browser: APIBrowser>: View {
     
-    #if os(macOS)
-    var browser: Browser
-    #else
     @ObservedObject var browser: Browser
     @Environment(\.presentationMode) private var presentationMode
-    #endif
     
     var body: some View {
         HStack {
-            #if os(macOS)
-            self.browser
-                .onAppear() {
-                    self.browser.load()
-                }
-            #else
             self.browser
                 .onAppear() {
                     self.browser.load()
@@ -34,7 +24,6 @@ struct BrowserView<Browser: APIBrowser>: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }
                 }
-            #endif
         }
         .padding()
     }

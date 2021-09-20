@@ -25,12 +25,12 @@ struct ToolsView: View {
                 Text("Transfer")
             })
             .disabled(!self.model.facades[self.selectionFrom].gotTracks
-                            || !self.model.facades[self.selectionTo].isAuthorised
-                            || model.operationInProgress)
+                        || !self.model.facades[self.selectionTo].isAuthorised
+                        || model.operationInProgress)
             .alert(isPresented: $showingAlert1, content: {
                 Alert(title: Text("Are you sure you want to transfer all tracks?"),
                       message: Text("All your tracks from \(self.model.facades[self.selectionFrom].apiName) "
-                      + "would be added to \(self.model.facades[self.selectionTo].apiName)."),
+                                        + "would be added to \(self.model.facades[self.selectionTo].apiName)."),
                       primaryButton: .destructive(Text("Transfer")) {
                         DispatchQueue.global(qos: .background).async {
                             self.model.facades[self.selectionTo]
@@ -46,12 +46,12 @@ struct ToolsView: View {
                 Text("Synchronise")
             })
             .disabled(!self.model.facades[self.selectionFrom].gotTracks
-                            || !self.model.facades[self.selectionTo].gotTracks
-                            || model.operationInProgress)
+                        || !self.model.facades[self.selectionTo].gotTracks
+                        || model.operationInProgress)
             .alert(isPresented: $showingAlert2, content: {
                 Alert(title: Text("Are you sure you want to synchronise all tracks?"),
                       message: Text("All your tracks from \(self.model.facades[self.selectionFrom].apiName) "
-                      + "would be added to \(self.model.facades[self.selectionTo].apiName), if they are not added yet."),
+                                        + "would be added to \(self.model.facades[self.selectionTo].apiName), if they are not added yet."),
                       primaryButton: .destructive(Text("Synchronise")) {
                         DispatchQueue.global(qos: .background).async {
                             self.model.facades[self.selectionTo]

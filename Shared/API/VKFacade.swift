@@ -187,11 +187,7 @@ final class VKFacade: APIFacade {
                 defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
                 
                 DispatchQueue.main.async {
-                    #if os(macOS)
-                    TransferState.shared.operationInProgress = false
-                    #else
                     self.loginViewModel?.shouldDismissView = true
-                    #endif
                 }
                 
                 self.isAuthorised = true
@@ -208,20 +204,12 @@ final class VKFacade: APIFacade {
                 } else {
                     let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if capthcaError != nil {
-                        #if os(macOS)
-                        let captchaDelegate = CaptchaViewDelegate.shared
-                        captchaDelegate.open(errorMsg: capthcaError!, completion: {(_ solvedCaptcha: Captcha.Solved) in
-                            self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
-                        })
-                        #else
-                        print("сделать капчу")
                         
                         let captcha = Captcha(errorMessage: capthcaError!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
                         })
                         TransferState.shared.captcha = captcha
                         
-                        #endif
                     } else {
                         let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
                         
@@ -555,20 +543,12 @@ final class VKFacade: APIFacade {
                     
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        #if os(macOS)
-                        let captchaDelegate = CaptchaViewDelegate.shared
-                        captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: Captcha.Solved) in
-                            searchTracks(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
-                        #else
-                        print("сделать капчу")
                         
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.searchTracks(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                         TransferState.shared.captcha = captcha
                         
-                        #endif
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
@@ -712,20 +692,12 @@ final class VKFacade: APIFacade {
                 if let httpResponse = response as? HTTPURLResponse {
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        #if os(macOS)
-                        let captchaDelegate = CaptchaViewDelegate.shared
-                        captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: Captcha.Solved) in
-                            likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
-                        #else
-                        print("сделать капчу")
                         
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                         TransferState.shared.captcha = captcha
                         
-                        #endif
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {
@@ -814,20 +786,12 @@ final class VKFacade: APIFacade {
                 if let httpResponse = response as? HTTPURLResponse {
                     let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
                     if error != nil {
-                        #if os(macOS)
-                        let captchaDelegate = CaptchaViewDelegate.shared
-                        captchaDelegate.open(errorMsg: error!, completion: {(_ solvedCaptcha: Captcha.Solved) in
-                            deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
-                        #else
-                        print("сделать капчу")
                         
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
                         TransferState.shared.captcha = captcha
                         
-                        #endif
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
                         if error != nil {

@@ -37,9 +37,6 @@ struct CaptchaView: View {
                                 key: key
                             )
                         )
-                        #if os(macOS)
-                            CaptchaViewDelegate.shared.close()
-                        #endif
                         solveAction?()
                     })
                 }

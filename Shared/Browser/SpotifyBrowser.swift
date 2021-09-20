@@ -94,12 +94,7 @@ public final class SpotifyBrowser: APIBrowser {
                 spotifyFacade.requestTokens(code: codeValue)
                 
                 decisionHandler(.cancel)
-                #if os(macOS)
-                let browserDelegate = BrowserViewDelegate.shared
-                browserDelegate.closeBrowser()
-                #else
                 parent.shouldDismissView = true
-                #endif
                 
             } else {
                 decisionHandler(.allow)

@@ -49,7 +49,6 @@
 		0B2C159225A680B400ACB2C7 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* ProgressView.swift */; };
 		0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159C25A680F700ACB2C7 /* BrowserView.swift */; };
 		0B2C15B025A6811E00ACB2C7 /* CaptchaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */; };
-		0B2C15B725A6819300ACB2C7 /* CaptchaViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15B525A6819300ACB2C7 /* CaptchaViewDelegate.swift */; };
 		0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15BC25A681B300ACB2C7 /* LoginView.swift */; };
 		0B2C15CC25A681EC00ACB2C7 /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15CA25A681EC00ACB2C7 /* TracksTable.swift */; };
 		0B2C15D325A6821500ACB2C7 /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15D125A6821500ACB2C7 /* TracksTableRow.swift */; };
@@ -134,7 +133,6 @@
 		0B2C159C25A680F700ACB2C7 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		0B2C15A725A6810E00ACB2C7 /* BrowserViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewDelegate.swift; sourceTree = "<group>"; };
 		0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaView.swift; sourceTree = "<group>"; };
-		0B2C15B525A6819300ACB2C7 /* CaptchaViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaViewDelegate.swift; sourceTree = "<group>"; };
 		0B2C15BC25A681B300ACB2C7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0B2C15CA25A681EC00ACB2C7 /* TracksTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTable.swift; sourceTree = "<group>"; };
 		0B2C15D125A6821500ACB2C7 /* TracksTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableRow.swift; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 			isa = PBXGroup;
 			children = (
 				0B2C15A725A6810E00ACB2C7 /* BrowserViewDelegate.swift */,
-				0B2C15B525A6819300ACB2C7 /* CaptchaViewDelegate.swift */,
 				0B2C15D825A6822800ACB2C7 /* TracksTableViewDelegate.swift */,
 			);
 			path = SecondaryViews;
@@ -629,7 +626,6 @@
 				0B2C15CC25A681EC00ACB2C7 /* TracksTable.swift in Sources */,
 				0B42352C26E431A6007CAAB7 /* TransferState.swift in Sources */,
 				0B2C14E625A6781400ACB2C7 /* TransferView.swift in Sources */,
-				0B2C15B725A6819300ACB2C7 /* CaptchaViewDelegate.swift in Sources */,
 				0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */,
 				0B2C160225A6841800ACB2C7 /* VKKeys.swift in Sources */,
 				0B2C153C25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,

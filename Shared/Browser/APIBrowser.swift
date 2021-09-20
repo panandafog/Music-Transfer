@@ -9,16 +9,22 @@
 import SwiftUI
 
 #if os(macOS)
+
 import Cocoa
-protocol APIBrowser: NSViewRepresentable {
+import Combine
+protocol APIBrowser: NSViewRepresentable, ObservableObject {
     var url: URL? { get }
+    var viewDismissalModePublisher: PassthroughSubject<Bool, Never> { get }
     func load()
 }
+
 #else
+
 import Combine
 protocol APIBrowser: UIViewRepresentable, ObservableObject {
     var url: URL? { get }
     var viewDismissalModePublisher: PassthroughSubject<Bool, Never> { get }
     func load()
 }
+
 #endif

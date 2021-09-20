@@ -172,6 +172,7 @@ final class SpotifyFacade: APIFacade {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
                 TransferState.shared.operationInProgress = false
+                
                 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
                 #else

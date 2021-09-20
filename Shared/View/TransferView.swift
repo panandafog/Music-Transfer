@@ -54,6 +54,8 @@ struct TransferView: View {
                     $0
                         .frame(maxWidth: Self.menuMaxWidth)
                         .padding(.leading)
+                    #else
+                    $0
                     #endif
                 }
                 
@@ -137,6 +139,8 @@ struct TransferView: View {
                     $0
                         .frame(maxWidth: Self.menuMaxWidth)
                         .padding(.leading)
+                    #else
+                    $0
                     #endif
                 }
                 
