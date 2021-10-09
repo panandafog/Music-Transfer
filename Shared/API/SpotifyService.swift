@@ -1,5 +1,5 @@
 //
-//  SpotifyFacade.swift
+//  SpotifyService.swift
 //  Music Transfer
 //
 //  Created by panandafog on 25.07.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-final class SpotifyFacade: APIFacade {
+final class SpotifyService: APIService {
     
     static let authorizationRedirectUrl = "https://example.com/callback/"
     static var state = randomString(length: stateLength)
@@ -23,7 +23,7 @@ final class SpotifyFacade: APIFacade {
         tmp.queryItems = [
             URLQueryItem(name: "client_id", value: SpotifyKeys.client_id),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "redirect_uri", value: SpotifyFacade.authorizationRedirectUrl),
+            URLQueryItem(name: "redirect_uri", value: SpotifyService.authorizationRedirectUrl),
             URLQueryItem(name: "state", value: state),
             URLQueryItem(name: "scope", value: "user-library-read%20user-library-modify"),
             URLQueryItem(name: "show_dialog", value: "true")
@@ -31,8 +31,8 @@ final class SpotifyFacade: APIFacade {
         return tmp.url
     }
     
-    static var shared: SpotifyFacade = {
-        let instance = SpotifyFacade()
+    static var shared: SpotifyService = {
+        let instance = SpotifyService()
         return instance
     }()
     
@@ -47,7 +47,7 @@ final class SpotifyFacade: APIFacade {
         tmp.queryItems = [
             URLQueryItem(name: "grant_type", value: "authorization_code"),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "redirect_uri", value: SpotifyFacade.authorizationRedirectUrl),
+            URLQueryItem(name: "redirect_uri", value: SpotifyService.authorizationRedirectUrl),
             URLQueryItem(name: "state", value: state)
         ]
         return tmp.url
@@ -94,7 +94,7 @@ final class SpotifyFacade: APIFacade {
     
     func authorize() -> AnyView {
         return AnyView(
-            BrowserView<SpotifyBrowser>(browser: SpotifyBrowser(url: SpotifyFacade.authorizationUrl))
+            BrowserView<SpotifyBrowser>(browser: SpotifyBrowser(url: SpotifyService.authorizationUrl))
         )
     }
     
@@ -124,7 +124,7 @@ final class SpotifyFacade: APIFacade {
         let postString = "grant_type=" + "authorization_code" + "&" +
         "client_id=" + SpotifyKeys.client_id + "&" +
         "code=" + code + "&" +
-        "redirect_uri=" + SpotifyFacade.authorizationRedirectUrl + "&" +
+        "redirect_uri=" + SpotifyService.authorizationRedirectUrl + "&" +
         "&client_secret=" + SpotifyKeys.client_secret
         
         request.httpBody = postString.data(using: String.Encoding.utf8)
@@ -615,7 +615,7 @@ final class SpotifyFacade: APIFacade {
     }
 }
 
-extension SpotifyFacade: NSCopying {
+extension SpotifyService: NSCopying {
     
     func copy(with zone: NSZone? = nil) -> Any {
         return self

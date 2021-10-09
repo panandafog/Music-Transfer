@@ -24,17 +24,17 @@ struct ToolsView: View {
             }, label: {
                 Text("Transfer")
             })
-                .disabled(!self.model.facades[self.selectionFrom].gotTracks
-                          || !self.model.facades[self.selectionTo].isAuthorised
+                .disabled(!self.model.services[self.selectionFrom].gotTracks
+                          || !self.model.services[self.selectionTo].isAuthorised
                           || model.operationInProgress)
                 .alert(isPresented: $showingAlert1, content: {
                     Alert(title: Text("Are you sure you want to transfer all tracks?"),
-                          message: Text("All your tracks from \(self.model.facades[self.selectionFrom].apiName) "
-                                        + "would be added to \(self.model.facades[self.selectionTo].apiName)."),
+                          message: Text("All your tracks from \(self.model.services[self.selectionFrom].apiName) "
+                                        + "would be added to \(self.model.services[self.selectionTo].apiName)."),
                           primaryButton: .destructive(Text("Transfer")) {
                         DispatchQueue.global(qos: .background).async {
-                            self.model.facades[self.selectionTo]
-                                .addTracks(self.model.facades[self.selectionFrom].savedTracks)
+                            self.model.services[self.selectionTo]
+                                .addTracks(self.model.services[self.selectionFrom].savedTracks)
                         }
                     },
                           secondaryButton: .cancel())
@@ -45,17 +45,17 @@ struct ToolsView: View {
             }, label: {
                 Text("Synchronise")
             })
-                .disabled(!self.model.facades[self.selectionFrom].gotTracks
-                          || !self.model.facades[self.selectionTo].gotTracks
+                .disabled(!self.model.services[self.selectionFrom].gotTracks
+                          || !self.model.services[self.selectionTo].gotTracks
                           || model.operationInProgress)
                 .alert(isPresented: $showingAlert2, content: {
                     Alert(title: Text("Are you sure you want to synchronise all tracks?"),
-                          message: Text("All your tracks from \(self.model.facades[self.selectionFrom].apiName) "
-                                        + "would be added to \(self.model.facades[self.selectionTo].apiName), if they are not added yet."),
+                          message: Text("All your tracks from \(self.model.services[self.selectionFrom].apiName) "
+                                        + "would be added to \(self.model.services[self.selectionTo].apiName), if they are not added yet."),
                           primaryButton: .destructive(Text("Synchronise")) {
                         DispatchQueue.global(qos: .background).async {
-                            self.model.facades[self.selectionTo]
-                                .synchroniseTracks(self.model.facades[self.selectionFrom].savedTracks)
+                            self.model.services[self.selectionTo]
+                                .synchroniseTracks(self.model.services[self.selectionFrom].savedTracks)
                         }
                     },
                           secondaryButton: .cancel())

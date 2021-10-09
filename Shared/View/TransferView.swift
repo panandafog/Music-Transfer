@@ -32,22 +32,22 @@ struct TransferView: View {
                 Spacer()
 #endif
                 Menu {
-                    ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
+                    ForEach(0...(model.services.count - 1), id: \.self, content: { ind in
                         Button(action: {
                             selectionFrom = ind
                             if selectionTo == ind {
-                                if selectionTo == model.facades.count - 1 {
+                                if selectionTo == model.services.count - 1 {
                                     selectionTo = 0
                                 } else {
                                     selectionTo += 1
                                 }
                             }
                         }, label: {
-                            Text(model.facades[ind].apiName)
+                            Text(model.services[ind].apiName)
                         })
                     })
                 } label: {
-                    Label(model.facades[selectionFrom].apiName, systemImage: "chevron.down")
+                    Label(model.services[selectionFrom].apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)
@@ -70,24 +70,24 @@ struct TransferView: View {
                     Text("Authorize")
                 })
                     .sheet(isPresented: $showingAuthorization1) {
-                        model.facades[selectionFrom].authorize()
+                        model.services[selectionFrom].authorize()
                     }
                 Button(action: {
-                    let facade = model.facades[selectionFrom]
+                    let service = model.services[selectionFrom]
                     DispatchQueue.global(qos: .background).async {
-                        facade.getSavedTracks()
+                        service.getSavedTracks()
                     }
                 }, label: {
                     Text("Get saved tracks")
                 })
-                    .disabled(!model.facades[selectionFrom].isAuthorised
+                    .disabled(!model.services[selectionFrom].isAuthorised
                               || model.operationInProgress)
 #if !os(macOS)
                 NavigationLink("View saved tracks", destination:
                                 TracksTable(tracks: .init(get: {
-                    model.facades[selectionFrom].savedTracks
+                    model.services[selectionFrom].savedTracks
                 }, set: { _ in }), name: "Saved tracks:"))
-                    .disabled(!model.facades[selectionFrom].gotTracks
+                    .disabled(!model.services[selectionFrom].gotTracks
                               || model.operationInProgress)
 #endif
                 Button(action: {
@@ -95,15 +95,15 @@ struct TransferView: View {
                 }, label: {
                     Text("Delete all tracks")
                 })
-                    .disabled(!model.facades[selectionFrom].gotTracks
+                    .disabled(!model.services[selectionFrom].gotTracks
                               || model.operationInProgress)
                     .alert(isPresented: $showingAlert1, content: {
                         Alert(title: Text("Are you sure you want to delete all tracks?"),
                               message: Text("There is no undo"),
                               primaryButton: .destructive(Text("Delete")) {
-                            let facade = model.facades[selectionFrom]
+                            let service = model.services[selectionFrom]
                             DispatchQueue.global(qos: .background).async {
-                                facade.deleteAllTracks()
+                                service.deleteAllTracks()
                             }
                         },
                               secondaryButton: .cancel())
@@ -111,7 +111,7 @@ struct TransferView: View {
             }
 #if os(macOS)
             TracksTable(tracks: .init(get: {
-                model.facades[selectionFrom].savedTracks
+                model.services[selectionFrom].savedTracks
             }, set: { _ in }), name: "Saved tracks:")
 #endif
         })
@@ -127,16 +127,16 @@ struct TransferView: View {
                 Spacer()
 #endif
                 Menu {
-                    ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
+                    ForEach(0...(model.services.count - 1), id: \.self, content: { ind in
                         Button(action: {
                             selectionTo = ind
                         }, label: {
-                            Text(model.facades[ind].apiName)
+                            Text(model.services[ind].apiName)
                         })
                             .disabled(selectionFrom == ind)
                     })
                 } label: {
-                    Label(model.facades[selectionTo].apiName, systemImage: "chevron.down")
+                    Label(model.services[selectionTo].apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)
@@ -159,24 +159,24 @@ struct TransferView: View {
                     Text("Authorize")
                 })
                     .sheet(isPresented: $showingAuthorization2) {
-                        model.facades[selectionTo].authorize()
+                        model.services[selectionTo].authorize()
                     }
                 Button(action: {
-                    let facade = model.facades[selectionTo]
+                    let service = model.services[selectionTo]
                     DispatchQueue.global(qos: .background).async {
-                        facade.getSavedTracks()
+                        service.getSavedTracks()
                     }
                 }, label: {
                     Text("Get saved tracks")
                 })
-                    .disabled(!model.facades[selectionTo].isAuthorised
+                    .disabled(!model.services[selectionTo].isAuthorised
                               || model.operationInProgress)
 #if !os(macOS)
                 NavigationLink("View saved tracks", destination:
                                 TracksTable(tracks: .init(get: {
-                    model.facades[selectionTo].savedTracks
+                    model.services[selectionTo].savedTracks
                 }, set: { _ in }), name: "Saved tracks:"))
-                    .disabled(!model.facades[selectionTo].gotTracks
+                    .disabled(!model.services[selectionTo].gotTracks
                               || model.operationInProgress)
 #endif
                 Button(action: {
@@ -184,15 +184,15 @@ struct TransferView: View {
                 }, label: {
                     Text("Delete all tracks")
                 })
-                    .disabled(!model.facades[selectionTo].gotTracks
+                    .disabled(!model.services[selectionTo].gotTracks
                               || model.operationInProgress)
                     .alert(isPresented: $showingAlert2, content: {
                         Alert(title: Text("Are you sure you want to delete all tracks?"),
                               message: Text("There is no undo"),
                               primaryButton: .destructive(Text("Delete")) {
-                            let facade = model.facades[selectionTo]
+                            let service = model.services[selectionTo]
                             DispatchQueue.global(qos: .background).async {
-                                facade.deleteAllTracks()
+                                service.deleteAllTracks()
                             }
                         },
                               secondaryButton: .cancel())
@@ -200,7 +200,7 @@ struct TransferView: View {
             }
 #if os(macOS)
             TracksTable(tracks: .init(get: {
-                model.facades[selectionTo].savedTracks
+                model.services[selectionTo].savedTracks
             }, set: { _ in }), name: " ")
 #endif
         })

@@ -37,7 +37,7 @@ public final class SpotifyBrowser: APIBrowser {
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         
         var parent: SpotifyBrowser
-        private let spotifyFacade = SpotifyFacade.shared
+        private let spotifyService = SpotifyService.shared
         
         init(parent: SpotifyBrowser) {
             self.parent = parent
@@ -69,7 +69,7 @@ public final class SpotifyBrowser: APIBrowser {
             }
             
             let currentUrlComponents = URLComponents(string: url.absoluteString)
-            let redirectUrlComponents = URLComponents(string: SpotifyFacade.authorizationRedirectUrl)
+            let redirectUrlComponents = URLComponents(string: SpotifyService.authorizationRedirectUrl)
             
             if currentUrlComponents?.host == redirectUrlComponents?.host {
                 let queryItems = currentUrlComponents?.queryItems
@@ -78,7 +78,7 @@ public final class SpotifyBrowser: APIBrowser {
                 let error = queryItems?.filter({$0.name == "error"}).first
                 let state = queryItems?.filter({$0.name == "state"}).first
                 
-                guard state?.value == SpotifyFacade.state else {
+                guard state?.value == SpotifyService.state else {
                     return
                 }
                 
@@ -90,8 +90,8 @@ public final class SpotifyBrowser: APIBrowser {
                     return
                 }
                 
-                spotifyFacade.isAuthorised = true
-                spotifyFacade.requestTokens(code: codeValue)
+                spotifyService.isAuthorised = true
+                spotifyService.requestTokens(code: codeValue)
                 
                 decisionHandler(.cancel)
                 parent.shouldDismissView = true

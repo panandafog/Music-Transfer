@@ -1,5 +1,5 @@
 //
-//  APIFacade.swift
+//  APIService.swift
 //  Music Transfer
 //
 //  Created by panandafog on 25.07.2020.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-protocol APIFacade {
+protocol APIService {
     static var authorizationUrl: URL? { get }
     var apiName: String { get }
     

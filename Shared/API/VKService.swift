@@ -1,5 +1,5 @@
 //
-//  VKFacade.swift
+//  VKService.swift
 //  Music Transfer
 //
 //  Created by panandafog on 08.08.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-final class VKFacade: APIFacade {
+final class VKService: APIService {
     static var authorizationUrl: URL?
     
     static let authorizationRedirectUrl = "https://oauth.vk.com/blank.html"
@@ -27,8 +27,8 @@ final class VKFacade: APIFacade {
         return tmp
     }
     
-    static var shared: VKFacade = {
-        let instance = VKFacade()
+    static var shared: VKService = {
+        let instance = VKService()
         return instance
     }()
     
@@ -132,10 +132,10 @@ final class VKFacade: APIFacade {
             URLQueryItem(name: "client_secret", value: VKKeys.client_secret),
             URLQueryItem(name: "username", value: username),
             URLQueryItem(name: "password", value: password),
-            URLQueryItem(name: "v", value: VKFacade.v),
-            URLQueryItem(name: "lang", value: VKFacade.lang),
+            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "lang", value: VKService.lang),
             URLQueryItem(name: "scope", value: "all"),
-            URLQueryItem(name: "device_id", value: VKFacade.randomString(length: 16))
+            URLQueryItem(name: "device_id", value: VKService.randomString(length: 16))
         ]
         if code != nil {
             tmp.queryItems?.append(URLQueryItem(name: "code", value: code!))
@@ -264,14 +264,14 @@ final class VKFacade: APIFacade {
             return
         }
         
-        var tmp = VKFacade.baseURL
+        var tmp = VKService.baseURL
         tmp.path = "/method/audio.get"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "https", value: "1"),
             URLQueryItem(name: "extended", value: "1"),
-            URLQueryItem(name: "v", value: VKFacade.v),
-            URLQueryItem(name: "lang", value: VKFacade.lang),
+            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "lang", value: VKService.lang),
             URLQueryItem(name: "count", value: "5000"),
             URLQueryItem(name: "offset", value: String(offset))
         ]
@@ -480,11 +480,11 @@ final class VKFacade: APIFacade {
         
         let query = track.strArtists() + " - " + track.title
         
-        var tmp = VKFacade.baseURL
+        var tmp = VKService.baseURL
         tmp.path = "/method/audio.search"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKFacade.v),
+            URLQueryItem(name: "v", value: VKService.v),
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "auto_complete", value: "0"),
             URLQueryItem(name: "lyrics", value: "0"),
@@ -636,11 +636,11 @@ final class VKFacade: APIFacade {
             return
         }
         
-        var tmp = VKFacade.baseURL
+        var tmp = VKService.baseURL
         tmp.path = "/method/audio.add"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKFacade.v),
+            URLQueryItem(name: "v", value: VKService.v),
             URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
             URLQueryItem(name: "owner_id", value: String(tracks[0].owner_id))
         ]
@@ -735,11 +735,11 @@ final class VKFacade: APIFacade {
             return
         }
         
-        var tmp = VKFacade.baseURL
+        var tmp = VKService.baseURL
         tmp.path = "/method/audio.delete"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKFacade.v),
+            URLQueryItem(name: "v", value: VKService.v),
             URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
             URLQueryItem(name: "owner_id", value: String(ownerID))
         ]

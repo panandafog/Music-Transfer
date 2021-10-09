@@ -17,7 +17,7 @@ class TransferState: ObservableObject {
     
     // MARK: - Constants
     
-    private(set) var facades: [APIFacade] = [SpotifyFacade.shared, VKFacade.shared]
+    private(set) var services: [APIService] = [SpotifyService.shared, VKService.shared]
     let objectWillChange = ObservableObjectPublisher()
     
     // MARK: - Operations management
