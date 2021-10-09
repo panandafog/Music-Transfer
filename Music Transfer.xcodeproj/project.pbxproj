@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -55,8 +55,6 @@
 		0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15D825A6822800ACB2C7 /* TracksTableViewDelegate.swift */; };
 		0B2C15E025A682A000ACB2C7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15DF25A682A000ACB2C7 /* Constants.swift */; };
 		0B2C15E125A682A000ACB2C7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15DF25A682A000ACB2C7 /* Constants.swift */; };
-		0B2C15F425A6837000ACB2C7 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B2C15F325A6837000ACB2C7 /* URLImage */; };
-		0B2C15FB25A683C800ACB2C7 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B2C15FA25A683C800ACB2C7 /* URLImage */; };
 		0B2C160125A6841800ACB2C7 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C160025A6841800ACB2C7 /* VKKeys.swift */; };
 		0B2C160225A6841800ACB2C7 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C160025A6841800ACB2C7 /* VKKeys.swift */; };
 		0B2C160825A6843000ACB2C7 /* SpotifyKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C160725A6843000ACB2C7 /* SpotifyKeys.swift */; };
@@ -169,7 +167,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C15F425A6837000ACB2C7 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,7 +174,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C15FB25A683C800ACB2C7 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,7 +445,6 @@
 			);
 			name = "Music Transfer (iOS)";
 			packageProductDependencies = (
-				0B2C15F325A6837000ACB2C7 /* URLImage */,
 			);
 			productName = "Music Transfer (iOS)";
 			productReference = 0B2C14C125A6781300ACB2C7 /* Music Transfer.app */;
@@ -469,7 +464,6 @@
 			);
 			name = "Music Transfer (macOS)";
 			packageProductDependencies = (
-				0B2C15FA25A683C800ACB2C7 /* URLImage */,
 			);
 			productName = "Music Transfer (macOS)";
 			productReference = 0B2C14C925A6781300ACB2C7 /* Music Transfer.app */;
@@ -546,7 +540,6 @@
 			);
 			mainGroup = 0B2C14B425A6781300ACB2C7;
 			packageReferences = (
-				0B2C15F225A6837000ACB2C7 /* XCRemoteSwiftPackageReference "url-image" */,
 			);
 			productRefGroup = 0B2C14C225A6781300ACB2C7 /* Products */;
 			projectDirPath = "";
@@ -1069,30 +1062,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		0B2C15F225A6837000ACB2C7 /* XCRemoteSwiftPackageReference "url-image" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		0B2C15F325A6837000ACB2C7 /* URLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0B2C15F225A6837000ACB2C7 /* XCRemoteSwiftPackageReference "url-image" */;
-			productName = URLImage;
-		};
-		0B2C15FA25A683C800ACB2C7 /* URLImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0B2C15F225A6837000ACB2C7 /* XCRemoteSwiftPackageReference "url-image" */;
-			productName = URLImage;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0B2C14B525A6781300ACB2C7 /* Project object */;
 }
