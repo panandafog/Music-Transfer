@@ -9,7 +9,7 @@
 import Foundation
 
 enum SpotifySavedTracks {
-
+    
     // MARK: - TracksList
     struct TracksList: Codable {
         let href: String
@@ -19,13 +19,13 @@ enum SpotifySavedTracks {
         let offset: Int
         let total: Int
     }
-
+    
     // MARK: - Item
     struct Item: Codable {
         let added_at: String
         let track: Track
     }
-
+    
     // MARK: - Track
     struct Track: Codable {
         let album: Album
@@ -42,7 +42,7 @@ enum SpotifySavedTracks {
         let track_number: Int
         let uri: String
     }
-
+    
     // MARK: - Album
     struct Album: Codable {
         let artists: [Artist]
@@ -54,12 +54,12 @@ enum SpotifySavedTracks {
         let type: AlbumTypeEnum
         let uri: String
     }
-
+    
     enum AlbumTypeEnum: String, Codable {
         case album = "album"
         case single = "single"
     }
-
+    
     // MARK: - Artist
     struct Artist: Codable {
         let href: String
@@ -67,30 +67,30 @@ enum SpotifySavedTracks {
         let type: ArtistType
         let uri: String
     }
-
+    
     // MARK: - ExternalUrls
     struct ExternalUrls: Codable {
         let spotify: String
     }
-
+    
     enum ArtistType: String, Codable {
         case artist = "artist"
     }
-
+    
     // MARK: - Image
     struct Image: Codable {
         let height: Int
         let url: String
         let width: Int
     }
-
+    
     // MARK: - ExternalIDS
     struct ExternalIDS: Codable {
         let isrc: String
     }
-
+    
     enum TrackType: String, Codable {
         case track = "track"
     }
-
+    
 }

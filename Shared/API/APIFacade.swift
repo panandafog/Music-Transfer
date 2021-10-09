@@ -11,11 +11,11 @@ import SwiftUI
 protocol APIFacade {
     static var authorizationUrl: URL? { get }
     var apiName: String { get }
-
+    
     var isAuthorised: Bool { get }
     var gotTracks: Bool { get }
     var savedTracks: [SharedTrack] { get }
-
+    
     func authorize() -> AnyView
     
     func getSavedTracks()

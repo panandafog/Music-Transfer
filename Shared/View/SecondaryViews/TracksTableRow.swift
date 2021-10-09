@@ -25,7 +25,7 @@ struct TracksTableRow: View {
         HStack {
             TextField("", text: .constant(track.strArtists() + " – " + track.title))
             Spacer()
-        
+            
             Text(getDuration())
         }
     }

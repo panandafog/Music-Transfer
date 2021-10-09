@@ -23,8 +23,8 @@ class TracksTableViewDelegate {
         DispatchQueue.main.async {
             
             let tableView = TracksTable(tracks: .init(
-                                            get: { tracks },
-                                            set: { _ in }),
+                get: { tracks },
+                set: { _ in }),
                                         name: name)
             let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 810, height: 850),

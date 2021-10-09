@@ -22,16 +22,16 @@ struct Music_TransferApp: App {
                 Text("History")
             }
         }
-        .listStyle(SidebarListStyle())
-
-        #if os(macOS)
+            .listStyle(SidebarListStyle())
+        
+#if os(macOS)
         return sidebarList
             .frame(minWidth: 150, idealWidth: 150, maxWidth: 200, maxHeight: .infinity)
             .padding(.top, 16)
-        #else
+#else
         return sidebarList
             .navigationBarTitle("Music transfer")
-        #endif
+#endif
     }
     
     var body: some Scene {
@@ -41,9 +41,9 @@ struct Music_TransferApp: App {
                 TransferView()
             }
             .onAppear {
-                #if os(macOS)
+#if os(macOS)
                 self.selectedView = 1
-                #else
+#else
                 let device = UIDevice.current
                 if device.model == "iPad" && device.orientation.isLandscape {
                     self.selectedView = 1
@@ -51,7 +51,7 @@ struct Music_TransferApp: App {
                 if device.model == "iPhone" && device.orientation.isLandscape {
                     self.selectedView = 1
                 }
-                #endif
+#endif
             }
         }
     }

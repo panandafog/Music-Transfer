@@ -241,14 +241,14 @@ extension SharedTrack: Equatable {
         let equalArtists = equalArtistsL || equalArtistsR
         
         return equalArtists
-            && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
-            && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
+        && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
+        && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
     }
     
     // MARK: durationsAreEqual
     static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {
         Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
-            && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
+        && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
     }
     
     // MARK: titlesAreEqual
@@ -257,8 +257,8 @@ extension SharedTrack: Equatable {
         let clearRhs = clearTitle(rhs).lowercased()
         
         return rhs.lowercased().contains(clearLhs)
-            || lhs.lowercased().contains(clearRhs)
-            || lhs.lowercased() == rhs.lowercased()
+        || lhs.lowercased().contains(clearRhs)
+        || lhs.lowercased() == rhs.lowercased()
     }
     
     // MARK: clearTitle

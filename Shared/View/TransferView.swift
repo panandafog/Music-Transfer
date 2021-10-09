@@ -28,9 +28,9 @@ struct TransferView: View {
             HStack {
                 Text("From:")
                     .font(.title)
-                #if !os(macOS)
+#if !os(macOS)
                 Spacer()
-                #endif
+#endif
                 Menu {
                     ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
                         Button(action: {
@@ -50,18 +50,18 @@ struct TransferView: View {
                     Label(model.facades[selectionFrom].apiName, systemImage: "chevron.down")
                 }
                 .modify {
-                    #if os(macOS)
+#if os(macOS)
                     $0
                         .frame(maxWidth: Self.menuMaxWidth)
                         .padding(.leading)
-                    #else
+#else
                     $0
-                    #endif
+#endif
                 }
                 
-                #if os(macOS)
+#if os(macOS)
                 Spacer()
-                #endif
+#endif
             }
             HStack {
                 Button(action: {
@@ -69,9 +69,9 @@ struct TransferView: View {
                 }, label: {
                     Text("Authorize")
                 })
-                .sheet(isPresented: $showingAuthorization1) {
-                    model.facades[selectionFrom].authorize()
-                }
+                    .sheet(isPresented: $showingAuthorization1) {
+                        model.facades[selectionFrom].authorize()
+                    }
                 Button(action: {
                     let facade = model.facades[selectionFrom]
                     DispatchQueue.global(qos: .background).async {
@@ -80,38 +80,42 @@ struct TransferView: View {
                 }, label: {
                     Text("Get saved tracks")
                 })
-                .disabled(!model.facades[selectionFrom].isAuthorised
-                            || model.operationInProgress)
+                    .disabled(!model.facades[selectionFrom].isAuthorised
+                              || model.operationInProgress)
+#if !os(macOS)
                 NavigationLink("View saved tracks", destination:
                                 TracksTable(tracks: .init(get: {
-                                    model.facades[selectionFrom].savedTracks
-                                }, set: { _ in }), name: "Saved tracks:"))
+                    model.facades[selectionFrom].savedTracks
+                }, set: { _ in }), name: "Saved tracks:"))
                     .disabled(!model.facades[selectionFrom].gotTracks
-                                || model.operationInProgress)
+                              || model.operationInProgress)
+#endif
                 Button(action: {
                     self.showingAlert1 = true
                 }, label: {
                     Text("Delete all tracks")
                 })
-                .disabled(!model.facades[selectionFrom].gotTracks
-                            || model.operationInProgress)
-                .alert(isPresented: $showingAlert1, content: {
-                    Alert(title: Text("Are you sure you want to delete all tracks?"),
-                          message: Text("There is no undo"),
-                          primaryButton: .destructive(Text("Delete")) {
+                    .disabled(!model.facades[selectionFrom].gotTracks
+                              || model.operationInProgress)
+                    .alert(isPresented: $showingAlert1, content: {
+                        Alert(title: Text("Are you sure you want to delete all tracks?"),
+                              message: Text("There is no undo"),
+                              primaryButton: .destructive(Text("Delete")) {
                             let facade = model.facades[selectionFrom]
                             DispatchQueue.global(qos: .background).async {
                                 facade.deleteAllTracks()
                             }
-                          },
-                          secondaryButton: .cancel())
-                })
+                        },
+                              secondaryButton: .cancel())
+                    })
             }
+#if os(macOS)
             TracksTable(tracks: .init(get: {
                 model.facades[selectionFrom].savedTracks
             }, set: { _ in }), name: "Saved tracks:")
+#endif
         })
-        .padding(.horizontal)
+            .padding(.horizontal)
     }
     
     var secondServiceView: some View {
@@ -119,9 +123,9 @@ struct TransferView: View {
             HStack {
                 Text("To:")
                     .font(.title)
-                #if !os(macOS)
+#if !os(macOS)
                 Spacer()
-                #endif
+#endif
                 Menu {
                     ForEach(0...(model.facades.count - 1), id: \.self, content: { ind in
                         Button(action: {
@@ -129,24 +133,24 @@ struct TransferView: View {
                         }, label: {
                             Text(model.facades[ind].apiName)
                         })
-                        .disabled(selectionFrom == ind)
+                            .disabled(selectionFrom == ind)
                     })
                 } label: {
                     Label(model.facades[selectionTo].apiName, systemImage: "chevron.down")
                 }
                 .modify {
-                    #if os(macOS)
+#if os(macOS)
                     $0
                         .frame(maxWidth: Self.menuMaxWidth)
                         .padding(.leading)
-                    #else
+#else
                     $0
-                    #endif
+#endif
                 }
                 
-                #if os(macOS)
+#if os(macOS)
                 Spacer()
-                #endif
+#endif
             }
             HStack {
                 Button(action: {
@@ -154,9 +158,9 @@ struct TransferView: View {
                 }, label: {
                     Text("Authorize")
                 })
-                .sheet(isPresented: $showingAuthorization2) {
-                    model.facades[selectionTo].authorize()
-                }
+                    .sheet(isPresented: $showingAuthorization2) {
+                        model.facades[selectionTo].authorize()
+                    }
                 Button(action: {
                     let facade = model.facades[selectionTo]
                     DispatchQueue.global(qos: .background).async {
@@ -165,38 +169,42 @@ struct TransferView: View {
                 }, label: {
                     Text("Get saved tracks")
                 })
-                .disabled(!model.facades[selectionTo].isAuthorised
-                            || model.operationInProgress)
+                    .disabled(!model.facades[selectionTo].isAuthorised
+                              || model.operationInProgress)
+#if !os(macOS)
                 NavigationLink("View saved tracks", destination:
                                 TracksTable(tracks: .init(get: {
-                                    model.facades[selectionTo].savedTracks
-                                }, set: { _ in }), name: "Saved tracks:"))
+                    model.facades[selectionTo].savedTracks
+                }, set: { _ in }), name: "Saved tracks:"))
                     .disabled(!model.facades[selectionTo].gotTracks
-                                || model.operationInProgress)
+                              || model.operationInProgress)
+#endif
                 Button(action: {
                     self.showingAlert2 = true
                 }, label: {
                     Text("Delete all tracks")
                 })
-                .disabled(!model.facades[selectionTo].gotTracks
-                            || model.operationInProgress)
-                .alert(isPresented: $showingAlert2, content: {
-                    Alert(title: Text("Are you sure you want to delete all tracks?"),
-                          message: Text("There is no undo"),
-                          primaryButton: .destructive(Text("Delete")) {
+                    .disabled(!model.facades[selectionTo].gotTracks
+                              || model.operationInProgress)
+                    .alert(isPresented: $showingAlert2, content: {
+                        Alert(title: Text("Are you sure you want to delete all tracks?"),
+                              message: Text("There is no undo"),
+                              primaryButton: .destructive(Text("Delete")) {
                             let facade = model.facades[selectionTo]
                             DispatchQueue.global(qos: .background).async {
                                 facade.deleteAllTracks()
                             }
-                          },
-                          secondaryButton: .cancel())
-                })
+                        },
+                              secondaryButton: .cancel())
+                    })
             }
+#if os(macOS)
             TracksTable(tracks: .init(get: {
                 model.facades[selectionTo].savedTracks
             }, set: { _ in }), name: " ")
+#endif
         })
-        .padding(.horizontal)
+            .padding(.horizontal)
     }
     
     var bottomView: some View {
@@ -205,13 +213,13 @@ struct TransferView: View {
                 CaptchaRequestView(openCaptcha: {
                     model.solvingCaptcha = true
                 })
-                .padding()
-                .sheet(isPresented: $model.solvingCaptcha) {
-                    CaptchaView(captcha: model.captcha!) {
-                        model.solvingCaptcha = false
-                        model.captcha = nil
+                    .padding()
+                    .sheet(isPresented: $model.solvingCaptcha) {
+                        CaptchaView(captcha: model.captcha!) {
+                            model.solvingCaptcha = false
+                            model.captcha = nil
+                        }
                     }
-                }
             } else {
                 if model.active {
                     MainProgressView()
@@ -226,15 +234,15 @@ struct TransferView: View {
     var body: some View {
         VStack {
             
-            #if os(macOS)
+#if os(macOS)
             HStack {
                 firstServiceView
                 secondServiceView
             }
-            #else
+#else
             firstServiceView
             secondServiceView
-            #endif
+#endif
             
             Spacer()
             

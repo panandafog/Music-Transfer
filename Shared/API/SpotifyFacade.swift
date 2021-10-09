@@ -122,10 +122,10 @@ final class SpotifyFacade: APIFacade {
         request.httpMethod = "POST"
         
         let postString = "grant_type=" + "authorization_code" + "&" +
-            "client_id=" + SpotifyKeys.client_id + "&" +
-            "code=" + code + "&" +
-            "redirect_uri=" + SpotifyFacade.authorizationRedirectUrl + "&" +
-            "&client_secret=" + SpotifyKeys.client_secret
+        "client_id=" + SpotifyKeys.client_id + "&" +
+        "code=" + code + "&" +
+        "redirect_uri=" + SpotifyFacade.authorizationRedirectUrl + "&" +
+        "&client_secret=" + SpotifyKeys.client_secret
         
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
@@ -173,11 +173,11 @@ final class SpotifyFacade: APIFacade {
                 self.progressViewModel.off()
                 TransferState.shared.operationInProgress = false
                 
-                #if os(macOS)
+#if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
-                #else
+#else
                 print("а это вообще можно сделать?")
-                #endif
+#endif
             }
         })
     }
@@ -266,67 +266,67 @@ final class SpotifyFacade: APIFacade {
         
         searchTracks(tracks,
                      completion: { (foundTracks: [SpotifySearchTracks.Item]) in
-                        let currentTrack = tracksToAdd[0]
-                        savedTracks.append(currentTrack)
-                        globalFoundTracks.append(foundTracks)
-                        
-                        DispatchQueue.main.async {
-                            self.progressViewModel.progressPercentage
-                                = Double(savedTracks.count) / Double(tracks.count) * 100.0
-                        }
-                        
-                        tracksToAdd.remove(at: 0)
-                        
-                        if savedTracks.count == tracks.count {
-                            if savedTracks.count > 1000 {
-                                DispatchQueue.main.async {
-                                    self.progressViewModel.progressPercentage = 0.0
-                                    self.progressViewModel.determinate = false
-                                    self.progressViewModel.processName = "Processing search results"
-                                    self.progressViewModel.active = true
-                                }
-                            }
-                            let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
-                            DispatchQueue.main.async {
-                                self.progressViewModel.progressPercentage = 0.0
-                                self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
-                                self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
-                            }
-                            
-                            var packages = [[SpotifySearchTracks.Item]]()
-                            
-                            var package = [SpotifySearchTracks.Item]()
-                            for track in filtered.tracksToAdd {
-                                package.append(track)
-                                if package.count == 50 {
-                                    packages.append(package)
-                                    package.removeAll()
-                                }
-                            }
-                            if !package.isEmpty {
-                                packages.append(package)
-                            }
-                            
-                            self.likeTracks(packages, completion: { (remaining: Int) in
-                                DispatchQueue.main.async {
-                                    self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
-                                }
-                            }, finalCompletion: {
-                                if !filtered.notFoundTracks.isEmpty {
-                                    #if os(macOS)
-                                    TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
-                                    #else
-                                    print("сделать таблички")
-                                    #endif
-                                }
-                                DispatchQueue.main.async {
-                                    self.progressViewModel.off()
-                                }
-                                usleep(self.requestRepeatDelay)
-                                self.getSavedTracks()
-                            })
-                        }
-                     })
+            let currentTrack = tracksToAdd[0]
+            savedTracks.append(currentTrack)
+            globalFoundTracks.append(foundTracks)
+            
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage
+                = Double(savedTracks.count) / Double(tracks.count) * 100.0
+            }
+            
+            tracksToAdd.remove(at: 0)
+            
+            if savedTracks.count == tracks.count {
+                if savedTracks.count > 1000 {
+                    DispatchQueue.main.async {
+                        self.progressViewModel.progressPercentage = 0.0
+                        self.progressViewModel.determinate = false
+                        self.progressViewModel.processName = "Processing search results"
+                        self.progressViewModel.active = true
+                    }
+                }
+                let filtered = self.filterTracks(commonTracks: savedTracks, currentTracks: globalFoundTracks)
+                DispatchQueue.main.async {
+                    self.progressViewModel.progressPercentage = 0.0
+                    self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
+                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                }
+                
+                var packages = [[SpotifySearchTracks.Item]]()
+                
+                var package = [SpotifySearchTracks.Item]()
+                for track in filtered.tracksToAdd {
+                    package.append(track)
+                    if package.count == 50 {
+                        packages.append(package)
+                        package.removeAll()
+                    }
+                }
+                if !package.isEmpty {
+                    packages.append(package)
+                }
+                
+                self.likeTracks(packages, completion: { (remaining: Int) in
+                    DispatchQueue.main.async {
+                        self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
+                    }
+                }, finalCompletion: {
+                    if !filtered.notFoundTracks.isEmpty {
+#if os(macOS)
+                        TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
+#else
+                        print("сделать таблички")
+#endif
+                    }
+                    DispatchQueue.main.async {
+                        self.progressViewModel.off()
+                    }
+                    usleep(self.requestRepeatDelay)
+                    self.getSavedTracks()
+                })
+            }
+        })
         
     }
     

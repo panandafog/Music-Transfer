@@ -21,8 +21,8 @@ enum VKErrors {
         
         func validate() -> Bool {
             error == "need_validation" &&
-                error_description == "use app code" &&
-                validation_type == "2fa_app"
+            error_description == "use app code" &&
+            validation_type == "2fa_app"
         }
     }
     
@@ -34,8 +34,8 @@ enum VKErrors {
         
         func isWrongCredentialsError() -> Bool {
             error == "invalid_client" &&
-                error_description == "Username or password is incorrect" &&
-                error_type == "username_or_password_is_incorrect"
+            error_description == "Username or password is incorrect" &&
+            error_type == "username_or_password_is_incorrect"
         }
     }
     

@@ -9,12 +9,12 @@
 import Foundation
 
 enum VKCaptcha {
-
+    
     // MARK: - ErrorMessage
     struct ErrorMessage: Codable {
         let error: Error
     }
-
+    
     // MARK: - Error
     struct Error: Codable {
         let error_code: Int
@@ -23,7 +23,7 @@ enum VKCaptcha {
         let captcha_sid: String
         let captcha_img: String
     }
-
+    
     // MARK: - RequestParam
     struct RequestParam: Codable {
         let key, value: String

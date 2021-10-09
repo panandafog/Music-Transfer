@@ -10,6 +10,7 @@ import Foundation
 
 // MARK: - VKUser
 struct VKUser: Codable {
+    
     let id: Int
     let first_name, last_name: String
     let is_closed: Bool

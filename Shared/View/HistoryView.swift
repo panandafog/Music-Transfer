@@ -12,12 +12,12 @@ struct HistoryView: View {
     
     var body: some View {
         Text("Coming soon")
-//        Button("ловушка") {
-//                    self.isPresented.toggle()
-//                }
-//        .fullScreenCover(isPresented: $isPresented, content: {
-//            Text("попавсь")
-//        })
+        //        Button("ловушка") {
+        //                    self.isPresented.toggle()
+        //                }
+        //        .fullScreenCover(isPresented: $isPresented, content: {
+        //            Text("попавсь")
+        //        })
     }
 }
 

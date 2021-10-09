@@ -27,6 +27,6 @@ struct TracksTable: View {
                 }
             }
         })
-        .padding()
+            .padding()
     }
 }

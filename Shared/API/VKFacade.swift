@@ -116,11 +116,11 @@ final class VKFacade: APIFacade {
     
     // MARK: requestTokens
     func requestTokens(username: String, password: String, code: String?, captcha: Captcha.Solved?) {
-        #if os(macOS)
+#if os(macOS)
         DispatchQueue.main.async {
             TransferState.shared.operationInProgress = true
         }
-        #endif
+#endif
         
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -143,10 +143,10 @@ final class VKFacade: APIFacade {
         if captcha != nil {
             tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
                                                 value: captcha!.sid
-            ))
+                                               ))
             tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
                                                 value: captcha!.key
-            ))
+                                               ))
         }
         let url = tmp.url
         
@@ -247,11 +247,11 @@ final class VKFacade: APIFacade {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
                 TransferState.shared.operationInProgress = false
-                #if os(macOS)
+#if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
-                #else
+#else
                 print("а это вообще можно сделать?")
-                #endif
+#endif
             }
         })
     }
@@ -335,71 +335,71 @@ final class VKFacade: APIFacade {
         
         searchTracks(tmpTracks, attempt: 0, own: false, captcha: nil,
                      completion: { (currentFoundTracks: [VKSavedTracks.Item]) in
-                        tmpTracks.remove(at: 0)
-                        foundTracks.append(currentFoundTracks)
-                        print(foundTracks.count)
-                        
-                        DispatchQueue.main.async {
-                            self.progressViewModel.progressPercentage
-                                = Double(tracks.count - tmpTracks.count) / Double(tracks.count) * 100.0
-                        }
-                     },
+            tmpTracks.remove(at: 0)
+            foundTracks.append(currentFoundTracks)
+            print(foundTracks.count)
+            
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage
+                = Double(tracks.count - tmpTracks.count) / Double(tracks.count) * 100.0
+            }
+        },
                      finalCompletion: {
-                        if reversedTracks.count > 500 {
-                            DispatchQueue.main.async {
-                                self.progressViewModel.progressPercentage = 0.0
-                                self.progressViewModel.determinate = false
-                                self.progressViewModel.processName = "Processing search results"
-                                self.progressViewModel.active = true
-                            }
-                        }
-                        
-                        let filtered = self.filterTracks(commonTracks: reversedTracks, currentTracks: foundTracks)
-                        notFoundTracks.append(contentsOf: filtered.notFoundTracks)
-                        duplicates.append(contentsOf: filtered.duplicates)
-                        
-                        DispatchQueue.main.async {
-                            self.progressViewModel.determinate = true
-                            self.progressViewModel.progressPercentage = 0.0
-                            self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
-                            self.progressViewModel.active = true
-                        }
-                        
-                        self.likeTracks(filtered.tracksToAdd, captcha: nil, completion: {(notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
-                            
-                            DispatchQueue.main.async {
-                                self.progressViewModel.progressPercentage
-                                    = Double(filtered.tracksToAdd.count - remaining) / Double(filtered.tracksToAdd.count) * 100
-                            }
-                            
-                            guard let notLikedTrack = notLikedTrack else {
-                                return
-                            }
-                            notFoundTracks.append(SharedTrack(from: notLikedTrack))
-                            
-                        }, finalCompletion: {
-                            
-                            DispatchQueue.main.async {
-                                self.progressViewModel.off()
-                            }
-                            
-                            if !notFoundTracks.isEmpty {
-                                #if os(macOS)
-                                TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
-                                #else
-                                print("сделать таблички")
-                                #endif
-                            }
-                            if !duplicates.isEmpty {
-                                #if os(macOS)
-                                TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
-                                #else
-                                print("сделать таблички")
-                                #endif
-                            }
-                            self.getSavedTracks()
-                        })
-                     })
+            if reversedTracks.count > 500 {
+                DispatchQueue.main.async {
+                    self.progressViewModel.progressPercentage = 0.0
+                    self.progressViewModel.determinate = false
+                    self.progressViewModel.processName = "Processing search results"
+                    self.progressViewModel.active = true
+                }
+            }
+            
+            let filtered = self.filterTracks(commonTracks: reversedTracks, currentTracks: foundTracks)
+            notFoundTracks.append(contentsOf: filtered.notFoundTracks)
+            duplicates.append(contentsOf: filtered.duplicates)
+            
+            DispatchQueue.main.async {
+                self.progressViewModel.determinate = true
+                self.progressViewModel.progressPercentage = 0.0
+                self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                self.progressViewModel.active = true
+            }
+            
+            self.likeTracks(filtered.tracksToAdd, captcha: nil, completion: {(notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
+                
+                DispatchQueue.main.async {
+                    self.progressViewModel.progressPercentage
+                    = Double(filtered.tracksToAdd.count - remaining) / Double(filtered.tracksToAdd.count) * 100
+                }
+                
+                guard let notLikedTrack = notLikedTrack else {
+                    return
+                }
+                notFoundTracks.append(SharedTrack(from: notLikedTrack))
+                
+            }, finalCompletion: {
+                
+                DispatchQueue.main.async {
+                    self.progressViewModel.off()
+                }
+                
+                if !notFoundTracks.isEmpty {
+#if os(macOS)
+                    TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
+#else
+                    print("сделать таблички")
+#endif
+                }
+                if !duplicates.isEmpty {
+#if os(macOS)
+                    TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
+#else
+                    print("сделать таблички")
+#endif
+                }
+                self.getSavedTracks()
+            })
+        })
     }
     
     // MARK: deleteAllTracks
@@ -419,16 +419,16 @@ final class VKFacade: APIFacade {
         deleteTracks(savedTracks,
                      captcha: nil,
                      completion: {(remaining: Int) in
-                        DispatchQueue.main.async {
-                            self.progressViewModel.progressPercentage
-                                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
-                        }
-                     }, finalCompletion: {
-                        DispatchQueue.main.async {
-                            self.progressViewModel.off()
-                        }
-                        self.getSavedTracks()
-                     })
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage
+                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
+            }
+        }, finalCompletion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+            self.getSavedTracks()
+        })
     }
     
     // MARK: synchroniseTracks
@@ -498,10 +498,10 @@ final class VKFacade: APIFacade {
         if captcha != nil {
             tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
                                                 value: captcha!.sid
-            ))
+                                               ))
             tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
                                                 value: captcha!.key
-            ))
+                                               ))
         }
         
         guard let url = tmp.url else {
@@ -648,10 +648,10 @@ final class VKFacade: APIFacade {
         if captcha != nil {
             tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
                                                 value: captcha!.sid
-            ))
+                                               ))
             tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
                                                 value: captcha!.key
-            ))
+                                               ))
         }
         
         guard let url = tmp.url else {
@@ -747,10 +747,10 @@ final class VKFacade: APIFacade {
         if captcha != nil {
             tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
                                                 value: captcha!.sid
-            ))
+                                               ))
             tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
                                                 value: captcha!.key
-            ))
+                                               ))
         }
         
         guard let url = tmp.url else {
