@@ -89,6 +89,8 @@
 		0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB427124D65003BEC3B /* RequestError.swift */; };
 		0BE6DCB8271251C6003BEC3B /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB7271251C6003BEC3B /* String.swift */; };
 		0BE6DCB927125705003BEC3B /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB7271251C6003BEC3B /* String.swift */; };
+		0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */; };
+		0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */; };
 		2E01063F3A9C948D8241D220 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = A656BF3686459084095FA1DD /* libPods-Music Transfer (macOS).a */; };
 		D223504747E68BAAB8D15DE0 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E7ADCCD331BE1D04A6E889 /* libPods-Music Transfer (iOS).a */; };
 /* End PBXBuildFile section */
@@ -163,6 +165,7 @@
 		0BE6DCAE27124B49003BEC3B /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		0BE6DCB427124D65003BEC3B /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		0BE6DCB7271251C6003BEC3B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		18E7ADCCD331BE1D04A6E889 /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B1DAB7E4A98C795BB4878B /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		79C983236031E66044334244 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
@@ -240,11 +243,12 @@
 		0B2C14B925A6781300ACB2C7 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0BE6DCBA27125A63003BEC3B /* Caching */,
 				0B42352A26E431A6007CAAB7 /* TransferState.swift */,
 				0B2C150625A67E2700ACB2C7 /* API */,
 				0B0AB42625B8A35F003254E8 /* Browser */,
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
-				0BE6DCA6271249D0003BEC3B /* Logs */,
+				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
@@ -423,14 +427,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0BE6DCA6271249D0003BEC3B /* Logs */ = {
+		0BE6DCA6271249D0003BEC3B /* Logging */ = {
 			isa = PBXGroup;
 			children = (
 				0BE6DCA727124A20003BEC3B /* Log.swift */,
 				0BE6DCAB27124A56003BEC3B /* LogType.swift */,
 				0BE6DCA927124A43003BEC3B /* Logger.swift */,
 			);
-			path = Logs;
+			path = Logging;
 			sourceTree = "<group>";
 		};
 		0BE6DCAD27124B1B003BEC3B /* Network */ = {
@@ -440,6 +444,14 @@
 				0BE6DCB427124D65003BEC3B /* RequestError.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		0BE6DCBA27125A63003BEC3B /* Caching */ = {
+			isa = PBXGroup;
+			children = (
+				0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */,
+			);
+			path = Caching;
 			sourceTree = "<group>";
 		};
 		3A4887CC3B4465DB9AE0DB68 /* Pods */ = {
@@ -661,6 +673,7 @@
 			files = (
 				0B02BC2026EEAE0300F395E6 /* View.swift in Sources */,
 				0B2C156125A67FE700ACB2C7 /* VKSavedTracks.swift in Sources */,
+				0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */,
 				0BE6DCA827124A20003BEC3B /* Log.swift in Sources */,
 				0BC2639A25BD9B7B00820FE0 /* APIBrowser.swift in Sources */,
 				0BE6DCB527124D65003BEC3B /* RequestError.swift in Sources */,
@@ -730,6 +743,7 @@
 				0B2C154925A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
 				0BE6DCB027124CBE003BEC3B /* Log.swift in Sources */,
 				0B2C158325A6806800ACB2C7 /* ToolsView.swift in Sources */,
+				0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */,
 				0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */,
 				0BE6DCB227124CC4003BEC3B /* Logger.swift in Sources */,
 				0B2C157725A6802800ACB2C7 /* VKAddTrack.swift in Sources */,

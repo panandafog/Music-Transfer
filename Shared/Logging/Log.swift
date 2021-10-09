@@ -8,6 +8,7 @@
 enum Log: String {
     case authorization
     case businesslogic
+    case database
     case debug
     case network
     case viewcycle
