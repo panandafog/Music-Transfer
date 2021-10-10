@@ -154,6 +154,10 @@ final class SpotifyService: APIService {
     
     // MARK: getSavedTracks
     func getSavedTracks() {
+        guard let tokensInfo = self.tokensInfo else {
+            return
+        }
+        
         DispatchQueue.main.async {
             TransferState.shared.operationInProgress = true
         }
@@ -168,18 +172,72 @@ final class SpotifyService: APIService {
             self.progressViewModel.active = true
         }
         
-        requestTracks(offset: 0, completion: {
-            DispatchQueue.main.async {
-                self.progressViewModel.off()
-                TransferState.shared.operationInProgress = false
-                
-#if os(macOS)
-                NSApp.requestUserAttention(.informationalRequest)
-#else
-                print("а это вообще можно сделать?")
-#endif
+        var queue: MTQueue<SpotifyTracksRequestOperation>? = nil
+        var id = 0
+        let step = 50
+        var offset = 0
+        
+        var rec: (() -> SpotifyTracksRequestOperation)? = nil
+        rec = {
+            SpotifyTracksRequestOperation(id: id, offset: offset, tokensInfo: tokensInfo, completion: { result in
+                switch result {
+                case .success(let tracksData):
+                    self.savedTracks.append(contentsOf: tracksData.tracks)
+                    
+                    if tracksData.gotNext {
+                        usleep(self.requestRepeatDelay)
+                        id += 1
+                        offset += step
+                        
+                        if let operation = rec?() {
+                            try? queue?.addOperation(operation: operation)
+                        }
+                    }
+                case .failure(let error):
+                    switch error {
+                    case .needToWait(let seconds):
+                        sleep(UInt32(seconds))
+                        if let operation = rec?() {
+                            try? queue?.addOperation(operation: operation)
+                        }
+                    case .unknown:
+                        sleep(failedRequestReattemptDelay)
+                        if let operation = rec?() {
+                            try? queue?.addOperation(operation: operation)
+                        }
+                    }
+                }
+            })
+        }
+        
+        guard let tmpRec = rec else { return }
+        
+        let operations = [
+            tmpRec()
+        ]
+        
+        queue = MTQueue(
+            operations: operations,
+            mode: .serial,
+            completion: {
+                self.gotTracks = true
+                DispatchQueue.main.async {
+                    self.progressViewModel.off()
+                    TransferState.shared.operationInProgress = false
+                    
+    #if os(macOS)
+                    NSApp.requestUserAttention(.informationalRequest)
+    #else
+                    print("а это вообще можно сделать?")
+    #endif
+                }
+            },
+            progressHandler: { percentage in
+                self.progressViewModel.progressPercentage = percentage
             }
-        })
+        )
+        
+        queue?.run()
     }
     
     private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
