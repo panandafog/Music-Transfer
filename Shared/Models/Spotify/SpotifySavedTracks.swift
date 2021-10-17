@@ -28,31 +28,34 @@ enum SpotifySavedTracks {
     
     // MARK: - Track
     struct Track: Codable {
-        let album: Album
-        let artists: [Artist]
+        let id: String
+        let name: String
         let disc_number: Int
         let duration_ms: Int
-        let explicit: Bool
-        let href: String
-        let id: String
-        let is_local: Bool
-        let name: String
-        let popularity: Int
+        let album: Album?
+        let artists: [Artist]
+        
+        let explicit: Bool?
+        let href: String?
+        let is_local: Bool?
+        let popularity: Int?
         let preview_url: String?
-        let track_number: Int
-        let uri: String
+        let track_number: Int?
+        let uri: String?
     }
     
     // MARK: - Album
     struct Album: Codable {
-        let artists: [Artist]
-        let href: String
         let id: String
-        let images: [Image]
-        let name, release_date: String
-        let total_tracks: Int
-        let type: AlbumTypeEnum
-        let uri: String
+        let name: String
+        let artists: [Artist]
+        
+        let href: String?
+        let images: [Image]?
+        let release_date: String?
+        let total_tracks: Int?
+        let type: AlbumTypeEnum?
+        let uri: String?
     }
     
     enum AlbumTypeEnum: String, Codable {
@@ -62,10 +65,10 @@ enum SpotifySavedTracks {
     
     // MARK: - Artist
     struct Artist: Codable {
-        let href: String
         let id, name: String
-        let type: ArtistType
+        let type: ArtistType?
         let uri: String
+        let href: String?
     }
     
     // MARK: - ExternalUrls
@@ -92,5 +95,4 @@ enum SpotifySavedTracks {
     enum TrackType: String, Codable {
         case track = "track"
     }
-    
 }

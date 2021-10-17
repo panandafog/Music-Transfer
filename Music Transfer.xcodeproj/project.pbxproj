@@ -77,6 +77,11 @@
 		0BC8D84F260943DB00AC204E /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C158125A6806800ACB2C7 /* ToolsView.swift */; };
 		0BC8D85F260A890000AC204E /* CaptchaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8D85E260A890000AC204E /* CaptchaViewModel.swift */; };
 		0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8D85E260A890000AC204E /* CaptchaViewModel.swift */; };
+		0BCF5AE3271B84E30019C5B1 /* SharedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */; };
+		0BCF5AE6271B99600019C5B1 /* SpotifySearchedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */; };
+		0BCF5AE8271B99790019C5B1 /* SpotifySavedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */; };
+		0BCF5AEA271B9B600019C5B1 /* SpotifyAlbumRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */; };
+		0BCF5AEC271B9BA70019C5B1 /* SpotifyArtistRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */; };
 		0BE6DCA827124A20003BEC3B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA727124A20003BEC3B /* Log.swift */; };
 		0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA927124A43003BEC3B /* Logger.swift */; };
 		0BE6DCAC27124A56003BEC3B /* LogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCAB27124A56003BEC3B /* LogType.swift */; };
@@ -165,6 +170,11 @@
 		0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaRequestView.swift; sourceTree = "<group>"; };
 		0BC2635B25BD815300820FE0 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		0BC8D85E260A890000AC204E /* CaptchaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaViewModel.swift; sourceTree = "<group>"; };
+		0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTrackRealm.swift; sourceTree = "<group>"; };
+		0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchedItemRealm.swift; sourceTree = "<group>"; };
+		0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySavedItemRealm.swift; sourceTree = "<group>"; };
+		0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAlbumRealm.swift; sourceTree = "<group>"; };
+		0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyArtistRealm.swift; sourceTree = "<group>"; };
 		0BE6DCA727124A20003BEC3B /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		0BE6DCA927124A43003BEC3B /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		0BE6DCAB27124A56003BEC3B /* LogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogType.swift; sourceTree = "<group>"; };
@@ -259,6 +269,7 @@
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
 				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
+				0BCF5AE1271B84C20019C5B1 /* RealmModels */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0BE6DCBE27134CB4003BEC3B /* OperationsManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
@@ -435,6 +446,26 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		0BCF5AE1271B84C20019C5B1 /* RealmModels */ = {
+			isa = PBXGroup;
+			children = (
+				0BCF5AE4271B92170019C5B1 /* Spotify */,
+				0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */,
+			);
+			path = RealmModels;
+			sourceTree = "<group>";
+		};
+		0BCF5AE4271B92170019C5B1 /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */,
+				0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */,
+				0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */,
+				0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */,
+			);
+			path = Spotify;
 			sourceTree = "<group>";
 		};
 		0BE6DCA6271249D0003BEC3B /* Logging */ = {
@@ -713,13 +744,17 @@
 				0B2C150B25A67E6000ACB2C7 /* APIService.swift in Sources */,
 				0B2C156825A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
 				0B2C15E025A682A000ACB2C7 /* Constants.swift in Sources */,
+				0BCF5AE8271B99790019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0BC2635C25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0B42353526E96A69007CAAB7 /* CaptchaRequestView.swift in Sources */,
+				0BCF5AEA271B9B600019C5B1 /* SpotifyAlbumRealm.swift in Sources */,
 				0B42353326E4F5E1007CAAB7 /* CaptchaView.swift in Sources */,
+				0BCF5AE6271B99600019C5B1 /* SpotifySearchedItemRealm.swift in Sources */,
 				0B2C156F25A6801400ACB2C7 /* VKErrors.swift in Sources */,
 				0B2C152C25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
 				0BC263A425BD9B9F00820FE0 /* BrowserView.swift in Sources */,
 				0BE6DCB8271251C6003BEC3B /* String.swift in Sources */,
+				0BCF5AEC271B9BA70019C5B1 /* SpotifyArtistRealm.swift in Sources */,
 				0BC8D85F260A890000AC204E /* CaptchaViewModel.swift in Sources */,
 				0BE6DCC227134FE3003BEC3B /* MTOperation.swift in Sources */,
 				0BC2639F25BD9B7F00820FE0 /* SpotifyBrowser.swift in Sources */,
@@ -732,6 +767,7 @@
 				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestOperation.swift in Sources */,
 				0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */,
 				0B2C153B25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
+				0BCF5AE3271B84E30019C5B1 /* SharedTrackRealm.swift in Sources */,
 				0B42352B26E431A6007CAAB7 /* TransferState.swift in Sources */,
 				0B2C14E325A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0BC2634925BCE91000820FE0 /* TracksTable.swift in Sources */,
