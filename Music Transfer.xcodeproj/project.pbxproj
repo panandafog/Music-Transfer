@@ -67,6 +67,26 @@
 		0B42353526E96A69007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
 		0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
 		0B63AD4E25BB3241001252F2 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* ProgressView.swift */; };
+		0B9DFAFC271C8739008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */; };
+		0B9DFAFE271C88CE008E3893 /* TransferSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */; };
+		0B9DFB03271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */; };
+		0B9DFB05271C95DA008E3893 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB04271C95DA008E3893 /* Object.swift */; };
+		0B9DFB06271C99FD008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */; };
+		0B9DFB07271C9A01008E3893 /* TransferSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */; };
+		0B9DFB08271C9A06008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */; };
+		0B9DFB09271C9A13008E3893 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB04271C95DA008E3893 /* Object.swift */; };
+		0B9DFB0A271C9A16008E3893 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AFA271BABAF0019C5B1 /* List.swift */; };
+		0B9DFB0D271C9C80008E3893 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0C271C9C80008E3893 /* DatabaseManager.swift */; };
+		0B9DFB0E271C9D94008E3893 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0C271C9C80008E3893 /* DatabaseManager.swift */; };
+		0B9DFB10271CA63D008E3893 /* SpotifySearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */; };
+		0BB4F99C2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F99B2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift */; };
+		0BB4F99D2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F99B2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift */; };
+		0BB4F99F2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F99E2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift */; };
+		0BB4F9A02725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F99E2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift */; };
+		0BB4F9A22725E7B0003C7CE5 /* SpotifySearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F9A12725E7B0003C7CE5 /* SpotifySearchedTrack.swift */; };
+		0BB4F9A32725E7B0003C7CE5 /* SpotifySearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F9A12725E7B0003C7CE5 /* SpotifySearchedTrack.swift */; };
+		0BB4F9A52725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F9A42725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift */; };
+		0BB4F9A62725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB4F9A42725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift */; };
 		0BC2634425BCE90C00820FE0 /* TracksTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15D125A6821500ACB2C7 /* TracksTableRow.swift */; };
 		0BC2634925BCE91000820FE0 /* TracksTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15CA25A681EC00ACB2C7 /* TracksTable.swift */; };
 		0BC2635C25BD815300820FE0 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2635B25BD815300820FE0 /* HistoryView.swift */; };
@@ -82,6 +102,14 @@
 		0BCF5AE8271B99790019C5B1 /* SpotifySavedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */; };
 		0BCF5AEA271B9B600019C5B1 /* SpotifyAlbumRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */; };
 		0BCF5AEC271B9BA70019C5B1 /* SpotifyArtistRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */; };
+		0BCF5AF3271BA7FD0019C5B1 /* SpotifyAlbumRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */; };
+		0BCF5AF4271BA8000019C5B1 /* SpotifyArtistRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */; };
+		0BCF5AF5271BA8050019C5B1 /* SpotifySearchedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */; };
+		0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */; };
+		0BCF5AF7271BA80A0019C5B1 /* SharedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */; };
+		0BCF5AFB271BABAF0019C5B1 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AFA271BABAF0019C5B1 /* List.swift */; };
+		0BD0B19A2725FE700092F285 /* SpotifyTrackToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD0B1992725FE700092F285 /* SpotifyTrackToLikeRealm.swift */; };
+		0BD0B19B2725FE700092F285 /* SpotifyTrackToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD0B1992725FE700092F285 /* SpotifyTrackToLikeRealm.swift */; };
 		0BE6DCA827124A20003BEC3B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA727124A20003BEC3B /* Log.swift */; };
 		0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA927124A43003BEC3B /* Logger.swift */; };
 		0BE6DCAC27124A56003BEC3B /* LogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCAB27124A56003BEC3B /* LogType.swift */; };
@@ -100,10 +128,10 @@
 		0BE6DCC227134FE3003BEC3B /* MTOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTOperation.swift */; };
 		0BE6DCC3271355DE003BEC3B /* MTQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */; };
 		0BE6DCC4271355E2003BEC3B /* MTOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTOperation.swift */; };
-		0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestOperation.swift */; };
-		0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestOperation.swift */; };
-		2E01063F3A9C948D8241D220 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = A656BF3686459084095FA1DD /* libPods-Music Transfer (macOS).a */; };
-		D223504747E68BAAB8D15DE0 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E7ADCCD331BE1D04A6E889 /* libPods-Music Transfer (iOS).a */; };
+		0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
+		0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
+		6178965FFFB1FDEDA0F5DAB9 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */; };
+		8BA8EF3F86C6062A015C1FB5 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +196,16 @@
 		0B42352A26E431A6007CAAB7 /* TransferState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferState.swift; sourceTree = "<group>"; };
 		0B42353026E4D0F2007CAAB7 /* Captcha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Captcha.swift; sourceTree = "<group>"; };
 		0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaRequestView.swift; sourceTree = "<group>"; };
+		0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchTracksSuboperation.swift; sourceTree = "<group>"; };
+		0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSuboperation.swift; sourceTree = "<group>"; };
+		0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchTracksSuboperationRealm.swift; sourceTree = "<group>"; };
+		0B9DFB04271C95DA008E3893 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		0B9DFB0C271C9C80008E3893 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchedTrackRealm.swift; sourceTree = "<group>"; };
+		0BB4F99B2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyLikeTracksSuboperation.swift; sourceTree = "<group>"; };
+		0BB4F99E2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyLikeTracksSuboperationRealm.swift; sourceTree = "<group>"; };
+		0BB4F9A12725E7B0003C7CE5 /* SpotifySearchedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchedTrack.swift; sourceTree = "<group>"; };
+		0BB4F9A42725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksPackageToLike.swift; sourceTree = "<group>"; };
 		0BC2635B25BD815300820FE0 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		0BC8D85E260A890000AC204E /* CaptchaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaViewModel.swift; sourceTree = "<group>"; };
 		0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTrackRealm.swift; sourceTree = "<group>"; };
@@ -175,6 +213,8 @@
 		0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySavedItemRealm.swift; sourceTree = "<group>"; };
 		0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAlbumRealm.swift; sourceTree = "<group>"; };
 		0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyArtistRealm.swift; sourceTree = "<group>"; };
+		0BCF5AFA271BABAF0019C5B1 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
+		0BD0B1992725FE700092F285 /* SpotifyTrackToLikeRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTrackToLikeRealm.swift; sourceTree = "<group>"; };
 		0BE6DCA727124A20003BEC3B /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		0BE6DCA927124A43003BEC3B /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		0BE6DCAB27124A56003BEC3B /* LogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogType.swift; sourceTree = "<group>"; };
@@ -184,13 +224,13 @@
 		0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTQueue.swift; sourceTree = "<group>"; };
 		0BE6DCC127134FE3003BEC3B /* MTOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTOperation.swift; sourceTree = "<group>"; };
-		0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksRequestOperation.swift; sourceTree = "<group>"; };
-		18E7ADCCD331BE1D04A6E889 /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		23B1DAB7E4A98C795BB4878B /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
-		79C983236031E66044334244 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
-		7EEE3FB1BA30BB4DBC526ACB /* Pods-Music Transfer (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).debug.xcconfig"; sourceTree = "<group>"; };
-		8876561E8B46D3247135A453 /* Pods-Music Transfer (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).release.xcconfig"; sourceTree = "<group>"; };
-		A656BF3686459084095FA1DD /* libPods-Music Transfer (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksRequestTask.swift; sourceTree = "<group>"; };
+		3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).release.xcconfig"; sourceTree = "<group>"; };
+		8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
+		B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D223504747E68BAAB8D15DE0 /* libPods-Music Transfer (iOS).a in Frameworks */,
+				6178965FFFB1FDEDA0F5DAB9 /* libPods-Music Transfer (iOS).a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E01063F3A9C948D8241D220 /* libPods-Music Transfer (macOS).a in Frameworks */,
+				8BA8EF3F86C6062A015C1FB5 /* libPods-Music Transfer (macOS).a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,8 +270,10 @@
 		0B02BC1E26EEADEC00F395E6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0B02BC1F26EEAE0300F395E6 /* View.swift */,
 				0BE6DCB7271251C6003BEC3B /* String.swift */,
+				0B02BC1F26EEAE0300F395E6 /* View.swift */,
+				0BCF5AFA271BABAF0019C5B1 /* List.swift */,
+				0B9DFB04271C95DA008E3893 /* Object.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -254,24 +296,25 @@
 				0B2C14D425A6781400ACB2C7 /* Tests iOS */,
 				0B2C14DF25A6781400ACB2C7 /* Tests macOS */,
 				0B2C14C225A6781300ACB2C7 /* Products */,
-				0B2C15F925A683C800ACB2C7 /* Frameworks */,
 				3A4887CC3B4465DB9AE0DB68 /* Pods */,
+				A230628A8A2A9AAE7613887F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		0B2C14B925A6781300ACB2C7 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				0BE6DCBA27125A63003BEC3B /* Caching */,
 				0B42352A26E431A6007CAAB7 /* TransferState.swift */,
 				0B2C150625A67E2700ACB2C7 /* API */,
 				0B0AB42625B8A35F003254E8 /* Browser */,
+				0BE6DCBA27125A63003BEC3B /* Caching */,
+				0B9DFB0B271C9C6B008E3893 /* Database */,
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
 				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
 				0BCF5AE1271B84C20019C5B1 /* RealmModels */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
-				0BE6DCBE27134CB4003BEC3B /* OperationsManagement */,
+				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
 				0B2C15DF25A682A000ACB2C7 /* Constants.swift */,
 				0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */,
@@ -358,6 +401,7 @@
 				0B2C154625A67F7600ACB2C7 /* Spotify */,
 				0B2C154525A67F6C00ACB2C7 /* VK */,
 				0B42353026E4D0F2007CAAB7 /* Captcha.swift */,
+				0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -377,8 +421,8 @@
 		0B2C154625A67F7600ACB2C7 /* Spotify */ = {
 			isa = PBXGroup;
 			children = (
-				0B2C154725A67FA100ACB2C7 /* SpotifySavedTracks.swift */,
-				0B2C155225A67FB400ACB2C7 /* SpotifySearchTracks.swift */,
+				0B9DFAFA271C8649008E3893 /* Suboperations */,
+				0B9DFAF9271C8636008E3893 /* Tracks Info */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -400,15 +444,6 @@
 			path = SecondaryViews;
 			sourceTree = "<group>";
 		};
-		0B2C15F925A683C800ACB2C7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				18E7ADCCD331BE1D04A6E889 /* libPods-Music Transfer (iOS).a */,
-				A656BF3686459084095FA1DD /* libPods-Music Transfer (macOS).a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		0B63ACB425BA08DD001252F2 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,6 +460,56 @@
 				0BC263C225BDA37B00820FE0 /* SecondaryViews */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0B9DFAF8271C7EAE008E3893 /* Tracks Info */ = {
+			isa = PBXGroup;
+			children = (
+				0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */,
+				0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */,
+				0BD0B1992725FE700092F285 /* SpotifyTrackToLikeRealm.swift */,
+				0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */,
+				0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */,
+			);
+			path = "Tracks Info";
+			sourceTree = "<group>";
+		};
+		0B9DFAF9271C8636008E3893 /* Tracks Info */ = {
+			isa = PBXGroup;
+			children = (
+				0B2C154725A67FA100ACB2C7 /* SpotifySavedTracks.swift */,
+				0BB4F9A12725E7B0003C7CE5 /* SpotifySearchedTrack.swift */,
+				0BB4F9A42725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift */,
+				0B2C155225A67FB400ACB2C7 /* SpotifySearchTracks.swift */,
+			);
+			path = "Tracks Info";
+			sourceTree = "<group>";
+		};
+		0B9DFAFA271C8649008E3893 /* Suboperations */ = {
+			isa = PBXGroup;
+			children = (
+				0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */,
+				0BB4F99B2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift */,
+			);
+			path = Suboperations;
+			sourceTree = "<group>";
+		};
+		0B9DFB01271C8EE1008E3893 /* Suboperations */ = {
+			isa = PBXGroup;
+			children = (
+				0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */,
+				0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */,
+				0BB4F99E2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift */,
+			);
+			path = Suboperations;
+			sourceTree = "<group>";
+		};
+		0B9DFB0B271C9C6B008E3893 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				0B9DFB0C271C9C80008E3893 /* DatabaseManager.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		0BC263C225BDA37B00820FE0 /* SecondaryViews */ = {
@@ -460,10 +545,8 @@
 		0BCF5AE4271B92170019C5B1 /* Spotify */ = {
 			isa = PBXGroup;
 			children = (
-				0BCF5AE9271B9B600019C5B1 /* SpotifyAlbumRealm.swift */,
-				0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */,
-				0BCF5AE5271B99600019C5B1 /* SpotifySearchedItemRealm.swift */,
-				0BCF5AE7271B99790019C5B1 /* SpotifySavedItemRealm.swift */,
+				0B9DFB01271C8EE1008E3893 /* Suboperations */,
+				0B9DFAF8271C7EAE008E3893 /* Tracks Info */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -495,20 +578,20 @@
 			path = Caching;
 			sourceTree = "<group>";
 		};
-		0BE6DCBE27134CB4003BEC3B /* OperationsManagement */ = {
+		0BE6DCBE27134CB4003BEC3B /* TasksManagement */ = {
 			isa = PBXGroup;
 			children = (
 				0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */,
 				0BE6DCC127134FE3003BEC3B /* MTOperation.swift */,
 			);
-			path = OperationsManagement;
+			path = TasksManagement;
 			sourceTree = "<group>";
 		};
 		0BE6DCC527137E8C003BEC3B /* Spotify */ = {
 			isa = PBXGroup;
 			children = (
 				0B2C152B25A67EF400ACB2C7 /* SpotifyService.swift */,
-				0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestOperation.swift */,
+				0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */,
 			);
 			path = Spotify;
 			sourceTree = "<group>";
@@ -516,12 +599,21 @@
 		3A4887CC3B4465DB9AE0DB68 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7EEE3FB1BA30BB4DBC526ACB /* Pods-Music Transfer (iOS).debug.xcconfig */,
-				23B1DAB7E4A98C795BB4878B /* Pods-Music Transfer (iOS).release.xcconfig */,
-				79C983236031E66044334244 /* Pods-Music Transfer (macOS).debug.xcconfig */,
-				8876561E8B46D3247135A453 /* Pods-Music Transfer (macOS).release.xcconfig */,
+				B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */,
+				3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */,
+				96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */,
+				5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		A230628A8A2A9AAE7613887F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */,
+				8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -531,7 +623,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0B2C14EB25A6781400ACB2C7 /* Build configuration list for PBXNativeTarget "Music Transfer (iOS)" */;
 			buildPhases = (
-				C51081FB5AA97129C63182B2 /* [CP] Check Pods Manifest.lock */,
+				B7F669BCC4DEF9F626DE1D8C /* [CP] Check Pods Manifest.lock */,
 				0B2C14BD25A6781300ACB2C7 /* Sources */,
 				0B2C14BE25A6781300ACB2C7 /* Frameworks */,
 				0B2C14BF25A6781300ACB2C7 /* Resources */,
@@ -549,7 +641,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0B2C14EE25A6781400ACB2C7 /* Build configuration list for PBXNativeTarget "Music Transfer (macOS)" */;
 			buildPhases = (
-				4221B0FCFCF6C4C351E5F621 /* [CP] Check Pods Manifest.lock */,
+				0D90D4F7FA011DFFBE11F6D4 /* [CP] Check Pods Manifest.lock */,
 				0B2C14C525A6781300ACB2C7 /* Sources */,
 				0B2C14C625A6781300ACB2C7 /* Frameworks */,
 				0B2C14C725A6781300ACB2C7 /* Resources */,
@@ -679,7 +771,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4221B0FCFCF6C4C351E5F621 /* [CP] Check Pods Manifest.lock */ = {
+		0D90D4F7FA011DFFBE11F6D4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -701,7 +793,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C51081FB5AA97129C63182B2 /* [CP] Check Pods Manifest.lock */ = {
+		B7F669BCC4DEF9F626DE1D8C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -732,17 +824,25 @@
 			files = (
 				0B02BC2026EEAE0300F395E6 /* View.swift in Sources */,
 				0B2C156125A67FE700ACB2C7 /* VKSavedTracks.swift in Sources */,
+				0BB4F9A52725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
+				0BB4F99F2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */,
 				0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */,
 				0BE6DCA827124A20003BEC3B /* Log.swift in Sources */,
 				0BC2639A25BD9B7B00820FE0 /* APIBrowser.swift in Sources */,
 				0BE6DCB527124D65003BEC3B /* RequestError.swift in Sources */,
 				0B42353126E4D0F2007CAAB7 /* Captcha.swift in Sources */,
 				0B2C155325A67FB400ACB2C7 /* SpotifySearchTracks.swift in Sources */,
+				0B9DFB10271CA63D008E3893 /* SpotifySearchedTrackRealm.swift in Sources */,
 				0BC8D84F260943DB00AC204E /* ToolsView.swift in Sources */,
 				0B2C152525A67EDA00ACB2C7 /* VKService.swift in Sources */,
+				0B9DFB05271C95DA008E3893 /* Object.swift in Sources */,
+				0B9DFAFC271C8739008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
 				0B2C160825A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
 				0B2C150B25A67E6000ACB2C7 /* APIService.swift in Sources */,
+				0B9DFAFE271C88CE008E3893 /* TransferSuboperation.swift in Sources */,
 				0B2C156825A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
+				0BD0B19A2725FE700092F285 /* SpotifyTrackToLikeRealm.swift in Sources */,
+				0B9DFB0D271C9C80008E3893 /* DatabaseManager.swift in Sources */,
 				0B2C15E025A682A000ACB2C7 /* Constants.swift in Sources */,
 				0BCF5AE8271B99790019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0BC2635C25BD815300820FE0 /* HistoryView.swift in Sources */,
@@ -751,6 +851,8 @@
 				0B42353326E4F5E1007CAAB7 /* CaptchaView.swift in Sources */,
 				0BCF5AE6271B99600019C5B1 /* SpotifySearchedItemRealm.swift in Sources */,
 				0B2C156F25A6801400ACB2C7 /* VKErrors.swift in Sources */,
+				0BCF5AFB271BABAF0019C5B1 /* List.swift in Sources */,
+				0BB4F9A22725E7B0003C7CE5 /* SpotifySearchedTrack.swift in Sources */,
 				0B2C152C25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
 				0BC263A425BD9B9F00820FE0 /* BrowserView.swift in Sources */,
 				0BE6DCB8271251C6003BEC3B /* String.swift in Sources */,
@@ -763,8 +865,10 @@
 				0BE6DCAF27124B49003BEC3B /* NetworkService.swift in Sources */,
 				0B2C157625A6802800ACB2C7 /* VKAddTrack.swift in Sources */,
 				0B2C14E525A6781400ACB2C7 /* TransferView.swift in Sources */,
+				0B9DFB03271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
+				0BB4F99C2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift in Sources */,
 				0B2C160125A6841800ACB2C7 /* VKKeys.swift in Sources */,
-				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestOperation.swift in Sources */,
+				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
 				0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */,
 				0B2C153B25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
 				0BCF5AE3271B84E30019C5B1 /* SharedTrackRealm.swift in Sources */,
@@ -784,34 +888,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BB4F9A02725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */,
+				0BB4F9A32725E7B0003C7CE5 /* SpotifySearchedTrack.swift in Sources */,
+				0BCF5AF7271BA80A0019C5B1 /* SharedTrackRealm.swift in Sources */,
 				0BE6DCC3271355DE003BEC3B /* MTQueue.swift in Sources */,
 				0B2C156225A67FE700ACB2C7 /* VKSavedTracks.swift in Sources */,
+				0BB4F99D2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift in Sources */,
 				0B42353226E4D0F2007CAAB7 /* Captcha.swift in Sources */,
 				0B2C155425A67FB400ACB2C7 /* SpotifySearchTracks.swift in Sources */,
 				0B2C152625A67EDA00ACB2C7 /* VKService.swift in Sources */,
+				0BCF5AF4271BA8000019C5B1 /* SpotifyArtistRealm.swift in Sources */,
 				0B2C15D325A6821500ACB2C7 /* TracksTableRow.swift in Sources */,
 				0B2C160925A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
 				0B2C153425A67F1C00ACB2C7 /* SpotifyBrowser.swift in Sources */,
 				0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */,
 				0BE6DCB127124CC1003BEC3B /* LogType.swift in Sources */,
+				0B9DFB0E271C9D94008E3893 /* DatabaseManager.swift in Sources */,
 				0B2C150C25A67E6000ACB2C7 /* APIService.swift in Sources */,
 				0B2C15B025A6811E00ACB2C7 /* CaptchaView.swift in Sources */,
 				0B2C156925A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
 				0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */,
 				0B02BC2126EEAF6000F395E6 /* View.swift in Sources */,
+				0B9DFB0A271C9A16008E3893 /* List.swift in Sources */,
 				0B02BC1C26EEA4F400F395E6 /* LoginViewModel.swift in Sources */,
 				0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */,
 				0B2C15E125A682A000ACB2C7 /* Constants.swift in Sources */,
 				0B2C157025A6801400ACB2C7 /* VKErrors.swift in Sources */,
 				0B2C152D25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
+				0B9DFB09271C9A13008E3893 /* Object.swift in Sources */,
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
 				0BE6DCC4271355E2003BEC3B /* MTOperation.swift in Sources */,
+				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */,
 				0BE6DCB927125705003BEC3B /* String.swift in Sources */,
 				0B2C154925A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
 				0BE6DCB027124CBE003BEC3B /* Log.swift in Sources */,
 				0B2C158325A6806800ACB2C7 /* ToolsView.swift in Sources */,
+				0B9DFB06271C99FD008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
+				0BCF5AF5271BA8050019C5B1 /* SpotifySearchedItemRealm.swift in Sources */,
+				0B9DFB07271C9A01008E3893 /* TransferSuboperation.swift in Sources */,
+				0BCF5AF3271BA7FD0019C5B1 /* SpotifyAlbumRealm.swift in Sources */,
 				0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */,
 				0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */,
 				0BE6DCB227124CC4003BEC3B /* Logger.swift in Sources */,
@@ -819,6 +936,7 @@
 				0B2C15CC25A681EC00ACB2C7 /* TracksTable.swift in Sources */,
 				0B42352C26E431A6007CAAB7 /* TransferState.swift in Sources */,
 				0B2C14E625A6781400ACB2C7 /* TransferView.swift in Sources */,
+				0BD0B19B2725FE700092F285 /* SpotifyTrackToLikeRealm.swift in Sources */,
 				0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */,
 				0B2C160225A6841800ACB2C7 /* VKKeys.swift in Sources */,
 				0B2C153C25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
@@ -826,8 +944,10 @@
 				0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */,
 				0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
-				0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestOperation.swift in Sources */,
+				0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
+				0BB4F9A62725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
 				0B2C159225A680B400ACB2C7 /* ProgressView.swift in Sources */,
+				0B9DFB08271C9A06008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -914,7 +1034,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -969,7 +1089,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -980,7 +1100,7 @@
 		};
 		0B2C14EC25A6781400ACB2C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7EEE3FB1BA30BB4DBC526ACB /* Pods-Music Transfer (iOS).debug.xcconfig */;
+			baseConfigurationReference = B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1006,7 +1126,7 @@
 		};
 		0B2C14ED25A6781400ACB2C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 23B1DAB7E4A98C795BB4878B /* Pods-Music Transfer (iOS).release.xcconfig */;
+			baseConfigurationReference = 3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1033,7 +1153,7 @@
 		};
 		0B2C14EF25A6781400ACB2C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79C983236031E66044334244 /* Pods-Music Transfer (macOS).debug.xcconfig */;
+			baseConfigurationReference = 96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1058,7 +1178,7 @@
 		};
 		0B2C14F025A6781400ACB2C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8876561E8B46D3247135A453 /* Pods-Music Transfer (macOS).release.xcconfig */;
+			baseConfigurationReference = 5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

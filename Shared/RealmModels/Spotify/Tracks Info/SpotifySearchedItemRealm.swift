@@ -32,7 +32,7 @@ extension SpotifySearchedItemRealm {
             disc_number: discNumber,
             duration_ms: durationMs,
             album: album?.spotifySearchedAlbum,
-            artists: Array(artists)
+            artists: artists.map { $0.spotifySearchedArtist }
         )
     }
     

@@ -26,7 +26,7 @@ extension SpotifyAlbumRealm {
         SpotifySearchTracks.Album(
             id: id,
             name: name,
-            artists: Array(artists)
+            artists: artists.array.map { $0.spotifySearchedArtist }
         )
     }
     
@@ -34,7 +34,7 @@ extension SpotifyAlbumRealm {
         SpotifySavedTracks.Album(
             id: id,
             name: name,
-            artists: Array(artists),
+            artists: artists.array.map { $0.spotifySavedArtist },
             href: nil,
             images: nil,
             release_date: nil,

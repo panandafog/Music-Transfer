@@ -1,5 +1,5 @@
 //
-//  SpotifyTracksRequestOperation.swift
+//  SpotifyTracksRequestTask.swift
 //  Music Transfer (iOS)
 //
 //  Created by panandafog on 10.10.2021.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SpotifyTracksRequestOperation: MTOperation {
+class SpotifyTracksRequestTask: MTTask {
     
     typealias CompletionResult = Result<TracksData, TracksRequestError>
     typealias Completion = (CompletionResult) -> Void
@@ -87,14 +87,14 @@ class SpotifyTracksRequestOperation: MTOperation {
     }
 }
 
-extension SpotifyTracksRequestOperation: Equatable {
+extension SpotifyTracksRequestTask: Equatable {
     
-    static func == (lhs: SpotifyTracksRequestOperation, rhs: SpotifyTracksRequestOperation) -> Bool {
+    static func == (lhs: SpotifyTracksRequestTask, rhs: SpotifyTracksRequestTask) -> Bool {
         lhs.id == rhs.id
     }
 }
 
-extension SpotifyTracksRequestOperation {
+extension SpotifyTracksRequestTask {
     
     struct TracksData {
         let tracks: [SharedTrack]

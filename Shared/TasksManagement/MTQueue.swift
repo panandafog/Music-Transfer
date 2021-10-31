@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MTQueue<OperationType: MTOperation> {
+class MTQueue<OperationType: MTTask> {
     
     typealias Completion = () -> Void
     typealias ProgressHandler = (Double) -> Void

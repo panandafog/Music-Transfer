@@ -33,7 +33,7 @@ extension SpotifySavedItemRealm {
             disc_number: discNumber,
             duration_ms: durationMs,
             album: album?.spotifySavedAlbum,
-            artists: Array(artists),
+            artists: artists.array.map { $0.spotifySavedArtist },
             explicit: nil,
             href: nil,
             is_local: nil,

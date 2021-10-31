@@ -442,7 +442,7 @@ final class VKService: APIService {
         }
         
         var filteredTracks = [SharedTrack]()
-        for index in 0...tracksToAdd.count - 1 {
+        for index in 0 ..< tracksToAdd.count {
             var contains = false
             savedTracks.forEach({
                 if $0 ~= tracksToAdd[index] {
@@ -727,13 +727,13 @@ final class VKService: APIService {
             return
         }
         
-        guard let ownerID = tracks[0].ownerID else {
-            var remainingTracks = tracks
-            remainingTracks.remove(at: 0)
-            completion(remainingTracks.count)
-            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
-            return
-        }
+//        guard let ownerID = tracks[0].ownerID else {
+//            var remainingTracks = tracks
+//            remainingTracks.remove(at: 0)
+//            completion(remainingTracks.count)
+//            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+//            return
+//        }
         
         var tmp = VKService.baseURL
         tmp.path = "/method/audio.delete"
@@ -741,7 +741,7 @@ final class VKService: APIService {
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "v", value: VKService.v),
             URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
-            URLQueryItem(name: "owner_id", value: String(ownerID))
+//            URLQueryItem(name: "owner_id", value: String(ownerID))
         ]
         
         if captcha != nil {
