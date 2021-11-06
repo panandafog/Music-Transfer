@@ -327,22 +327,14 @@ final class VKService: APIService {
         var notFoundTracks = [SharedTrack]()
         var duplicates = [SharedTrack]()
         
-        var searchedTracks = [VKSearchedTrack]()
-        var tracksToSearhCounter = VKSearchedTrackRealm.incrementedPK()
-        
-        for track in tracksToSearch {
-            searchedTracks.append(
-                VKSearchedTrack(
-                    id: tracksToSearhCounter,
-                    trackToSearch: track,
-                    foundTracks: nil
-                )
+        let searchedTracks = tracksToSearch.map {
+            VKSearchedTrack(
+                trackToSearch: $0,
+                foundTracks: nil
             )
-            tracksToSearhCounter += 1
         }
         
         var searchSuboperationModel = VKSearchTracksSuboperation(
-            id: VKSearchTracksSuboperationRealm.incrementedPK(),
             started: true,
             completed: false,
             tracks: searchedTracks
@@ -388,7 +380,6 @@ final class VKService: APIService {
             duplicates.append(contentsOf: filtered.duplicates)
             
             var likeSuboperationModel = VKLikeTracksSuboperation(
-                id: VKLikeTracksSuboperationRealm.incrementedPK(),
                 started: true,
                 completed: false,
                 tracksToLike: filtered.tracksToAdd.map {
@@ -781,13 +772,13 @@ final class VKService: APIService {
             return
         }
         
-//        guard let ownerID = tracks[0].ownerID else {
-//            var remainingTracks = tracks
-//            remainingTracks.remove(at: 0)
-//            completion(remainingTracks.count)
-//            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
-//            return
-//        }
+        //        guard let ownerID = tracks[0].ownerID else {
+        //            var remainingTracks = tracks
+        //            remainingTracks.remove(at: 0)
+        //            completion(remainingTracks.count)
+        //            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+        //            return
+        //        }
         
         var tmp = VKService.baseURL
         tmp.path = "/method/audio.delete"
@@ -795,7 +786,7 @@ final class VKService: APIService {
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "v", value: VKService.v),
             URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
-//            URLQueryItem(name: "owner_id", value: String(ownerID))
+            //            URLQueryItem(name: "owner_id", value: String(ownerID))
         ]
         
         if captcha != nil {

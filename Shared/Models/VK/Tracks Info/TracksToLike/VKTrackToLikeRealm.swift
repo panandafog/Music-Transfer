@@ -8,7 +8,7 @@
 import RealmSwift
 
 class VKTrackToLikeRealm: Object {
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     @objc dynamic var liked = false
     
     @objc dynamic var track: VKSavedItemRealm?
@@ -30,7 +30,7 @@ extension VKTrackToLikeRealm {
     convenience init(_ trackToLike: VKTrackToLike) {
         self.init()
         
-        id = trackToLike.id ?? Self.incrementedPK()
+        id = trackToLike.id
         track = VKSavedItemRealm(trackToLike.track)
         liked = trackToLike.liked
     }

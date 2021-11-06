@@ -313,17 +313,9 @@ final class SpotifyService: APIService {
             TransferState.shared.operationInProgress = true
         }
         
-        let id = SpotifySearchTracksSuboperationRealm.incrementedPK()
-        var searchedTracks = [SpotifySearchedTrack]()
-        var tracksToSearhCounter = SpotifySearchedTrackRealm.incrementedPK()
-        
-        for track in tracks {
-            searchedTracks.append(SpotifySearchedTrack(id: tracksToSearhCounter, trackToSearch: track, foundTracks: nil))
-            tracksToSearhCounter += 1
-        }
+        let searchedTracks = tracks.map { SpotifySearchedTrack(trackToSearch: $0, foundTracks: nil) }
         
         var searchSuboperationModel = SpotifySearchTracksSuboperation(
-            id: id,
             started: true,
             completed: false,
             tracks: searchedTracks
@@ -388,7 +380,6 @@ final class SpotifyService: APIService {
                 }
                 
                 var likeSuboperationModel = SpotifyLikeTracksSuboperation(
-                    id: SpotifyLikeTracksSuboperationRealm.incrementedPK(),
                     started: true,
                     completed: false,
                     trackPackagesToLike: packages.map {

@@ -10,7 +10,7 @@ import RealmSwift
 
 class SpotifySearchTracksSuboperationRealm: Object {
     
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     
     @objc dynamic var started = false
     @objc dynamic var completed = false
@@ -25,7 +25,7 @@ class SpotifySearchTracksSuboperationRealm: Object {
 extension SpotifySearchTracksSuboperationRealm {
     var spotifySearchTracksSuboperation: SpotifySearchTracksSuboperation {
         SpotifySearchTracksSuboperation(
-            id: Int(id),
+            id: id,
             started: started,
             completed: completed,
             tracks: tracks.map { $0.searchedTrack }
@@ -35,11 +35,7 @@ extension SpotifySearchTracksSuboperationRealm {
     convenience init(_ spotifySearchTracksSuboperation: SpotifySearchTracksSuboperation) {
         self.init()
         
-        if let intID = spotifySearchTracksSuboperation.id {
-            id = intID
-        } else {
-            id = Self.incrementedPK()
-        }
+        id = spotifySearchTracksSuboperation.id
         
         started = spotifySearchTracksSuboperation.started
         completed = spotifySearchTracksSuboperation.completed

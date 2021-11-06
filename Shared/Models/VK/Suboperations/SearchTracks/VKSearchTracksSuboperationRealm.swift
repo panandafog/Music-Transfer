@@ -10,7 +10,7 @@ import RealmSwift
 
 class VKSearchTracksSuboperationRealm: Object {
     
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     
     @objc dynamic var started = false
     @objc dynamic var completed = false
@@ -25,7 +25,7 @@ class VKSearchTracksSuboperationRealm: Object {
 extension VKSearchTracksSuboperationRealm {
     var vkSearchTracksSuboperation: VKSearchTracksSuboperation {
         VKSearchTracksSuboperation(
-            id: Int(id),
+            id: id,
             started: started,
             completed: completed,
             tracks: tracks.map { $0.searchedTrack }
@@ -35,11 +35,7 @@ extension VKSearchTracksSuboperationRealm {
     convenience init(_ vkSearchTracksSuboperation: VKSearchTracksSuboperation) {
         self.init()
         
-        if let intID = vkSearchTracksSuboperation.id {
-            id = intID
-        } else {
-            id = Self.incrementedPK()
-        }
+        id = vkSearchTracksSuboperation.id
         
         started = vkSearchTracksSuboperation.started
         completed = vkSearchTracksSuboperation.completed

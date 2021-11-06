@@ -8,7 +8,7 @@
 import Foundation
 
 struct SpotifySearchedTrack {
-    var id: Int?
+    var id = NSUUID().uuidString
     
     var trackToSearch: SharedTrack
     var foundTracks: [SpotifySearchTracks.Item]?

@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class SpotifySearchedTrackRealm: Object {
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     
     @objc dynamic var trackToSearch: SharedTrackRealm?
     @objc dynamic var triedToSearchTracks = false
@@ -32,7 +32,7 @@ extension SpotifySearchedTrackRealm {
     convenience init(_ searchedTrack: SpotifySearchedTrack) {
         self.init()
         
-        id = searchedTrack.id ?? Self.incrementedPK()
+        id = searchedTrack.id
         trackToSearch = SharedTrackRealm(searchedTrack.trackToSearch)
         foundTracks.append(objectsIn: searchedTrack.foundTracks?.map { SpotifySearchedItemRealm($0) } ?? [])
         triedToSearchTracks = searchedTrack.foundTracks != nil

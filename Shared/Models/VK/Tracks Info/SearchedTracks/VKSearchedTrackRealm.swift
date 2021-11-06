@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class VKSearchedTrackRealm: Object {
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     
     @objc dynamic var trackToSearch: SharedTrackRealm?
     @objc dynamic var triedToSearchTracks = false
@@ -33,7 +33,7 @@ extension VKSearchedTrackRealm {
     convenience init(_ searchedTrack: VKSearchedTrack) {
         self.init()
         
-        id = searchedTrack.id ?? Self.incrementedPK()
+        id = searchedTrack.id
         trackToSearch = SharedTrackRealm(searchedTrack.trackToSearch)
         foundTracks.append(objectsIn: searchedTrack.foundTracks?.map { VKSavedItemRealm($0) } ?? [])
         triedToSearchTracks = searchedTrack.foundTracks != nil

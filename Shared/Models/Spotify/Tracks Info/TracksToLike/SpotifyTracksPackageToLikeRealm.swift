@@ -8,7 +8,7 @@
 import RealmSwift
 
 class SpotifyTracksPackageToLikeRealm: Object {
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     @objc dynamic var liked = false
     
     let tracks = List<SpotifySearchedItemRealm>()
@@ -30,7 +30,7 @@ extension SpotifyTracksPackageToLikeRealm {
     convenience init(_ package: SpotifyTracksPackageToLike) {
         self.init()
         
-        id = package.id ?? Self.incrementedPK()
+        id = package.id
         tracks.append(objectsIn: package.tracks.map { SpotifySearchedItemRealm($0) })
         liked = package.liked
     }

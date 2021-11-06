@@ -12,7 +12,7 @@ struct SharedTrack: Identifiable {
     
     static let durationComparisonInaccuracy = 10 // percents
     
-    var id: String
+    var id = NSUUID().uuidString
     let artists: [String]
     let title: String
     let durationS: Int

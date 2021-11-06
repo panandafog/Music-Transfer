@@ -10,7 +10,7 @@ import RealmSwift
 
 class VKLikeTracksSuboperationRealm: Object {
     
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
     
     @objc dynamic var started = false
     @objc dynamic var completed = false
@@ -39,11 +39,7 @@ extension VKLikeTracksSuboperationRealm {
     convenience init(_ vkLikeTracksSuboperation: VKLikeTracksSuboperation) {
         self.init()
         
-        if let intID = vkLikeTracksSuboperation.id {
-            id = intID
-        } else {
-            id = Self.incrementedPK()
-        }
+        id = vkLikeTracksSuboperation.id
         
         started = vkLikeTracksSuboperation.started
         completed = vkLikeTracksSuboperation.completed

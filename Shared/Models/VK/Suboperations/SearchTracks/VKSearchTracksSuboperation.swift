@@ -8,7 +8,7 @@
 import Foundation
 
 struct VKSearchTracksSuboperation: TransferSuboperation {
-    var id: Int?
+    var id = NSUUID().uuidString
     
     var started = false
     var completed = false
