@@ -13,6 +13,7 @@ import Combine
 public final class SpotifyBrowser: APIBrowser {
     
     var url: URL? = nil
+    let service: SpotifyService
     
     private let webView: WKWebView = WKWebView()
     
@@ -23,8 +24,9 @@ public final class SpotifyBrowser: APIBrowser {
         webView.load(URLRequest(url: url))
     }
     
-    init(url: URL?) {
+    init(url: URL?, service: SpotifyService) {
         self.url = url
+        self.service = service
     }
     
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
@@ -35,12 +37,12 @@ public final class SpotifyBrowser: APIBrowser {
     }
     
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+        let browser: SpotifyBrowser
+        let service: SpotifyService
         
-        var parent: SpotifyBrowser
-        private let spotifyService = SpotifyService.shared
-        
-        init(parent: SpotifyBrowser) {
-            self.parent = parent
+        init(browser: SpotifyBrowser, service: SpotifyService) {
+            self.browser = browser
+            self.service = service
         }
         
         public func webView(_: WKWebView, didFail: WKNavigation!, withError: Error) {
@@ -90,11 +92,11 @@ public final class SpotifyBrowser: APIBrowser {
                     return
                 }
                 
-                spotifyService.isAuthorised = true
-                spotifyService.requestTokens(code: codeValue)
+                service.isAuthorised = true
+                service.requestTokens(code: codeValue)
                 
                 decisionHandler(.cancel)
-                parent.shouldDismissView = true
+                browser.shouldDismissView = true
                 
             } else {
                 decisionHandler(.allow)
@@ -103,7 +105,7 @@ public final class SpotifyBrowser: APIBrowser {
     }
     
     public func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self)
+        Coordinator(browser: self, service: service)
     }
 }
 

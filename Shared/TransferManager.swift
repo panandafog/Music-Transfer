@@ -17,7 +17,7 @@ class TransferManager: ObservableObject {
     
     // MARK: - Constants
     
-    private(set) var services: [APIService] = [SpotifyService.shared, VKService.shared]
+    private(set) var services: [APIService] = [SpotifyService(), VKService()]
     let objectWillChange = ObservableObjectPublisher()
     
     // MARK: - Operation state

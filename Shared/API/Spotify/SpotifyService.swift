@@ -32,11 +32,6 @@ final class SpotifyService: APIService {
         return tmp.url
     }
     
-    static var shared: SpotifyService = {
-        let instance = SpotifyService()
-        return instance
-    }()
-    
     private static let stateLength = 100
     
     private static var requestTokensURL: URL? {
@@ -91,13 +86,16 @@ final class SpotifyService: APIService {
         TransferManager.shared
     }
     
-    private init() {}
-    
     // MARK: authorize
     
     func authorize() -> AnyView {
         return AnyView(
-            BrowserView<SpotifyBrowser>(browser: SpotifyBrowser(url: SpotifyService.authorizationUrl))
+            BrowserView<SpotifyBrowser>(
+                browser: SpotifyBrowser(
+                    url: SpotifyService.authorizationUrl,
+                    service: self
+                )
+            )
         )
     }
     
@@ -228,11 +226,11 @@ final class SpotifyService: APIService {
                     self.progressViewModel.off()
                     TransferManager.shared.operationInProgress = false
                     
-    #if os(macOS)
+#if os(macOS)
                     NSApp.requestUserAttention(.informationalRequest)
-    #else
+#else
                     print("а это вообще можно сделать?")
-    #endif
+#endif
                 }
             },
             progressHandler: { percentage in

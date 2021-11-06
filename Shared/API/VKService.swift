@@ -27,11 +27,6 @@ final class VKService: APIService {
         return tmp
     }
     
-    static var shared: VKService = {
-        let instance = VKService()
-        return instance
-    }()
-    
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
@@ -98,7 +93,7 @@ final class VKService: APIService {
         TransferManager.shared
     }
     
-    private init() {
+    init() {
         let defaults = UserDefaults.standard
         
         if let access_token = defaults.string(forKey: "vk_access_token"),

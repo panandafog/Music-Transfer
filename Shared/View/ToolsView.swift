@@ -33,29 +33,10 @@ struct ToolsView: View {
                                         + "would be added to \(self.model.services[self.selectionTo].apiName)."),
                           primaryButton: .destructive(Text("Transfer")) {
                         DispatchQueue.global(qos: .background).async {
-                            self.model.services[self.selectionTo]
-                                .addTracks(self.model.services[self.selectionFrom].savedTracks)
-                        }
-                    },
-                          secondaryButton: .cancel())
-                })
-            
-            Button(action: {
-                self.showingAlert2 = true
-            }, label: {
-                Text("Synchronise")
-            })
-                .disabled(!self.model.services[self.selectionFrom].gotTracks
-                          || !self.model.services[self.selectionTo].gotTracks
-                          || model.operationInProgress)
-                .alert(isPresented: $showingAlert2, content: {
-                    Alert(title: Text("Are you sure you want to synchronise all tracks?"),
-                          message: Text("All your tracks from \(self.model.services[self.selectionFrom].apiName) "
-                                        + "would be added to \(self.model.services[self.selectionTo].apiName), if they are not added yet."),
-                          primaryButton: .destructive(Text("Synchronise")) {
-                        DispatchQueue.global(qos: .background).async {
-                            self.model.services[self.selectionTo]
-                                .synchroniseTracks(self.model.services[self.selectionFrom].savedTracks)
+                            self.model.transfer(
+                                from: self.model.services[self.selectionFrom],
+                                to: self.model.services[self.selectionTo]
+                            )
                         }
                     },
                           secondaryButton: .cancel())
