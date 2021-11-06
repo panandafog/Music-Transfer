@@ -42,7 +42,7 @@ enum VKSavedTracks {
         let title: String
         let ownerID: Int
         let accessKey: String
-        let thumb: Thumb
+        let thumb: Thumb?
     }
     
     // MARK: - Thumb

@@ -322,7 +322,7 @@ final class SpotifyService: APIService {
             tracksToSearhCounter += 1
         }
         
-        var searchSuboperationModel = SpotifySearchTracksSuboperation.init(
+        var searchSuboperationModel = SpotifySearchTracksSuboperation(
             id: id,
             started: true,
             completed: false,
@@ -393,12 +393,15 @@ final class SpotifyService: APIService {
                     completed: false,
                     trackPackagesToLike: packages.map {
                         SpotifyTracksPackageToLike(
-                        tracks: $0,
-                        liked: false
+                            tracks: $0,
+                            liked: false
                         )
                     },
                     notFoundTracks: []
                 )
+                
+                searchSuboperationModel.completed = true
+                self.saveSubopertion(searchSuboperationModel)
                 self.saveSubopertion(likeSuboperationModel)
                 
                 var packageID = 0
@@ -408,8 +411,12 @@ final class SpotifyService: APIService {
                     }
                     
                     likeSuboperationModel.trackPackagesToLike[packageID].liked = true
+                    self.saveSubopertion(likeSuboperationModel)
                     packageID += 1
                 }, finalCompletion: {
+                    likeSuboperationModel.completed = true
+                    self.saveSubopertion(likeSuboperationModel)
+                    
                     if !filtered.notFoundTracks.isEmpty {
 #if os(macOS)
                         TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
@@ -422,8 +429,6 @@ final class SpotifyService: APIService {
                     }
                     usleep(self.requestRepeatDelay)
                     self.getSavedTracks()
-                    likeSuboperationModel.completed = true
-                    self.saveSubopertion(likeSuboperationModel)
                 })
             }
             searchedTrackIndex += 1
