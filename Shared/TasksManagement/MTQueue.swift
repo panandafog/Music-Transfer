@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MTQueue<OperationType: MTOperation> {
+class MTQueue<OperationType: MTTask> {
     
     typealias Completion = () -> Void
     typealias ProgressHandler = (Double) -> Void
@@ -16,7 +16,6 @@ class MTQueue<OperationType: MTOperation> {
     
     private let group = DispatchGroup()
     private let concurrentQueue = DispatchQueue(label: "MTConcurrentQueue", attributes: [.concurrent])
-    private let serialQueue = DispatchQueue(label: "MTSerialQueue", attributes: [])
     
     // MARK: - Instance properties
     
@@ -61,22 +60,18 @@ class MTQueue<OperationType: MTOperation> {
         case .serial:
             var rec: (() -> Void)? = nil
             rec = { [self] in
-//                while !pendingOperations.isEmpty {
-                    guard let operation = pendingOperations.first else {
-                        completed = true
-                        completion()
-                        return
+                guard let operation = pendingOperations.first else {
+                    completed = true
+                    completion()
+                    return
+                }
+                operation.execute { [self] in
+                    pendingOperations.removeAll {
+                        $0 == operation
                     }
-//                    serialQueue.sync {
-                        operation.execute { [self] in
-                            pendingOperations.removeAll {
-                                $0 == operation
-                            }
-                            completedOperations.append(operation)
-                            rec!()
-                        }
-//                    }
-//                }
+                    completedOperations.append(operation)
+                    rec!()
+                }
             }
             rec!()
         }

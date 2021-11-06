@@ -12,12 +12,10 @@ struct SharedTrack: Identifiable {
     
     static let durationComparisonInaccuracy = 10 // percents
     
-    var id: String
+    var id = NSUUID().uuidString
     let artists: [String]
     let title: String
     let durationS: Int
-    
-    let ownerID: Int?
     
     // MARK: init
     init(id: String, artists: [String], title: String, durationS: Int) {
@@ -25,8 +23,6 @@ struct SharedTrack: Identifiable {
         self.artists = artists
         self.title = title
         self.durationS = durationS
-        
-        self.ownerID = nil
     }
     
     init(from track: VKSavedTracks.Item) {
@@ -53,8 +49,6 @@ struct SharedTrack: Identifiable {
         self.artists = artistsArray
         self.title = track.title
         self.durationS = track.duration
-        
-        self.ownerID = track.owner_id
     }
     
     init(from track: SpotifySavedTracks.Track) {
@@ -67,8 +61,6 @@ struct SharedTrack: Identifiable {
         self.artists = artists
         self.title = track.name
         self.durationS = track.duration_ms / 1000
-        
-        self.ownerID = nil
     }
     
     init(from item: SpotifySavedTracks.Item) {
@@ -86,8 +78,6 @@ struct SharedTrack: Identifiable {
         self.artists = artists
         self.title = item.name
         self.durationS = item.duration_ms / 1000
-        
-        self.ownerID = nil
     }
     
     // MARK: strArtists

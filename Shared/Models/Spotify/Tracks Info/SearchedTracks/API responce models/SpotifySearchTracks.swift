@@ -26,23 +26,28 @@ enum SpotifySearchTracks {
     
     // MARK: - Item
     struct Item: Codable {
-        let album: Album
-        let artists: [Artist]
-        let disc_number, duration_ms: Int
         let id: String
         let name: String
+        let disc_number, duration_ms: Int
+        let album: Album?
+        let artists: [Artist]
     }
     
     // MARK: - Album
     struct Album: Codable {
-        let artists: [Artist]
         let id: String
         let name: String
+        let artists: [Artist]
     }
     
     // MARK: - Artist
     struct Artist: Codable {
-        let id, name, type, uri: String
+        let id, name, uri: String
+        let type: ArtistType?
+    }
+    
+    enum ArtistType: String, Codable {
+        case artist = "artist"
     }
 }
 

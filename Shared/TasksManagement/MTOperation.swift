@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MTOperation: Equatable {
+protocol MTTask: Equatable {
     
     typealias QueueCompletion = () -> Void
 
