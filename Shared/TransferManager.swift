@@ -96,6 +96,10 @@ class TransferManager: ObservableObject {
             return false
         }
         
+        guard type(of: departureService) != type(of: destinationService) else {
+            return false
+        }
+        
         for service in [departureService, destinationService] {
             guard service.isAuthorised else {
                 return false
@@ -113,6 +117,12 @@ class TransferManager: ObservableObject {
             return
         }
         
-        destinationService.addTracks(departureService.savedTracks)
+        if let spotifyService = destinationService as? SpotifyService {
+            spotifyService.addTracks(departureService.savedTracks)
+        }
+        
+        if let vkService = destinationService as? VKService {
+            vkService.addTracks(departureService.savedTracks)
+        }
     }
 }
