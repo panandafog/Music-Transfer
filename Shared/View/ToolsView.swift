@@ -18,30 +18,43 @@ struct ToolsView: View {
     @State private var showingAlert2 = false
     
     var body: some View {
-        HStack(alignment: .center, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
-            Button(action: {
-                self.showingAlert1 = true
-            }, label: {
-                Text("Transfer")
-            })
-                .disabled(!self.model.services[self.selectionFrom].gotTracks
-                          || !self.model.services[self.selectionTo].isAuthorised
-                          || model.operationInProgress)
-                .alert(isPresented: $showingAlert1, content: {
-                    Alert(title: Text("Are you sure you want to transfer all tracks?"),
-                          message: Text("All your tracks from \(self.model.services[self.selectionFrom].apiName) "
-                                        + "would be added to \(self.model.services[self.selectionTo].apiName)."),
-                          primaryButton: .destructive(Text("Transfer")) {
-                        DispatchQueue.global(qos: .background).async {
-                            self.model.transfer(
-                                from: self.model.services[self.selectionFrom],
-                                to: self.model.services[self.selectionTo]
-                            )
+        HStack(
+            alignment: .center,
+            spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/,
+            content: {
+                Button(
+                    action: {
+                        showingAlert1 = true
+                    }, label: {
+                        Text("Transfer")
+                    }
+                )
+                    .disabled(
+                        !model.ableToTransfer(
+                            from: model.services[selectionFrom],
+                            to: model.services[selectionTo]
+                        )
+                    )
+                    .alert(
+                        isPresented: $showingAlert1,
+                        content: {
+                            Alert(
+                                title: Text("Are you sure you want to transfer all tracks?"),
+                                message: Text("All your tracks from \(model.services[selectionFrom].apiName) "
+                                              + "would be added to \(model.services[selectionTo].apiName)."),
+                                primaryButton: .destructive(Text("Transfer")) {
+                                    DispatchQueue.global(qos: .background).async { [self] in
+                                        model.transfer(
+                                            from: model.services[selectionFrom],
+                                            to: model.services[selectionTo]
+                                        )
+                                    }
+                                },
+                                secondaryButton: .cancel())
                         }
-                    },
-                          secondaryButton: .cancel())
-                })
-        })
+                    )
+            }
+        )
             .padding(.bottom)
     }
 }
