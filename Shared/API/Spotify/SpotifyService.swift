@@ -58,14 +58,14 @@ final class SpotifyService: APIService {
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -87,8 +87,8 @@ final class SpotifyService: APIService {
     
     private let databaseManager: DatabaseManager = DatabaseManagerImpl(configuration: .defaultConfiguration)
     
-    private var progressViewModel: TransferState {
-        TransferState.shared
+    private var progressViewModel: TransferManager {
+        TransferManager.shared
     }
     
     private init() {}
@@ -109,7 +109,7 @@ final class SpotifyService: APIService {
     // MARK: requestTokens
     func requestTokens(code: String) {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         
         var tmp = URLComponents()
@@ -149,7 +149,7 @@ final class SpotifyService: APIService {
             }
             self.tokensInfo = tokensInfo
             DispatchQueue.main.async {
-                TransferState.shared.operationInProgress = false
+                TransferManager.shared.operationInProgress = false
             }
         }
         task.resume()
@@ -162,7 +162,7 @@ final class SpotifyService: APIService {
         }
         
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         
         self.gotTracks = false
@@ -226,7 +226,7 @@ final class SpotifyService: APIService {
                 self.gotTracks = true
                 DispatchQueue.main.async {
                     self.progressViewModel.off()
-                    TransferState.shared.operationInProgress = false
+                    TransferManager.shared.operationInProgress = false
                     
     #if os(macOS)
                     NSApp.requestUserAttention(.informationalRequest)
@@ -310,7 +310,7 @@ final class SpotifyService: APIService {
     
     func addTracks(_ tracks: [SharedTrack]) {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         
         let searchedTracks = tracks.map { SpotifySearchedTrack(trackToSearch: $0, foundTracks: nil) }
@@ -436,7 +436,7 @@ final class SpotifyService: APIService {
         }
         
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
             self.progressViewModel.off()
             self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
@@ -465,7 +465,7 @@ final class SpotifyService: APIService {
         }, finalCompletion: {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
-                TransferState.shared.operationInProgress = false
+                TransferManager.shared.operationInProgress = false
             }
             usleep(self.requestRepeatDelay)
             self.getSavedTracks()

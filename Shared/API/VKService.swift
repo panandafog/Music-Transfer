@@ -35,7 +35,7 @@ final class VKService: APIService {
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -43,7 +43,7 @@ final class VKService: APIService {
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -94,8 +94,8 @@ final class VKService: APIService {
     private let requestRepeatDelay: UInt32 = 1000000
     private let addingErrorDataString = "{\"response\":0}"
     
-    private var progressViewModel: TransferState {
-        TransferState.shared
+    private var progressViewModel: TransferManager {
+        TransferManager.shared
     }
     
     private init() {
@@ -165,7 +165,7 @@ final class VKService: APIService {
             
             guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
                 DispatchQueue.main.async {
-                    TransferState.shared.operationInProgress = false
+                    TransferManager.shared.operationInProgress = false
                 }
                 return
             }
@@ -176,7 +176,7 @@ final class VKService: APIService {
                 
                 guard let tokensInfo = tokensInfo else {
                     DispatchQueue.main.async {
-                        TransferState.shared.operationInProgress = false
+                        TransferManager.shared.operationInProgress = false
                     }
                     return
                 }
@@ -210,7 +210,7 @@ final class VKService: APIService {
                         let captcha = Captcha(errorMessage: capthcaError!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
                         })
-                        TransferState.shared.captcha = captcha
+                        TransferManager.shared.captcha = captcha
                         
                     } else {
                         let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
@@ -233,7 +233,7 @@ final class VKService: APIService {
     // MARK: getSavedTracks
     func getSavedTracks() {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         self.gotTracks = false
         self.savedTracks = [SharedTrack]()
@@ -248,7 +248,7 @@ final class VKService: APIService {
         requestTracks(offset: 0, completion: {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
-                TransferState.shared.operationInProgress = false
+                TransferManager.shared.operationInProgress = false
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
@@ -318,7 +318,7 @@ final class VKService: APIService {
     // MARK: addTracks
     func addTracks(_ tracks: [SharedTrack]) {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         
         var reversedTracks = tracks
@@ -450,7 +450,7 @@ final class VKService: APIService {
     // MARK: deleteAllTracks
     func deleteAllTracks() {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
         
         DispatchQueue.main.async {
@@ -479,7 +479,7 @@ final class VKService: APIService {
     // MARK: synchroniseTracks
     func synchroniseTracks(_ tracksToAdd: [SharedTrack]) {
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
             self.progressViewModel.off()
             self.progressViewModel.determinate = false
             self.progressViewModel.processName = "Looking for already added tracks"
@@ -592,7 +592,7 @@ final class VKService: APIService {
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.searchTracks(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
-                        TransferState.shared.captcha = captcha
+                        TransferManager.shared.captcha = captcha
                         
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
@@ -741,7 +741,7 @@ final class VKService: APIService {
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
-                        TransferState.shared.captcha = captcha
+                        TransferManager.shared.captcha = captcha
                         
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)
@@ -835,7 +835,7 @@ final class VKService: APIService {
                         let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
                             self.deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
                         })
-                        TransferState.shared.captcha = captcha
+                        TransferManager.shared.captcha = captcha
                         
                     } else {
                         let error = try? JSONDecoder().decode(VKErrors.TooManyRequestsError.self, from: data)

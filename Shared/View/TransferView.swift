@@ -16,7 +16,7 @@ struct TransferView: View {
     @State private var showingAlert1 = false
     @State private var showingAlert2 = false
     
-    @ObservedObject private var model = TransferState.shared
+    @ObservedObject private var model = TransferManager.shared
     
     @State private var showingAuthorization1 = false
     @State private var showingAuthorization2 = false

@@ -12,7 +12,7 @@ struct ToolsView: View {
     
     @Binding var selectionFrom: Int
     @Binding var selectionTo: Int
-    @ObservedObject var model: TransferState
+    @ObservedObject var model: TransferManager
     
     @State private var showingAlert1 = false
     @State private var showingAlert2 = false

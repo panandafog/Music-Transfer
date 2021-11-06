@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MainProgressView: View {
-    @ObservedObject var model = TransferState.shared
+    @ObservedObject var model = TransferManager.shared
     
     var body: some View {
         HStack {
@@ -32,8 +32,8 @@ struct MainProgressView: View {
 }
 
 struct MainProgressView_Preview: PreviewProvider {
-    static let model: TransferState = {
-        let model = TransferState.shared
+    static let model: TransferManager = {
+        let model = TransferManager.shared
         model.determinate = true
         model.processName = "Doing something important"
         model.active = true

@@ -1,5 +1,5 @@
 //
-//  TransferState.swift
+//  TransferManager.swift
 //  Music Transfer
 //
 //  Created by panandafog on 05.09.2021.
@@ -8,11 +8,11 @@
 import Combine
 import SwiftUI
 
-class TransferState: ObservableObject {
+class TransferManager: ObservableObject {
     
     // MARK: - Singleton
     
-    static var shared = TransferState()
+    static var shared = TransferManager()
     private init() { }
     
     // MARK: - Constants
@@ -20,12 +20,12 @@ class TransferState: ObservableObject {
     private(set) var services: [APIService] = [SpotifyService.shared, VKService.shared]
     let objectWillChange = ObservableObjectPublisher()
     
-    // MARK: - Operations management
+    // MARK: - Operation state
     
     @Published var operationInProgress = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -35,7 +35,7 @@ class TransferState: ObservableObject {
     @Published var captcha: Captcha? {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -43,7 +43,7 @@ class TransferState: ObservableObject {
     @Published var solvingCaptcha = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -53,28 +53,31 @@ class TransferState: ObservableObject {
     @Published var progressPercentage = 0.0 {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
+    
     @Published var processName = "" {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
+    
     @Published var active = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
+    
     @Published var determinate = false {
         willSet {
             DispatchQueue.main.async {
-                TransferState.shared.objectWillChange.send()
+                TransferManager.shared.objectWillChange.send()
             }
         }
     }
@@ -84,5 +87,32 @@ class TransferState: ObservableObject {
         self.processName = ""
         self.active = false
         self.determinate = false
+    }
+    
+    // MARK: - Perform operations
+    
+    func ableToTransfer(from departureService: APIService, to destinationService: APIService) -> Bool {
+        guard !operationInProgress else {
+            return false
+        }
+        
+        for service in [departureService, destinationService] {
+            guard service.isAuthorised else {
+                return false
+            }
+            guard service.gotTracks else {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    func transfer(from departureService: APIService, to destinationService: APIService) {
+        guard ableToTransfer(from: departureService, to: destinationService) else {
+            return
+        }
+        
+        destinationService.addTracks(departureService.savedTracks)
     }
 }
