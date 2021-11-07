@@ -19,7 +19,5 @@ protocol APIService {
     func authorize() -> AnyView
     
     func getSavedTracks()
-    func addTracks(_: [SharedTrack])
-    func synchroniseTracks(_: [SharedTrack])
     func deleteAllTracks()
 }

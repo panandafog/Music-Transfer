@@ -8,7 +8,10 @@
 import Combine
 import SwiftUI
 
-class TransferManager: ObservableObject {
+class TransferManager: ManagingDatabase, ObservableObject {
+    
+    typealias SpotifyAddTracksOperationHandler = (SpotifyAddTracksOperation) -> Void
+    typealias VKAddTracksOperationHandler = (VKAddTracksOperation) -> Void
     
     // MARK: - Singleton
     
@@ -118,11 +121,30 @@ class TransferManager: ObservableObject {
         }
         
         if let spotifyService = destinationService as? SpotifyService {
-            spotifyService.addTracks(departureService.savedTracks)
+            let operation = SpotifyAddTracksOperation(tracksToAdd: departureService.savedTracks)
+            let operationUpdateHandler: SpotifyAddTracksOperationHandler = { [self] operation in
+                save(operation)
+            }
+            spotifyService.addTracks(
+                operation: operation,
+                updateHandler: operationUpdateHandler
+            )
         }
         
         if let vkService = destinationService as? VKService {
-            vkService.addTracks(departureService.savedTracks)
+            var tracksToAdd = vkService.filterTracksToAdd(departureService.savedTracks)
+            tracksToAdd.reverse()
+            let operation = VKAddTracksOperation(tracksToAdd: tracksToAdd)
+            let operationUpdateHandler: VKAddTracksOperationHandler = { [self] operation in
+                save(operation)
+            }
+            
+            
+            vkService.addTracks(
+                operation: operation,
+                updateHandler: operationUpdateHandler
+            )
         }
     }
+
 }

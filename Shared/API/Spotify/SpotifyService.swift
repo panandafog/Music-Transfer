@@ -306,22 +306,21 @@ final class SpotifyService: APIService {
         task.resume()
     }
     
-    func addTracks(_ tracks: [SharedTrack]) {
+    func addTracks(
+        operation: SpotifyAddTracksOperation,
+        updateHandler: @escaping TransferManager.SpotifyAddTracksOperationHandler
+    ) {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
         }
         
-        let searchedTracks = tracks.map { SpotifySearchedTrack(trackToSearch: $0, foundTracks: nil) }
+        operation.searchSuboperaion.started = true
+        updateHandler(operation)
         
-        var searchSuboperationModel = SpotifySearchTracksSuboperation(
-            started: true,
-            completed: false,
-            tracks: searchedTracks
-        )
-        saveSubopertion(searchSuboperationModel)
+        let tracks = operation.searchSuboperaion.tracks.map { $0.trackToSearch }
         
         DispatchQueue.main.async {
-            self.progressViewModel.determinate = tracks.count > 10
+            self.progressViewModel.determinate = operation.searchSuboperaion.tracks.count > 10
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
             self.progressViewModel.active = true
@@ -333,8 +332,8 @@ final class SpotifyService: APIService {
                 return
             }
             
-            searchSuboperationModel.tracks[searchedTrackIndex].foundTracks = foundTracks
-            self.saveSubopertion(searchSuboperationModel)
+            operation.searchSuboperaion.tracks[searchedTrackIndex].foundTracks = foundTracks
+            updateHandler(operation)
             
             let processedTracksCount = searchedTrackIndex + 1
             DispatchQueue.main.async {
@@ -354,7 +353,7 @@ final class SpotifyService: APIService {
                     }
                 }
                 
-                let allFoundTracks = searchSuboperationModel.tracks.map { $0.foundTracks ?? [] }
+                let allFoundTracks = operation.searchSuboperaion.tracks.map { $0.foundTracks ?? [] }
                 
                 let filtered = self.filterTracks(commonTracks: tracks, currentTracks: allFoundTracks)
                 DispatchQueue.main.async {
@@ -377,21 +376,15 @@ final class SpotifyService: APIService {
                     packages.append(package)
                 }
                 
-                var likeSuboperationModel = SpotifyLikeTracksSuboperation(
-                    started: true,
-                    completed: false,
-                    trackPackagesToLike: packages.map {
-                        SpotifyTracksPackageToLike(
-                            tracks: $0,
-                            liked: false
-                        )
-                    },
-                    notFoundTracks: []
-                )
-                
-                searchSuboperationModel.completed = true
-                self.saveSubopertion(searchSuboperationModel)
-                self.saveSubopertion(likeSuboperationModel)
+                operation.searchSuboperaion.completed = true
+                operation.likeSuboperation.started = true
+                operation.likeSuboperation.trackPackagesToLike = packages.map {
+                    SpotifyTracksPackageToLike(
+                        tracks: $0,
+                        liked: false
+                    )
+                }
+                updateHandler(operation)
                 
                 var packageID = 0
                 self.likeTracks(packages, completion: { (remaining: Int) in
@@ -399,12 +392,13 @@ final class SpotifyService: APIService {
                         self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
                     }
                     
-                    likeSuboperationModel.trackPackagesToLike[packageID].liked = true
-                    self.saveSubopertion(likeSuboperationModel)
+                    operation.likeSuboperation.trackPackagesToLike[packageID].liked = true
+                    updateHandler(operation)
                     packageID += 1
+                    
                 }, finalCompletion: {
-                    likeSuboperationModel.completed = true
-                    self.saveSubopertion(likeSuboperationModel)
+                    operation.likeSuboperation.completed = true
+                    updateHandler(operation)
                     
                     if !filtered.notFoundTracks.isEmpty {
 #if os(macOS)
@@ -422,10 +416,6 @@ final class SpotifyService: APIService {
             }
             searchedTrackIndex += 1
         }
-    }
-    
-    func synchroniseTracks(_ tracks: [SharedTrack]) {
-        addTracks(tracks)
     }
     
     func deleteAllTracks() {
@@ -702,20 +692,6 @@ final class SpotifyService: APIService {
             }
         }
         task.resume()
-    }
-    
-    // MARK: - Database methods
-    
-    private func saveSubopertion(_ suboperation: SpotifySearchTracksSuboperation) {
-        databaseManager.write([
-            SpotifySearchTracksSuboperationRealm(suboperation)
-        ])
-    }
-    
-    private func saveSubopertion(_ suboperation: SpotifyLikeTracksSuboperation) {
-        databaseManager.write([
-            SpotifyLikeTracksSuboperationRealm(suboperation)
-        ])
     }
 }
 

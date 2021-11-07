@@ -311,30 +311,22 @@ final class VKService: APIService {
     }
     
     // MARK: addTracks
-    func addTracks(_ tracks: [SharedTrack]) {
+    func addTracks(
+        operation: VKAddTracksOperation,
+        updateHandler: @escaping TransferManager.VKAddTracksOperationHandler
+    ) {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
         }
         
-        var reversedTracks = tracks
-        reversedTracks.reverse()
-        var tracksToSearch = reversedTracks
+        operation.searchSuboperaion.started = true
+        updateHandler(operation)
+        
         var notFoundTracks = [SharedTrack]()
         var duplicates = [SharedTrack]()
         
-        let searchedTracks = tracksToSearch.map {
-            VKSearchedTrack(
-                trackToSearch: $0,
-                foundTracks: nil
-            )
-        }
-        
-        var searchSuboperationModel = VKSearchTracksSuboperation(
-            started: true,
-            completed: false,
-            tracks: searchedTracks
-        )
-        saveSubopertion(searchSuboperationModel)
+        var tracksToSearch = operation.searchSuboperaion.tracks.map { $0.trackToSearch }
+        let initialTracksToSearch = tracksToSearch
         
         DispatchQueue.main.async {
             self.progressViewModel.determinate = true
@@ -343,103 +335,110 @@ final class VKService: APIService {
             self.progressViewModel.active = true
         }
         
-        searchTracks(tracksToSearch, attempt: 0, own: false, captcha: nil,
-                     completion: { (currentFoundTracks: [VKSavedTracks.Item]) in
-            let searchedTrackIndex = reversedTracks.count - tracksToSearch.count
-            print(searchedTrackIndex)
-            
-            tracksToSearch.remove(at: 0)
-            
-            searchSuboperationModel.tracks[searchedTrackIndex].foundTracks = currentFoundTracks
-            self.saveSubopertion(searchSuboperationModel)
-            
-            DispatchQueue.main.async {
-                self.progressViewModel.progressPercentage
-                = Double(tracks.count - tracksToSearch.count) / Double(tracks.count) * 100.0
-            }
-        },
-                     finalCompletion: {
-            if reversedTracks.count > 500 {
+        searchTracks(
+            tracksToSearch,
+            attempt: 0,
+            own: false,
+            captcha: nil,
+            completion: { (currentFoundTracks: [VKSavedTracks.Item]) in
+                let searchedTrackIndex = operation.searchSuboperaion.tracks.count - tracksToSearch.count
+                print(searchedTrackIndex)
+                
+                tracksToSearch.remove(at: 0)
+                
+                operation.searchSuboperaion.tracks[searchedTrackIndex].foundTracks = currentFoundTracks
+                updateHandler(operation)
+                
                 DispatchQueue.main.async {
-                    self.progressViewModel.progressPercentage = 0.0
-                    self.progressViewModel.determinate = false
-                    self.progressViewModel.processName = "Processing search results"
-                    self.progressViewModel.active = true
+                    self.progressViewModel.progressPercentage
+                    = Double(operation.searchSuboperaion.tracks.count - tracksToSearch.count)
+                    / Double(operation.searchSuboperaion.tracks.count) * 100.0
                 }
-            }
-            
-            let allFoundTracks = searchSuboperationModel.tracks.map { $0.foundTracks ?? [] }
-            
-            let filtered = self.filterTracks(commonTracks: reversedTracks, currentTracks: allFoundTracks)
-            notFoundTracks.append(contentsOf: filtered.notFoundTracks)
-            duplicates.append(contentsOf: filtered.duplicates)
-            
-            var likeSuboperationModel = VKLikeTracksSuboperation(
-                started: true,
-                completed: false,
-                tracksToLike: filtered.tracksToAdd.map {
+            },
+            finalCompletion: {
+                if operation.searchSuboperaion.tracks.count > 500 {
+                    DispatchQueue.main.async {
+                        self.progressViewModel.progressPercentage = 0.0
+                        self.progressViewModel.determinate = false
+                        self.progressViewModel.processName = "Processing search results"
+                        self.progressViewModel.active = true
+                    }
+                }
+                
+                let allFoundTracks = operation.searchSuboperaion.tracks.map { $0.foundTracks ?? [] }
+                
+                let filtered = self.filterTracks(
+                    commonTracks: initialTracksToSearch,
+                    currentTracks: allFoundTracks
+                )
+                notFoundTracks.append(contentsOf: filtered.notFoundTracks)
+                duplicates.append(contentsOf: filtered.duplicates)
+                
+                operation.searchSuboperaion.completed = true
+                operation.likeSuboperation.started = true
+                operation.likeSuboperation.tracksToLike = filtered.tracksToAdd.map {
                     VKTrackToLike(
                         track: $0,
                         liked: false
                     )
-                },
-                notFoundTracks: filtered.notFoundTracks,
-                duplicates: filtered.duplicates
-            )
-            
-            searchSuboperationModel.completed = true
-            self.saveSubopertion(searchSuboperationModel)
-            self.saveSubopertion(likeSuboperationModel)
-            
-            DispatchQueue.main.async {
-                self.progressViewModel.determinate = true
-                self.progressViewModel.progressPercentage = 0.0
-                self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
-                self.progressViewModel.active = true
+                }
+                updateHandler(operation)
+                
+                DispatchQueue.main.async {
+                    self.progressViewModel.determinate = true
+                    self.progressViewModel.progressPercentage = 0.0
+                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                    self.progressViewModel.active = true
+                }
+                
+                var tracksFailedToAdd = [VKSavedTracks.Item]()
+                
+                self.likeTracks(
+                    filtered.tracksToAdd,
+                    captcha: nil,
+                    completion: { (notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
+                        let likedTrackIndex = filtered.tracksToAdd.count - (remaining + 1)
+                        
+                        DispatchQueue.main.async {
+                            self.progressViewModel.progressPercentage
+                            = Double(filtered.tracksToAdd.count - remaining) / Double(filtered.tracksToAdd.count) * 100
+                        }
+                        
+                        guard let notLikedTrack = notLikedTrack else {
+                            operation.likeSuboperation.tracksToLike[likedTrackIndex].liked = true
+                            updateHandler(operation)
+                            return
+                        }
+                        tracksFailedToAdd.append(notLikedTrack)
+                        
+                    },
+                    finalCompletion: {
+                        operation.likeSuboperation.completed = true
+                        updateHandler(operation)
+                        
+                        DispatchQueue.main.async {
+                            self.progressViewModel.off()
+                        }
+                        
+                        if !notFoundTracks.isEmpty {
+#if os(macOS)
+                            TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
+#else
+                            print("сделать таблички")
+#endif
+                        }
+                        if !duplicates.isEmpty {
+#if os(macOS)
+                            TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
+#else
+                            print("сделать таблички")
+#endif
+                        }
+                        self.getSavedTracks()
+                    }
+                )
             }
-            
-            var tracksFailedToAdd = [VKSavedTracks.Item]()
-            
-            self.likeTracks(filtered.tracksToAdd, captcha: nil, completion: {(notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
-                let likedTrackIndex = filtered.tracksToAdd.count - (remaining + 1)
-                
-                DispatchQueue.main.async {
-                    self.progressViewModel.progressPercentage
-                    = Double(filtered.tracksToAdd.count - remaining) / Double(filtered.tracksToAdd.count) * 100
-                }
-                
-                guard let notLikedTrack = notLikedTrack else {
-                    likeSuboperationModel.tracksToLike[likedTrackIndex].liked = true
-                    self.saveSubopertion(likeSuboperationModel)
-                    return
-                }
-                tracksFailedToAdd.append(notLikedTrack)
-                
-            }, finalCompletion: {
-                likeSuboperationModel.completed = true
-                self.saveSubopertion(likeSuboperationModel)
-                
-                DispatchQueue.main.async {
-                    self.progressViewModel.off()
-                }
-                
-                if !notFoundTracks.isEmpty {
-#if os(macOS)
-                    TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
-#else
-                    print("сделать таблички")
-#endif
-                }
-                if !duplicates.isEmpty {
-#if os(macOS)
-                    TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
-#else
-                    print("сделать таблички")
-#endif
-                }
-                self.getSavedTracks()
-            })
-        })
+        )
     }
     
     // MARK: deleteAllTracks
@@ -471,8 +470,7 @@ final class VKService: APIService {
         })
     }
     
-    // MARK: synchroniseTracks
-    func synchroniseTracks(_ tracksToAdd: [SharedTrack]) {
+    func filterTracksToAdd(_ tracksToAdd: [SharedTrack]) -> [SharedTrack] {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
             self.progressViewModel.off()
@@ -493,7 +491,7 @@ final class VKService: APIService {
                 filteredTracks.append(tracksToAdd[index])
             }
         }
-        addTracks(filteredTracks)
+        return filteredTracks
     }
     
     // MARK: searchTracks
@@ -845,19 +843,5 @@ final class VKService: APIService {
             }
         }
         task.resume()
-    }
-    
-    // MARK: - Database methods
-    
-    private func saveSubopertion(_ suboperation: VKSearchTracksSuboperation) {
-        databaseManager.write([
-            VKSearchTracksSuboperationRealm(suboperation)
-        ])
-    }
-    
-    private func saveSubopertion(_ suboperation: VKLikeTracksSuboperation) {
-        databaseManager.write([
-            VKLikeTracksSuboperationRealm(suboperation)
-        ])
     }
 }

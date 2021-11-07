@@ -84,6 +84,7 @@
 		0B81BE86273733510024D4EC /* VKAddTracksOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE85273733510024D4EC /* VKAddTracksOperation.swift */; };
 		0B81BE88273734E00024D4EC /* SpotifyAddTracksOperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE87273734E00024D4EC /* SpotifyAddTracksOperationRealm.swift */; };
 		0B81BE8A273738E30024D4EC /* VKAddTracksOperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE89273738E30024D4EC /* VKAddTracksOperationRealm.swift */; };
+		0B81BE8E27374C3C0024D4EC /* ManagingDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE8D27374C3C0024D4EC /* ManagingDatabase.swift */; };
 		0B9DFAFC271C8739008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */; };
 		0B9DFAFE271C88CE008E3893 /* TransferSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */; };
 		0B9DFB03271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */; };
@@ -229,6 +230,7 @@
 		0B81BE85273733510024D4EC /* VKAddTracksOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTracksOperation.swift; sourceTree = "<group>"; };
 		0B81BE87273734E00024D4EC /* SpotifyAddTracksOperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyAddTracksOperationRealm.swift; sourceTree = "<group>"; };
 		0B81BE89273738E30024D4EC /* VKAddTracksOperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTracksOperationRealm.swift; sourceTree = "<group>"; };
+		0B81BE8D27374C3C0024D4EC /* ManagingDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagingDatabase.swift; sourceTree = "<group>"; };
 		0B9DFAFB271C8739008E3893 /* SpotifySearchTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchTracksSuboperation.swift; sourceTree = "<group>"; };
 		0B9DFAFD271C88CE008E3893 /* TransferSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferSuboperation.swift; sourceTree = "<group>"; };
 		0B9DFB02271C8EF6008E3893 /* SpotifySearchTracksSuboperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchTracksSuboperationRealm.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 			isa = PBXGroup;
 			children = (
 				0B9DFB0C271C9C80008E3893 /* DatabaseManager.swift */,
+				0B81BE8D27374C3C0024D4EC /* ManagingDatabase.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -1024,6 +1027,7 @@
 				0BC8D84F260943DB00AC204E /* ToolsView.swift in Sources */,
 				0B2C152525A67EDA00ACB2C7 /* VKService.swift in Sources */,
 				0B9DFB05271C95DA008E3893 /* Object.swift in Sources */,
+				0B81BE8E27374C3C0024D4EC /* ManagingDatabase.swift in Sources */,
 				0B9DFAFC271C8739008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
 				0B81BE74273570280024D4EC /* VKSearchTracksSuboperationRealm.swift in Sources */,
 				0B2C160825A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
