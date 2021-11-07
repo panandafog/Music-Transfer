@@ -6,6 +6,7 @@
 //
 
 import Combine
+import RealmSwift
 import SwiftUI
 
 class TransferManager: ManagingDatabase, ObservableObject {
@@ -16,7 +17,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
     // MARK: - Singleton
     
     static var shared = TransferManager()
-    private init() { }
     
     // MARK: - Constants
     
@@ -85,6 +85,33 @@ class TransferManager: ManagingDatabase, ObservableObject {
         }
     }
     
+    // Operations data
+    
+    @Published var operationsHistory: [TransferOperation] = [] {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    private var spotifyAddOperations: Results<SpotifyAddTracksOperationRealm>? = nil
+    private var vkAddOperations: Results<VKAddTracksOperationRealm>? = nil
+    
+    private var spotifyAddOperationsHistoryToken: NotificationToken? = nil
+    private var vkAddOperationsHistoryToken: NotificationToken? = nil
+    
+    private init() {
+        spotifyAddOperations = databaseManager.read()
+        vkAddOperations = databaseManager.read()
+        spotifyAddOperationsHistoryToken = spotifyAddOperations?.observe { [self] _ in
+            updateOperationsHistory()
+        }
+        vkAddOperationsHistoryToken = vkAddOperations?.observe { [self] _ in
+            updateOperationsHistory()
+        }
+    }
+    
     func off() {
         self.progressPercentage = 0.0
         self.processName = ""
@@ -146,5 +173,19 @@ class TransferManager: ManagingDatabase, ObservableObject {
             )
         }
     }
-
+    
+    private func updateOperationsHistory() {
+        var newHistory = [TransferOperation]()
+        newHistory.append(
+            contentsOf: spotifyAddOperations?.map {
+                $0.spotifyAddTracksOperation
+            } ?? []
+        )
+        newHistory.append(
+            contentsOf: vkAddOperations?.map {
+                $0.vkAddTracksOperation
+            } ?? []
+        )
+        operationsHistory = newHistory
+    }
 }
