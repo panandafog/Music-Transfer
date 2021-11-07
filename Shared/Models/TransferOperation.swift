@@ -6,6 +6,7 @@
 //
 
 protocol TransferOperation {
+    var id: String { get }
     var suboperations: [TransferSuboperation] { get }
     var started: Bool { get }
     var completed: Bool { get }
