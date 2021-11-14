@@ -5,6 +5,8 @@
 //  Created by panandafog on 07.11.2021.
 //
 
+// swiftlint:disable force_unwrapping
+
 import Foundation
 import RealmSwift
 

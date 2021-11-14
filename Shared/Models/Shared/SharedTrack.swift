@@ -10,14 +10,20 @@ import Foundation
 
 struct SharedTrack: Identifiable {
     
-    static let durationComparisonInaccuracy = 10 // percents
+    // MARK: - Constants
+    
+    /// in percents
+    static let durationComparisonInaccuracy = 10
+    
+    // MARK: - Instance properties
     
     var id = NSUUID().uuidString
     let artists: [String]
     let title: String
     let durationS: Int
     
-    // MARK: init
+    // MARK: - Initializers
+
     init(id: String, artists: [String], title: String, durationS: Int) {
         self.id = id
         self.artists = artists
@@ -31,13 +37,15 @@ struct SharedTrack: Identifiable {
         let patterns = [" feat. ", " ft. "]
         do {
             for pattern in patterns {
-                let regEx = try NSRegularExpression (pattern: pattern, options: [])
+                let regEx = try NSRegularExpression(pattern: pattern, options: [])
                 let nsString = artistsStr as NSString
-                let range = NSMakeRange(0, nsString.length)
-                artistsStr = regEx.stringByReplacingMatches(in: artistsStr,
-                                                            options: .withTransparentBounds,
-                                                            range: range,
-                                                            withTemplate: ", ")
+                let range = NSRange(location: 0, length: nsString.length)
+                artistsStr = regEx.stringByReplacingMatches(
+                    in: artistsStr,
+                    options: .withTransparentBounds,
+                    range: range,
+                    withTemplate: ", "
+                )
             }
         } catch _ as NSError {
             print("Matching failed")
@@ -60,7 +68,7 @@ struct SharedTrack: Identifiable {
         self.id = track.id
         self.artists = artists
         self.title = track.name
-        self.durationS = track.duration_ms / 1000
+        self.durationS = track.duration_ms / 1_000
     }
     
     init(from item: SpotifySavedTracks.Item) {
@@ -77,30 +85,17 @@ struct SharedTrack: Identifiable {
         self.id = item.id
         self.artists = artists
         self.title = item.name
-        self.durationS = item.duration_ms / 1000
+        self.durationS = item.duration_ms / 1_000
     }
     
-    // MARK: strArtists
-    func strArtists() -> String {
-        var res = ""
-        if artists.count > 1 {
-            for index in 0...artists.count - 2 {
-                res.append(artists[index] + ", ")
-            }
-        }
-        if !artists.isEmpty {
-            res.append(artists.last!)
-        }
-        return res
-    }
+    // MARK: - Making array methods
     
-    // MARK: makeArray
     static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {
         var res = [SharedTrack]()
         
-        list.items.forEach({
+        list.items.forEach {
             res.append(SharedTrack(from: $0))
-        })
+        }
         
         return res
     }
@@ -108,18 +103,33 @@ struct SharedTrack: Identifiable {
     static func makeArray(from list: VKSavedTracks.TracksList) -> [SharedTrack] {
         var res = [SharedTrack]()
         
-        list.response.items.forEach({
+        list.response.items.forEach {
             res.append(SharedTrack(from: $0))
-        })
+        }
         
+        return res
+    }
+    
+    // MARK: - Making string methods
+    
+    func strArtists() -> String {
+        var res = ""
+        if artists.count > 1 {
+            for index in 0...artists.count - 2 {
+                res.append(artists[index] + ", ")
+            }
+        }
+        if !artists.isEmpty, let last = artists.last {
+            res.append(last)
+        }
         return res
     }
 }
 
-// MARK: - Equatable
+// MARK: - Extensions
+
 extension SharedTrack: Equatable {
     
-    // MARK: ==
     static func == (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
         
         guard lhs ~= rhs else {
@@ -127,14 +137,14 @@ extension SharedTrack: Equatable {
         }
         
         var lhsArtists = [String]()
-        lhs.artists.forEach({
+        lhs.artists.forEach {
             lhsArtists.append($0.lowercased())
-        })
+        }
         
         var rhsArtists = [String]()
-        rhs.artists.forEach({
+        rhs.artists.forEach {
             rhsArtists.append($0.lowercased())
-        })
+        }
         
         var equalArtistsL = true
         let artistL = lhsArtists[0]
@@ -171,7 +181,6 @@ extension SharedTrack: Equatable {
         return equalArtistsL || equalArtistsR
     }
     
-    // MARK: ~=
     static func ~= (lhs: SharedTrack, rhs: SharedTrack) -> Bool {
         
         guard !lhs.artists.isEmpty && !rhs.artists.isEmpty else {
@@ -179,14 +188,14 @@ extension SharedTrack: Equatable {
         }
         
         var lhsArtists = [String]()
-        lhs.artists.forEach({
+        lhs.artists.forEach {
             lhsArtists.append($0.lowercased())
-        })
+        }
         
         var rhsArtists = [String]()
-        rhs.artists.forEach({
+        rhs.artists.forEach {
             rhsArtists.append($0.lowercased())
-        })
+        }
         
         var equalArtistsL = true
         let artistL = lhsArtists[0]
@@ -235,13 +244,11 @@ extension SharedTrack: Equatable {
         && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
     }
     
-    // MARK: durationsAreEqual
     static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {
         Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
         && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
     }
     
-    // MARK: titlesAreEqual
     static func titlesAreEqual(lhs: String, rhs: String) -> Bool {
         let clearLhs = clearTitle(lhs).lowercased()
         let clearRhs = clearTitle(rhs).lowercased()
@@ -251,19 +258,20 @@ extension SharedTrack: Equatable {
         || lhs.lowercased() == rhs.lowercased()
     }
     
-    // MARK: clearTitle
     static func clearTitle(_ title: String) -> String {
         var title = title
         let patterns = ["\\ *\\(.*\\)", "\\ *\\[.*\\]"]
         do {
             for pattern in patterns {
-                let regEx = try NSRegularExpression (pattern: pattern, options: [])
+                let regEx = try NSRegularExpression(pattern: pattern, options: [])
                 let nsString = title as NSString
-                let range = NSMakeRange(0, nsString.length)
-                title = regEx.stringByReplacingMatches(in: title,
-                                                       options: .withTransparentBounds,
-                                                       range: range,
-                                                       withTemplate: "")
+                let range = NSRange(location: 0, length: nsString.length)
+                title = regEx.stringByReplacingMatches(
+                    in: title,
+                    options: .withTransparentBounds,
+                    range: range,
+                    withTemplate: ""
+                )
             }
         } catch _ as NSError {
         }

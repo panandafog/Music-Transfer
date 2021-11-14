@@ -14,7 +14,7 @@ struct TracksTable: View {
     let name: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
+        VStack(alignment: .leading, spacing: nil) {
             HStack {
                 Text(name)
                     .font(.body)
@@ -26,7 +26,7 @@ struct TracksTable: View {
                     TracksTableRow(track: track)
                 }
             }
-        })
-            .padding()
+        }
+        .padding()
     }
 }

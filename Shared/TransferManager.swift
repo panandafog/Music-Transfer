@@ -95,11 +95,11 @@ class TransferManager: ManagingDatabase, ObservableObject {
         }
     }
     
-    private var spotifyAddOperations: Results<SpotifyAddTracksOperationRealm>? = nil
-    private var vkAddOperations: Results<VKAddTracksOperationRealm>? = nil
+    private var spotifyAddOperations: Results<SpotifyAddTracksOperationRealm>?
+    private var vkAddOperations: Results<VKAddTracksOperationRealm>?
     
-    private var spotifyAddOperationsHistoryToken: NotificationToken? = nil
-    private var vkAddOperationsHistoryToken: NotificationToken? = nil
+    private var spotifyAddOperationsHistoryToken: NotificationToken?
+    private var vkAddOperationsHistoryToken: NotificationToken?
     
     private init() {
         spotifyAddOperations = databaseManager.read()
@@ -165,7 +165,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
             let operationUpdateHandler: VKAddTracksOperationHandler = { [self] operation in
                 save(operation)
             }
-            
             
             vkService.addTracks(
                 operation: operation,

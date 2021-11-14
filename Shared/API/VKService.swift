@@ -10,22 +10,26 @@ import Foundation
 import SwiftUI
 
 final class VKService: APIService {
-    static var authorizationUrl: URL?
     
+    // MARK: - Constants
+    
+    static let authorizationUrl: URL? = nil
     static let authorizationRedirectUrl = "https://oauth.vk.com/blank.html"
+    static let state = randomString(length: stateLength)
+    static let apiName = "VK"
     
-    private static let v = "5.116"
+    private static let apiVersion = "5.116"
     private static let lang = "en"
     private static let stateLength = 100
     
-    static var state = randomString(length: stateLength)
-    
-    static var baseURL: URLComponents {
+    static var baseURL: URLComponents = {
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "api.vk.com"
         return tmp
-    }
+    }()
+    
+    // MARK: - Instance properties
     
     var isAuthorised = false {
         willSet {
@@ -43,29 +47,7 @@ final class VKService: APIService {
         }
     }
     
-    let apiName = "VK"
-    
     var tokensInfo: TokensInfo?
-    
-    // MARK: TokensInfo
-    struct TokensInfo: Decodable {
-        let access_token: String
-        let expires_in: Int
-        let user_id: Int
-    }
-    
-    // MARK: ErrorInfo
-    struct ErrorInfo: Decodable {
-        let error: String
-        let error_description: String
-    }
-    
-    // MARK: UserInfo
-    struct UserInfo: Codable {
-        let id: Int
-        let first_name, last_name: String
-        let is_closed: Bool
-    }
     
     var savedTracks = [SharedTrack]()
     
@@ -74,24 +56,16 @@ final class VKService: APIService {
     
     private let databaseManager: DatabaseManager = DatabaseManagerImpl(configuration: .defaultConfiguration)
     
-    // MARK: authorize
-    
-    func authorize() -> AnyView {
-        let model = LoginViewModel(twoFactor: false,
-                                   captcha: nil,
-                                   completion: requestTokens(username:password:code:captcha:))
-        self.loginViewModel = model
-        return AnyView(LoginView(model: model))
-    }
-    
     private let searchAttemptCount = 2
-    private let searchReattemptDelay: UInt32 = 1000000
-    private let requestRepeatDelay: UInt32 = 1000000
+    private let searchReattemptDelay: UInt32 = 1_000_000
+    private let requestRepeatDelay: UInt32 = 1_000_000
     private let addingErrorDataString = "{\"response\":0}"
     
     private var progressViewModel: TransferManager {
         TransferManager.shared
     }
+    
+    // - Initialisers
     
     init() {
         let defaults = UserDefaults.standard
@@ -108,11 +82,25 @@ final class VKService: APIService {
     
     private static func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<length).map{ _ in letters.randomElement()! })
+        return String((0 ..< length).map { _ in letters.randomElement() ?? "a" })
     }
     
-    // MARK: requestTokens
-    func requestTokens(username: String, password: String, code: String?, captcha: Captcha.Solved?) {
+    // MARK: - Authorization methods
+    
+    func authorize() -> AnyView {
+        let model = LoginViewModel(twoFactor: false,
+                                   captcha: nil,
+                                   completion: requestTokens(username:password:code:captcha:))
+        self.loginViewModel = model
+        return AnyView(LoginView(model: model))
+    }
+    
+    func requestTokens(
+        username: String,
+        password: String,
+        code: String?,
+        captcha: Captcha.Solved?
+    ) {
 #if os(macOS)
         DispatchQueue.main.async {
             TransferState.shared.operationInProgress = true
@@ -129,36 +117,51 @@ final class VKService: APIService {
             URLQueryItem(name: "client_secret", value: VKKeys.client_secret),
             URLQueryItem(name: "username", value: username),
             URLQueryItem(name: "password", value: password),
-            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "v", value: VKService.apiVersion),
             URLQueryItem(name: "lang", value: VKService.lang),
             URLQueryItem(name: "scope", value: "all"),
             URLQueryItem(name: "device_id", value: VKService.randomString(length: 16))
         ]
-        if code != nil {
-            tmp.queryItems?.append(URLQueryItem(name: "code", value: code!))
+        if let code = code {
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "code",
+                    value: code
+                )
+            )
         }
-        if captcha != nil {
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
-                                                value: captcha!.sid
-                                               ))
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
-                                                value: captcha!.key
-                                               ))
+        if let captcha = captcha {
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_sid",
+                    value: captcha.sid
+                )
+            )
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_key",
+                    value: captcha.key
+                )
+            )
         }
-        let url = tmp.url
         
-        var request = URLRequest(url: url!)
+        guard let url = tmp.url else {
+            print("url error")
+            return
+        }
+        
+        var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
             
             guard error == nil else {
-                sleep(failedRequestReattemptDelay)
+                sleep(kFailedRequestReattemptDelay)
                 self.requestTokens(username: username, password: password, code: code, captcha: captcha)
                 return
             }
             
-            guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+            guard let data = data, String(data: data, encoding: .utf8) != nil else {
                 DispatchQueue.main.async {
                     TransferManager.shared.operationInProgress = false
                 }
@@ -191,32 +194,29 @@ final class VKService: APIService {
                 
             } else {
                 
-                let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data)
-                
-                if twoFactorError != nil && twoFactorError!.validate() {
-                    DispatchQueue.main.async {
-                        self.loginViewModel?.twoFactor = true
-                        self.loginViewModel?.captcha = captcha
-                    }
-                } else {
-                    let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
-                    if capthcaError != nil {
-                        
-                        let captcha = Captcha(errorMessage: capthcaError!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
-                            self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
-                        })
-                        TransferManager.shared.captcha = captcha
-                        
+                if let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data) {
+                    if twoFactorError.validate() {
+                        DispatchQueue.main.async {
+                            self.loginViewModel?.twoFactor = true
+                            self.loginViewModel?.captcha = captcha
+                        }
                     } else {
-                        let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
-                        
-                        if commonError != nil && commonError!.isWrongCredentialsError() {
-                            DispatchQueue.main.async {
-                                self.loginViewModel?.twoFactor = code != nil
-                                self.loginViewModel?.captcha = captcha
+                        if let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
+                            let captcha = Captcha(errorMessage: capthcaError) {(_ solvedCaptcha: Captcha.Solved) in
+                                self.requestTokens(username: username, password: password, code: code, captcha: solvedCaptcha)
                             }
+                            TransferManager.shared.captcha = captcha
+                            
                         } else {
-                            print("unknown error")
+                            let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
+                            if commonError != nil && commonError?.isWrongCredentialsError() ?? false {
+                                DispatchQueue.main.async {
+                                    self.loginViewModel?.twoFactor = code != nil
+                                    self.loginViewModel?.captcha = captcha
+                                }
+                            } else {
+                                print("unknown error")
+                            }
                         }
                     }
                 }
@@ -225,7 +225,10 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: getSavedTracks
+    // MARK: - Tracks management methods
+    
+    // MARK: Saved tracks
+    
     func getSavedTracks() {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
@@ -235,12 +238,12 @@ final class VKService: APIService {
         
         DispatchQueue.main.async {
             self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(self.apiName)"
+            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
             self.progressViewModel.determinate = false
             self.progressViewModel.active = true
         }
         
-        requestTracks(offset: 0, completion: {
+        requestTracks(offset: 0) {
             DispatchQueue.main.async {
                 self.progressViewModel.off()
                 TransferManager.shared.operationInProgress = false
@@ -250,12 +253,11 @@ final class VKService: APIService {
                 print("а это вообще можно сделать?")
 #endif
             }
-        })
+        }
     }
     
-    // MARK: requestTracks
     private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
-        let count = 5000
+        let count = 5_000
         
         guard let access_token = self.tokensInfo?.access_token else {
             return
@@ -267,7 +269,7 @@ final class VKService: APIService {
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "https", value: "1"),
             URLQueryItem(name: "extended", value: "1"),
-            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "v", value: VKService.apiVersion),
             URLQueryItem(name: "lang", value: VKService.lang),
             URLQueryItem(name: "count", value: "5000"),
             URLQueryItem(name: "offset", value: String(offset))
@@ -279,17 +281,20 @@ final class VKService: APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        request.addValue("VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)", forHTTPHeaderField: "User-Agent")
+        request.addValue(
+            "VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)",
+            forHTTPHeaderField: "User-Agent"
+        )
         
-        let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { [self] data, response, error in
             
-            if let _ = error {
-                sleep(failedRequestReattemptDelay)
+            if error != nil {
+                sleep(kFailedRequestReattemptDelay)
                 requestTracks(offset: offset, completion: completion)
                 return
             }
             
-            guard let data = data, let _ = String(data: data, encoding: .utf8) else {
+            guard let data = data, String(data: data, encoding: .utf8) != nil else {
                 return
             }
             
@@ -310,7 +315,8 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: addTracks
+    // MARK: Adding tracks
+    
     func addTracks(
         operation: VKAddTracksOperation,
         updateHandler: @escaping TransferManager.VKAddTracksOperationHandler
@@ -331,7 +337,7 @@ final class VKService: APIService {
         DispatchQueue.main.async {
             self.progressViewModel.determinate = true
             self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
+            self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
             self.progressViewModel.active = true
         }
         
@@ -367,9 +373,9 @@ final class VKService: APIService {
                 
                 let allFoundTracks = operation.searchSuboperaion.tracks.map { $0.foundTracks ?? [] }
                 
-                let filtered = self.filterTracks(
-                    commonTracks: initialTracksToSearch,
-                    currentTracks: allFoundTracks
+                let filtered = self.filterFoundTracks(
+                    initialTracks: initialTracksToSearch,
+                    foundTracks: allFoundTracks
                 )
                 notFoundTracks.append(contentsOf: filtered.notFoundTracks)
                 duplicates.append(contentsOf: filtered.duplicates)
@@ -387,7 +393,7 @@ final class VKService: APIService {
                 DispatchQueue.main.async {
                     self.progressViewModel.determinate = true
                     self.progressViewModel.progressPercentage = 0.0
-                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                    self.progressViewModel.processName = "Adding tracks to \(Self.apiName)"
                     self.progressViewModel.active = true
                 }
                 
@@ -441,35 +447,6 @@ final class VKService: APIService {
         )
     }
     
-    // MARK: deleteAllTracks
-    func deleteAllTracks() {
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-        
-        DispatchQueue.main.async {
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
-            self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.determinate = true
-            self.progressViewModel.active = true
-        }
-        
-        deleteTracks(savedTracks,
-                     captcha: nil,
-                     completion: {(remaining: Int) in
-            DispatchQueue.main.async {
-                self.progressViewModel.progressPercentage
-                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
-            }
-        }, finalCompletion: {
-            DispatchQueue.main.async {
-                self.progressViewModel.off()
-            }
-            self.getSavedTracks()
-        })
-    }
-    
     func filterTracksToAdd(_ tracksToAdd: [SharedTrack]) -> [SharedTrack] {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
@@ -482,11 +459,12 @@ final class VKService: APIService {
         var filteredTracks = [SharedTrack]()
         for index in 0 ..< tracksToAdd.count {
             var contains = false
-            savedTracks.forEach({
+            savedTracks.forEach {
                 if $0 ~= tracksToAdd[index] {
                     contains = true
                 }
-            })
+            }
+            
             if !contains {
                 filteredTracks.append(tracksToAdd[index])
             }
@@ -494,13 +472,14 @@ final class VKService: APIService {
         return filteredTracks
     }
     
-    // MARK: searchTracks
-    private func searchTracks(_ tracks: [SharedTrack],
-                              attempt: Int,
-                              own: Bool,
-                              captcha: Captcha.Solved?,
-                              completion: @escaping ((_ foundTracks: [VKSavedTracks.Item]) -> Void),
-                              finalCompletion: @escaping (() -> Void)) {
+    private func searchTracks(
+        _ tracks: [SharedTrack],
+        attempt: Int,
+        own: Bool,
+        captcha: Captcha.Solved?,
+        completion: @escaping ((_ foundTracks: [VKSavedTracks.Item]) -> Void),
+        finalCompletion: @escaping (() -> Void)
+    ) {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
@@ -522,7 +501,7 @@ final class VKService: APIService {
         tmp.path = "/method/audio.search"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "v", value: VKService.apiVersion),
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "auto_complete", value: "0"),
             URLQueryItem(name: "lyrics", value: "0"),
@@ -533,13 +512,19 @@ final class VKService: APIService {
             URLQueryItem(name: "count", value: "10")
         ]
         
-        if captcha != nil {
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
-                                                value: captcha!.sid
-                                               ))
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
-                                                value: captcha!.key
-                                               ))
+        if let captcha = captcha {
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_sid",
+                    value: captcha.sid
+                )
+            )
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_key",
+                    value: captcha.key
+                )
+            )
         }
         
         guard let url = tmp.url else {
@@ -549,42 +534,47 @@ final class VKService: APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        request.addValue("VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)", forHTTPHeaderField: "User-Agent")
+        request.addValue(
+            "VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)",
+            forHTTPHeaderField: "User-Agent"
+        )
         
-        let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { [self] data, response, error in
             
             guard error == nil else {
-                sleep(failedRequestReattemptDelay)
+                sleep(kFailedRequestReattemptDelay)
                 searchTracks(tracks, attempt: attempt, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
-            guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+            guard let data = data, String(data: data, encoding: .utf8) != nil else {
                 return
             }
             
-            let tracksList = try? JSONDecoder().decode(VKSavedTracks.TracksList.self, from: data)
-            
-            if tracksList != nil {
-                if tracksList!.response.items.isEmpty && attempt < searchAttemptCount {
+            if let tracksList = try? JSONDecoder().decode(VKSavedTracks.TracksList.self, from: data) {
+                if tracksList.response.items.isEmpty && attempt < searchAttemptCount {
                     usleep(searchReattemptDelay)
                     searchTracks(tracks, attempt: attempt + 1, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 } else {
-                    completion(tracksList!.response.items)
+                    completion(tracksList.response.items)
                     var remaining = tracks
                     remaining.remove(at: 0)
                     usleep(requestRepeatDelay)
                     searchTracks(remaining, attempt: 0, own: own, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 }
             } else {
-                if let httpResponse = response as? HTTPURLResponse {
-                    
-                    let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
-                    if error != nil {
-                        
-                        let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
-                            self.searchTracks(tracks, attempt: attempt, own: own, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
+                if (response as? HTTPURLResponse) != nil {
+                    if let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
+                        let captcha = Captcha(errorMessage: error) {(_ solvedCaptcha: Captcha.Solved) in
+                                self.searchTracks(
+                                    tracks,
+                                    attempt: attempt,
+                                    own: own,
+                                    captcha: solvedCaptcha,
+                                    completion: completion,
+                                    finalCompletion: finalCompletion
+                                )
+                        }
                         TransferManager.shared.captcha = captcha
                         
                     } else {
@@ -602,31 +592,34 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: filterTracks
-    private func filterTracks(commonTracks: [SharedTrack], currentTracks: [[VKSavedTracks.Item]]) -> (tracksToAdd: [VKSavedTracks.Item], notFoundTracks: [SharedTrack], duplicates: [SharedTrack]) {
+    private func filterFoundTracks(
+        initialTracks: [SharedTrack],
+        foundTracks: [[VKSavedTracks.Item]]
+    ) -> FilterResult {
+        
         var tracksToAdd = [VKSavedTracks.Item]()
         var notFoundTracks = [SharedTrack]()
         var duplicates = [SharedTrack]()
         
-        if !commonTracks.isEmpty {
-            for index in 0...commonTracks.count - 1 {
-                if !currentTracks[index].isEmpty {
-                    var chosenTrack: VKSavedTracks.Item? = nil
-                    for foundTrack in currentTracks[index] {
-                        if SharedTrack(from: foundTrack) == commonTracks[index] {
+        if !initialTracks.isEmpty {
+            for index in 0...initialTracks.count - 1 {
+                if !foundTracks[index].isEmpty {
+                    var chosenTrack: VKSavedTracks.Item?
+                    for foundTrack in foundTracks[index] {
+                        if SharedTrack(from: foundTrack) == initialTracks[index] {
                             chosenTrack = foundTrack
                             break
                         }
                     }
                     
-                    if chosenTrack != nil {
+                    if let chosenTrack = chosenTrack {
                         
                         var isDuplicate = false
                         
                         // Search for duplicates in saved tracks
                         
                         for track in savedTracks {
-                            if track ~= SharedTrack(from: chosenTrack!) {
+                            if track ~= SharedTrack(from: chosenTrack) {
                                 isDuplicate = true
                                 break
                             }
@@ -637,34 +630,38 @@ final class VKService: APIService {
                             // Search for duplicates in added tracks
                             
                             for track in tracksToAdd {
-                                if SharedTrack(from: chosenTrack!) ~= SharedTrack(from: track) {
+                                if SharedTrack(from: chosenTrack) ~= SharedTrack(from: track) {
                                     isDuplicate = true
                                     break
                                 }
                             }
                         }
                         if !isDuplicate {
-                            tracksToAdd.append(chosenTrack!)
+                            tracksToAdd.append(chosenTrack)
                         } else {
-                            duplicates.append(commonTracks[index])
+                            duplicates.append(initialTracks[index])
                         }
                     } else {
-                        notFoundTracks.append(commonTracks[index])
+                        notFoundTracks.append(initialTracks[index])
                     }
                 } else {
-                    notFoundTracks.append(commonTracks[index])
+                    notFoundTracks.append(initialTracks[index])
                 }
             }
         }
-        return (tracksToAdd, notFoundTracks, duplicates)
+        return FilterResult(
+            tracksToAdd: tracksToAdd,
+            notFoundTracks: notFoundTracks,
+            duplicates: duplicates
+        )
     }
     
-    // MARK: likeTracks
-    private func likeTracks(_ tracks: [VKSavedTracks.Item],
-                            captcha: Captcha.Solved?,
-                            completion: @escaping ((_ notLikedTrack: VKSavedTracks.Item?,
-                                                    _ remaining: Int) -> Void),
-                            finalCompletion: @escaping (() -> Void)) {
+    private func likeTracks(
+        _ tracks: [VKSavedTracks.Item],
+        captcha: Captcha.Solved?,
+        completion: @escaping ((_ notLikedTrack: VKSavedTracks.Item?, _ remaining: Int) -> Void),
+        finalCompletion: @escaping (() -> Void)
+    ) {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
@@ -678,18 +675,24 @@ final class VKService: APIService {
         tmp.path = "/method/audio.add"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKService.v),
+            URLQueryItem(name: "v", value: VKService.apiVersion),
             URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
             URLQueryItem(name: "owner_id", value: String(tracks[0].owner_id))
         ]
         
-        if captcha != nil {
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
-                                                value: captcha!.sid
-                                               ))
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
-                                                value: captcha!.key
-                                               ))
+        if let captcha = captcha {
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_sid",
+                    value: captcha.sid
+                )
+            )
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_key",
+                    value: captcha.key
+                )
+            )
         }
         
         guard let url = tmp.url else {
@@ -699,12 +702,15 @@ final class VKService: APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        request.addValue("VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)", forHTTPHeaderField: "User-Agent")
+        request.addValue(
+            "VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)",
+            forHTTPHeaderField: "User-Agent"
+        )
         
-        let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { [self] data, response, error in
             
             guard error == nil else {
-                sleep(failedRequestReattemptDelay)
+                sleep(kFailedRequestReattemptDelay)
                 likeTracks(tracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
                 return
             }
@@ -727,13 +733,11 @@ final class VKService: APIService {
                 usleep(requestRepeatDelay)
                 likeTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
-                if let httpResponse = response as? HTTPURLResponse {
-                    let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
-                    if error != nil {
-                        
-                        let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
+                if (response as? HTTPURLResponse) != nil {
+                    if let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
+                        let captcha = Captcha(errorMessage: error) {(_ solvedCaptcha: Captcha.Solved) in
                             self.likeTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
+                        }
                         TransferManager.shared.captcha = captcha
                         
                     } else {
@@ -751,11 +755,42 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: deleteTrack
-    private func deleteTracks(_ tracks: [SharedTrack],
-                              captcha: Captcha.Solved?,
-                              completion: @escaping ((_ remaining: Int) -> Void),
-                              finalCompletion: @escaping (() -> Void)) {
+    // MARK: Deleting tracks
+    
+    func deleteAllTracks() {
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+        }
+        
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.determinate = true
+            self.progressViewModel.active = true
+        }
+        
+        deleteTracks(savedTracks,
+                     captcha: nil,
+                     completion: {(remaining: Int) in
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage
+                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
+            }
+        }, finalCompletion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+            self.getSavedTracks()
+        })
+    }
+    
+    private func deleteTracks(
+        _ tracks: [SharedTrack],
+        captcha: Captcha.Solved?,
+        completion: @escaping ((_ remaining: Int) -> Void),
+        finalCompletion: @escaping (() -> Void)
+    ) {
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
@@ -777,18 +812,24 @@ final class VKService: APIService {
         tmp.path = "/method/audio.delete"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
-            URLQueryItem(name: "v", value: VKService.v),
-            URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
+            URLQueryItem(name: "v", value: VKService.apiVersion),
+            URLQueryItem(name: "audio_id", value: String(tracks[0].id))
             //            URLQueryItem(name: "owner_id", value: String(ownerID))
         ]
         
-        if captcha != nil {
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_sid",
-                                                value: captcha!.sid
-                                               ))
-            tmp.queryItems?.append(URLQueryItem(name: "captcha_key",
-                                                value: captcha!.key
-                                               ))
+        if let captcha = captcha {
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_sid",
+                    value: captcha.sid
+                )
+            )
+            tmp.queryItems?.append(
+                URLQueryItem(
+                    name: "captcha_key",
+                    value: captcha.key
+                )
+            )
         }
         
         guard let url = tmp.url else {
@@ -798,17 +839,20 @@ final class VKService: APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        request.addValue("VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)", forHTTPHeaderField: "User-Agent")
+        request.addValue(
+            "VKAndroidApp/5.52-4543 (Android 5.1.1; SDK 22; x86_64; unknown Android SDK built for x86_64; en; 320x240)",
+            forHTTPHeaderField: "User-Agent"
+        )
         
-        let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { [self] data, response, error in
             
             guard error == nil else {
-                sleep(failedRequestReattemptDelay)
+                sleep(kFailedRequestReattemptDelay)
                 deleteTracks(tracks, captcha: captcha, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
-            guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+            guard let data = data, String(data: data, encoding: .utf8) != nil else {
                 return
             }
             
@@ -821,13 +865,12 @@ final class VKService: APIService {
                 usleep(requestRepeatDelay)
                 deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
             } else {
-                if let httpResponse = response as? HTTPURLResponse {
-                    let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data)
-                    if error != nil {
+                if (response as? HTTPURLResponse) != nil {
+                    if let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
                         
-                        let captcha = Captcha(errorMessage: error!, solveCompletion: {(_ solvedCaptcha: Captcha.Solved) in
+                        let captcha = Captcha(errorMessage: error) {(_ solvedCaptcha: Captcha.Solved) in
                             self.deleteTracks(tracks, captcha: solvedCaptcha, completion: completion, finalCompletion: finalCompletion)
-                        })
+                        }
                         TransferManager.shared.captcha = captcha
                         
                     } else {
@@ -843,5 +886,40 @@ final class VKService: APIService {
             }
         }
         task.resume()
+    }
+}
+
+// MARK: - Extensions
+
+extension VKService {
+    
+    struct TokensInfo: Decodable {
+        
+        let access_token: String
+        let expires_in: Int
+        let user_id: Int
+    }
+    
+    struct ErrorInfo: Decodable {
+        
+        let error: String
+        let error_description: String
+    }
+    
+    struct UserInfo: Codable {
+        
+        let id: Int
+        let first_name, last_name: String
+        let is_closed: Bool
+    }
+}
+
+extension VKService {
+    
+    struct FilterResult {
+        
+        let tracksToAdd: [VKSavedTracks.Item]
+        let notFoundTracks: [SharedTrack]
+        let duplicates: [SharedTrack]
     }
 }

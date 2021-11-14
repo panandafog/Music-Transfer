@@ -10,6 +10,8 @@ import SwiftUI
 
 struct TransferView: View {
     
+    private static let menuMaxWidth = CGFloat(100)
+    
     @State private var selectionFrom = 0
     @State private var selectionTo = 1
     
@@ -21,10 +23,8 @@ struct TransferView: View {
     @State private var showingAuthorization1 = false
     @State private var showingAuthorization2 = false
     
-    private static let menuMaxWidth = CGFloat(100)
-    
     var firstServiceView: some View {
-        VStack(spacing: nil, content: {
+        VStack(spacing: nil) {
             HStack {
                 Text("From:")
                     .font(.title)
@@ -32,7 +32,7 @@ struct TransferView: View {
                 Spacer()
 #endif
                 Menu {
-                    ForEach(0...(model.services.count - 1), id: \.self, content: { ind in
+                    ForEach(0...(model.services.count - 1), id: \.self) { ind in
                         Button(action: {
                             selectionFrom = ind
                             if selectionTo == ind {
@@ -43,11 +43,11 @@ struct TransferView: View {
                                 }
                             }
                         }, label: {
-                            Text(model.services[ind].apiName)
+                            Text(type(of: model.services[ind]).apiName)
                         })
-                    })
+                    }
                 } label: {
-                    Label(model.services[selectionFrom].apiName, systemImage: "chevron.down")
+                    Label(type(of: model.services[selectionFrom]).apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)
@@ -90,23 +90,30 @@ struct TransferView: View {
                     .disabled(!model.services[selectionFrom].gotTracks
                               || model.operationInProgress)
 #endif
-                Button(action: {
-                    self.showingAlert1 = true
-                }, label: {
-                    Text("Delete all tracks")
-                })
+                // swiftlint:disable trailing_closure
+                Button(
+                    // swiftlint:enable trailing_closure
+                    action: {
+                        self.showingAlert1 = true
+                    },
+                    label: {
+                        Text("Delete all tracks")
+                    }
+                )
                     .disabled(!model.services[selectionFrom].gotTracks
                               || model.operationInProgress)
                     .alert(isPresented: $showingAlert1, content: {
                         Alert(title: Text("Are you sure you want to delete all tracks?"),
                               message: Text("There is no undo"),
-                              primaryButton: .destructive(Text("Delete")) {
-                            let service = model.services[selectionFrom]
-                            DispatchQueue.global(qos: .background).async {
-                                service.deleteAllTracks()
-                            }
-                        },
-                              secondaryButton: .cancel())
+                              primaryButton:
+                                    .destructive(Text("Delete")) {
+                                        let service = model.services[selectionFrom]
+                                        DispatchQueue.global(qos: .background).async {
+                                            service.deleteAllTracks()
+                                        }
+                                    },
+                              secondaryButton: .cancel()
+                        )
                     })
             }
 #if os(macOS)
@@ -114,12 +121,12 @@ struct TransferView: View {
                 model.services[selectionFrom].savedTracks
             }, set: { _ in }), name: "Saved tracks:")
 #endif
-        })
-            .padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
     
     var secondServiceView: some View {
-        VStack(spacing: nil, content: {
+        VStack(spacing: nil) {
             HStack {
                 Text("To:")
                     .font(.title)
@@ -127,16 +134,16 @@ struct TransferView: View {
                 Spacer()
 #endif
                 Menu {
-                    ForEach(0...(model.services.count - 1), id: \.self, content: { ind in
+                    ForEach(0...(model.services.count - 1), id: \.self) { ind in
                         Button(action: {
                             selectionTo = ind
                         }, label: {
-                            Text(model.services[ind].apiName)
+                            Text(type(of: model.services[ind]).apiName)
                         })
                             .disabled(selectionFrom == ind)
-                    })
+                    }
                 } label: {
-                    Label(model.services[selectionTo].apiName, systemImage: "chevron.down")
+                    Label(type(of: model.services[selectionTo]).apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)
@@ -179,23 +186,30 @@ struct TransferView: View {
                     .disabled(!model.services[selectionTo].gotTracks
                               || model.operationInProgress)
 #endif
-                Button(action: {
-                    self.showingAlert2 = true
-                }, label: {
-                    Text("Delete all tracks")
-                })
+                // swiftlint:disable trailing_closure
+                Button(
+                    // swiftlint:enable trailing_closure
+                    action: {
+                        self.showingAlert2 = true
+                    },
+                    label: {
+                        Text("Delete all tracks")
+                    }
+                )
                     .disabled(!model.services[selectionTo].gotTracks
                               || model.operationInProgress)
                     .alert(isPresented: $showingAlert2, content: {
                         Alert(title: Text("Are you sure you want to delete all tracks?"),
                               message: Text("There is no undo"),
-                              primaryButton: .destructive(Text("Delete")) {
-                            let service = model.services[selectionTo]
-                            DispatchQueue.global(qos: .background).async {
-                                service.deleteAllTracks()
-                            }
-                        },
-                              secondaryButton: .cancel())
+                              primaryButton:
+                                    .destructive(Text("Delete")) {
+                                        let service = model.services[selectionTo]
+                                        DispatchQueue.global(qos: .background).async {
+                                            service.deleteAllTracks()
+                                        }
+                                    },
+                              secondaryButton: .cancel()
+                        )
                     })
             }
 #if os(macOS)
@@ -203,19 +217,19 @@ struct TransferView: View {
                 model.services[selectionTo].savedTracks
             }, set: { _ in }), name: " ")
 #endif
-        })
+        }
             .padding(.horizontal)
     }
     
     var bottomView: some View {
         Group {
-            if model.captcha != nil {
-                CaptchaRequestView(openCaptcha: {
+            if let captcha = model.captcha {
+                CaptchaRequestView {
                     model.solvingCaptcha = true
-                })
+                }
                     .padding()
                     .sheet(isPresented: $model.solvingCaptcha) {
-                        CaptchaView(captcha: model.captcha!) {
+                        CaptchaView(captcha: captcha) {
                             model.solvingCaptcha = false
                             model.captcha = nil
                         }

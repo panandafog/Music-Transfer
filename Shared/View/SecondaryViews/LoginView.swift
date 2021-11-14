@@ -20,15 +20,15 @@ struct LoginView: View {
                 TextField("login", text: $model.login)
                 SecureField("password", text: $model.password)
                 if model.twoFactor {
-                    TextField("code", text:$model.code)
+                    TextField("code", text: $model.code)
                 }
-                Button("Apply", action: {
+                Button("Apply") {
                     if !model.twoFactor {
                         model.completion(model.login, model.password, nil, model.captcha)
                     } else {
                         model.completion(model.login, model.password, model.code, model.captcha)
                     }
-                })
+                }
             }
             .padding()
             Spacer()

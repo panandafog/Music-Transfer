@@ -8,7 +8,9 @@
 import SwiftUI
 
 @main
+// swiftlint:disable type_name
 struct Music_TransferApp: App {
+// swiftlint:enable type_name
     
     @State private var selectedView: Int?
     @State private var tst: Int? = 1

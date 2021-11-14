@@ -10,7 +10,7 @@ import SwiftUI
 
 protocol APIService {
     static var authorizationUrl: URL? { get }
-    var apiName: String { get }
+    static var apiName: String { get }
     
     var isAuthorised: Bool { get }
     var gotTracks: Bool { get }

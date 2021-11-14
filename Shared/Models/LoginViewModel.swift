@@ -5,8 +5,8 @@
 //  Created by panandafog on 25.01.2021.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class LoginViewModel: ObservableObject {
     
@@ -24,12 +24,14 @@ class LoginViewModel: ObservableObject {
     @Published var captcha: Captcha.Solved?
     @Published var completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
     
-    init(login: String? = nil,
-         password: String? = nil,
-         code: String? = nil,
-         twoFactor: Bool,
-         captcha: Captcha.Solved?,
-         completion: @escaping ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)) {
+    init(
+        twoFactor: Bool,
+        captcha: Captcha.Solved?,
+        login: String? = nil,
+        password: String? = nil,
+        code: String? = nil,
+        completion: @escaping ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
+    ) {
         self.login = login ?? ""
         self.password = password ?? ""
         self.code = code ?? ""

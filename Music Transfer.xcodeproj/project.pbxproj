@@ -13,8 +13,8 @@
 		0B02BC2126EEAF6000F395E6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B02BC1F26EEAE0300F395E6 /* View.swift */; };
 		0B17559A25BF304D0094E75C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B17559925BF304D0094E75C /* LoginViewModel.swift */; };
 		0B1755A325BF3A1A0094E75C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15BC25A681B300ACB2C7 /* LoginView.swift */; };
-		0B2C14D625A6781400ACB2C7 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14D525A6781400ACB2C7 /* Tests_iOS.swift */; };
-		0B2C14E125A6781400ACB2C7 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14E025A6781400ACB2C7 /* Tests_macOS.swift */; };
+		0B2C14D625A6781400ACB2C7 /* TestsiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14D525A6781400ACB2C7 /* TestsiOS.swift */; };
+		0B2C14E125A6781400ACB2C7 /* TestsmacOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14E025A6781400ACB2C7 /* TestsmacOS.swift */; };
 		0B2C14E325A6781400ACB2C7 /* Music_TransferApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */; };
 		0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */; };
 		0B2C14E525A6781400ACB2C7 /* TransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BB25A6781300ACB2C7 /* TransferView.swift */; };
@@ -46,7 +46,7 @@
 		0B2C157625A6802800ACB2C7 /* VKAddTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C157525A6802800ACB2C7 /* VKAddTrack.swift */; };
 		0B2C157725A6802800ACB2C7 /* VKAddTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C157525A6802800ACB2C7 /* VKAddTrack.swift */; };
 		0B2C158325A6806800ACB2C7 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C158125A6806800ACB2C7 /* ToolsView.swift */; };
-		0B2C159225A680B400ACB2C7 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* ProgressView.swift */; };
+		0B2C159225A680B400ACB2C7 /* MainProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* MainProgressView.swift */; };
 		0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159C25A680F700ACB2C7 /* BrowserView.swift */; };
 		0B2C15B025A6811E00ACB2C7 /* CaptchaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */; };
 		0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15BC25A681B300ACB2C7 /* LoginView.swift */; };
@@ -67,7 +67,7 @@
 		0B42353526E96A69007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
 		0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
 		0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */; };
-		0B63AD4E25BB3241001252F2 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* ProgressView.swift */; };
+		0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* MainProgressView.swift */; };
 		0B81BE6527354D960024D4EC /* VKSearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */; };
 		0B81BE6827354E180024D4EC /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
 		0B81BE6A27354E5C0024D4EC /* VKSearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */; };
@@ -144,13 +144,13 @@
 		0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */; };
 		0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */; };
 		0BE6DCC027134CD8003BEC3B /* MTQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */; };
-		0BE6DCC227134FE3003BEC3B /* MTOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTOperation.swift */; };
+		0BE6DCC227134FE3003BEC3B /* MTTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTTask.swift */; };
 		0BE6DCC3271355DE003BEC3B /* MTQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */; };
-		0BE6DCC4271355E2003BEC3B /* MTOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTOperation.swift */; };
+		0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTTask.swift */; };
 		0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
 		0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
-		6178965FFFB1FDEDA0F5DAB9 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */; };
-		8BA8EF3F86C6062A015C1FB5 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */; };
+		2607A0709AF3086D4A5E4DE3 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB681A3095AF8D37663C632 /* libPods-Music Transfer (macOS).a */; };
+		314539FD730124145C93A290 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 629641A98D20EF95679CDC47 /* libPods-Music Transfer (iOS).a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,6 +171,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		068347EF6AFEE41CD72D6222 /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		0B02BC1F26EEAE0300F395E6 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		0B17559925BF304D0094E75C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferApp.swift; sourceTree = "<group>"; };
@@ -182,10 +183,10 @@
 		0B2C14CB25A6781300ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2C14CC25A6781300ACB2C7 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		0B2C14D125A6781300ACB2C7 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B2C14D525A6781400ACB2C7 /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
+		0B2C14D525A6781400ACB2C7 /* TestsiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestsiOS.swift; sourceTree = "<group>"; };
 		0B2C14D725A6781400ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2C14DC25A6781400ACB2C7 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B2C14E025A6781400ACB2C7 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
+		0B2C14E025A6781400ACB2C7 /* TestsmacOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestsmacOS.swift; sourceTree = "<group>"; };
 		0B2C14E225A6781400ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2C150A25A67E6000ACB2C7 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		0B2C151525A67E8800ACB2C7 /* APIBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIBrowser.swift; sourceTree = "<group>"; };
@@ -201,7 +202,7 @@
 		0B2C156E25A6801400ACB2C7 /* VKErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKErrors.swift; sourceTree = "<group>"; };
 		0B2C157525A6802800ACB2C7 /* VKAddTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTrack.swift; sourceTree = "<group>"; };
 		0B2C158125A6806800ACB2C7 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
-		0B2C159025A680B400ACB2C7 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		0B2C159025A680B400ACB2C7 /* MainProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProgressView.swift; sourceTree = "<group>"; };
 		0B2C159C25A680F700ACB2C7 /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
 		0B2C15A725A6810E00ACB2C7 /* BrowserViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewDelegate.swift; sourceTree = "<group>"; };
 		0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaView.swift; sourceTree = "<group>"; };
@@ -260,14 +261,13 @@
 		0BE6DCB7271251C6003BEC3B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTQueue.swift; sourceTree = "<group>"; };
-		0BE6DCC127134FE3003BEC3B /* MTOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTOperation.swift; sourceTree = "<group>"; };
+		0BE6DCC127134FE3003BEC3B /* MTTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTTask.swift; sourceTree = "<group>"; };
 		0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksRequestTask.swift; sourceTree = "<group>"; };
-		3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
-		50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).release.xcconfig"; sourceTree = "<group>"; };
-		8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
-		B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		149A4CF6F407C6434FD1A272 /* Pods-Music Transfer (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		5510CCAA480DA343AE145ED6 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
+		629641A98D20EF95679CDC47 /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DB681A3095AF8D37663C632 /* libPods-Music Transfer (macOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (macOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB58D1AC4B0D778982C54AC6 /* Pods-Music Transfer (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,7 +275,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6178965FFFB1FDEDA0F5DAB9 /* libPods-Music Transfer (iOS).a in Frameworks */,
+				314539FD730124145C93A290 /* libPods-Music Transfer (iOS).a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BA8EF3F86C6062A015C1FB5 /* libPods-Music Transfer (macOS).a in Frameworks */,
+				2607A0709AF3086D4A5E4DE3 /* libPods-Music Transfer (macOS).a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +334,7 @@
 				0B2C14DF25A6781400ACB2C7 /* Tests macOS */,
 				0B2C14C225A6781300ACB2C7 /* Products */,
 				3A4887CC3B4465DB9AE0DB68 /* Pods */,
-				A230628A8A2A9AAE7613887F /* Frameworks */,
+				7667BF58E82E5004E8894CE8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -349,7 +349,6 @@
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
 				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
-				0BCF5AE1271B84C20019C5B1 /* RealmModels */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
@@ -394,7 +393,7 @@
 		0B2C14D425A6781400ACB2C7 /* Tests iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0B2C14D525A6781400ACB2C7 /* Tests_iOS.swift */,
+				0B2C14D525A6781400ACB2C7 /* TestsiOS.swift */,
 				0B2C14D725A6781400ACB2C7 /* Info.plist */,
 			);
 			path = "Tests iOS";
@@ -403,7 +402,7 @@
 		0B2C14DF25A6781400ACB2C7 /* Tests macOS */ = {
 			isa = PBXGroup;
 			children = (
-				0B2C14E025A6781400ACB2C7 /* Tests_macOS.swift */,
+				0B2C14E025A6781400ACB2C7 /* TestsmacOS.swift */,
 				0B2C14E225A6781400ACB2C7 /* Info.plist */,
 			);
 			path = "Tests macOS";
@@ -670,13 +669,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		0B9DFAF8271C7EAE008E3893 /* Tracks Info */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Tracks Info";
-			sourceTree = "<group>";
-		};
 		0B9DFAF9271C8636008E3893 /* Tracks Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,13 +688,6 @@
 			path = Suboperations;
 			sourceTree = "<group>";
 		};
-		0B9DFB01271C8EE1008E3893 /* Suboperations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Suboperations;
-			sourceTree = "<group>";
-		};
 		0B9DFB0B271C9C6B008E3893 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -717,7 +702,7 @@
 			children = (
 				0B2C159C25A680F700ACB2C7 /* BrowserView.swift */,
 				0B2C15BC25A681B300ACB2C7 /* LoginView.swift */,
-				0B2C159025A680B400ACB2C7 /* ProgressView.swift */,
+				0B2C159025A680B400ACB2C7 /* MainProgressView.swift */,
 				0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */,
 				0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */,
 				0B2C15CA25A681EC00ACB2C7 /* TracksTable.swift */,
@@ -731,23 +716,6 @@
 			children = (
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		0BCF5AE1271B84C20019C5B1 /* RealmModels */ = {
-			isa = PBXGroup;
-			children = (
-				0BCF5AE4271B92170019C5B1 /* Spotify */,
-			);
-			path = RealmModels;
-			sourceTree = "<group>";
-		};
-		0BCF5AE4271B92170019C5B1 /* Spotify */ = {
-			isa = PBXGroup;
-			children = (
-				0B9DFB01271C8EE1008E3893 /* Suboperations */,
-				0B9DFAF8271C7EAE008E3893 /* Tracks Info */,
-			);
-			path = Spotify;
 			sourceTree = "<group>";
 		};
 		0BE6DCA6271249D0003BEC3B /* Logging */ = {
@@ -781,7 +749,7 @@
 			isa = PBXGroup;
 			children = (
 				0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */,
-				0BE6DCC127134FE3003BEC3B /* MTOperation.swift */,
+				0BE6DCC127134FE3003BEC3B /* MTTask.swift */,
 			);
 			path = TasksManagement;
 			sourceTree = "<group>";
@@ -798,19 +766,19 @@
 		3A4887CC3B4465DB9AE0DB68 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */,
-				3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */,
-				96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */,
-				5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */,
+				149A4CF6F407C6434FD1A272 /* Pods-Music Transfer (iOS).debug.xcconfig */,
+				068347EF6AFEE41CD72D6222 /* Pods-Music Transfer (iOS).release.xcconfig */,
+				5510CCAA480DA343AE145ED6 /* Pods-Music Transfer (macOS).debug.xcconfig */,
+				DB58D1AC4B0D778982C54AC6 /* Pods-Music Transfer (macOS).release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		A230628A8A2A9AAE7613887F /* Frameworks */ = {
+		7667BF58E82E5004E8894CE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				50A3493C3B2492F409BF63FD /* libPods-Music Transfer (iOS).a */,
-				8ED81BFF3C06BB90380448D3 /* libPods-Music Transfer (macOS).a */,
+				629641A98D20EF95679CDC47 /* libPods-Music Transfer (iOS).a */,
+				7DB681A3095AF8D37663C632 /* libPods-Music Transfer (macOS).a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -822,7 +790,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0B2C14EB25A6781400ACB2C7 /* Build configuration list for PBXNativeTarget "Music Transfer (iOS)" */;
 			buildPhases = (
-				B7F669BCC4DEF9F626DE1D8C /* [CP] Check Pods Manifest.lock */,
+				044F6CE39A94A590882FEAA6 /* [CP] Check Pods Manifest.lock */,
+				0B81BE9227383F760024D4EC /* ShellScript */,
 				0B2C14BD25A6781300ACB2C7 /* Sources */,
 				0B2C14BE25A6781300ACB2C7 /* Frameworks */,
 				0B2C14BF25A6781300ACB2C7 /* Resources */,
@@ -840,7 +809,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0B2C14EE25A6781400ACB2C7 /* Build configuration list for PBXNativeTarget "Music Transfer (macOS)" */;
 			buildPhases = (
-				0D90D4F7FA011DFFBE11F6D4 /* [CP] Check Pods Manifest.lock */,
+				C7B1B23A99981BE64BAAA92A /* [CP] Check Pods Manifest.lock */,
+				0B81BE9327383F8C0024D4EC /* ShellScript */,
 				0B2C14C525A6781300ACB2C7 /* Sources */,
 				0B2C14C625A6781300ACB2C7 /* Frameworks */,
 				0B2C14C725A6781300ACB2C7 /* Resources */,
@@ -970,29 +940,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0D90D4F7FA011DFFBE11F6D4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Music Transfer (macOS)-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B7F669BCC4DEF9F626DE1D8C /* [CP] Check Pods Manifest.lock */ = {
+		044F6CE39A94A590882FEAA6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1008,6 +956,62 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Music Transfer (iOS)-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0B81BE9227383F760024D4EC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		0B81BE9327383F8C0024D4EC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		C7B1B23A99981BE64BAAA92A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Music Transfer (macOS)-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1069,7 +1073,7 @@
 				0B81BE71273552780024D4EC /* VKArtistRealm.swift in Sources */,
 				0BC8D85F260A890000AC204E /* CaptchaViewModel.swift in Sources */,
 				0B81BE7C2735B2650024D4EC /* VKTrackToLike.swift in Sources */,
-				0BE6DCC227134FE3003BEC3B /* MTOperation.swift in Sources */,
+				0BE6DCC227134FE3003BEC3B /* MTTask.swift in Sources */,
 				0BC2639F25BD9B7F00820FE0 /* SpotifyBrowser.swift in Sources */,
 				0B1755A325BF3A1A0094E75C /* LoginView.swift in Sources */,
 				0B2C154825A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
@@ -1096,7 +1100,7 @@
 				0B17559A25BF304D0094E75C /* LoginViewModel.swift in Sources */,
 				0B2C155A25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0BC2634425BCE90C00820FE0 /* TracksTableRow.swift in Sources */,
-				0B63AD4E25BB3241001252F2 /* ProgressView.swift in Sources */,
+				0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */,
 				0B81BE81273707460024D4EC /* SpotifyAddTracksOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1134,7 +1138,7 @@
 				0B2C152D25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
 				0B9DFB09271C9A13008E3893 /* Object.swift in Sources */,
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
-				0BE6DCC4271355E2003BEC3B /* MTOperation.swift in Sources */,
+				0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */,
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */,
@@ -1164,7 +1168,7 @@
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
 				0BB4F9A62725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
-				0B2C159225A680B400ACB2C7 /* ProgressView.swift in Sources */,
+				0B2C159225A680B400ACB2C7 /* MainProgressView.swift in Sources */,
 				0B9DFB08271C9A06008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1173,7 +1177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C14D625A6781400ACB2C7 /* Tests_iOS.swift in Sources */,
+				0B2C14D625A6781400ACB2C7 /* TestsiOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1181,7 +1185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C14E125A6781400ACB2C7 /* Tests_macOS.swift in Sources */,
+				0B2C14E125A6781400ACB2C7 /* TestsmacOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1318,7 +1322,7 @@
 		};
 		0B2C14EC25A6781400ACB2C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B011A998A4102B8105052997 /* Pods-Music Transfer (iOS).debug.xcconfig */;
+			baseConfigurationReference = 149A4CF6F407C6434FD1A272 /* Pods-Music Transfer (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1344,7 +1348,7 @@
 		};
 		0B2C14ED25A6781400ACB2C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B6F93A2A2CA4FF0CB01845B /* Pods-Music Transfer (iOS).release.xcconfig */;
+			baseConfigurationReference = 068347EF6AFEE41CD72D6222 /* Pods-Music Transfer (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1371,7 +1375,7 @@
 		};
 		0B2C14EF25A6781400ACB2C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D8E6E2972CB78973D37306 /* Pods-Music Transfer (macOS).debug.xcconfig */;
+			baseConfigurationReference = 5510CCAA480DA343AE145ED6 /* Pods-Music Transfer (macOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1396,7 +1400,7 @@
 		};
 		0B2C14F025A6781400ACB2C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D74C3A6E2678E02E45D458D /* Pods-Music Transfer (macOS).release.xcconfig */;
+			baseConfigurationReference = DB58D1AC4B0D778982C54AC6 /* Pods-Music Transfer (macOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

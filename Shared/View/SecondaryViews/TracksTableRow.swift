@@ -12,15 +12,6 @@ struct TracksTableRow: View {
     
     var track: SharedTrack
     
-    func getDuration() -> String {
-        let minutes = String(Int(track.durationS / 60))
-        var seconds = String(track.durationS % 60)
-        if track.durationS % 60 < 10 {
-            seconds = "0" + seconds
-        }
-        return minutes + ":" + seconds
-    }
-    
     var body: some View {
         HStack {
             TextField("", text: .constant(track.strArtists() + " – " + track.title))
@@ -29,8 +20,18 @@ struct TracksTableRow: View {
             Text(getDuration())
         }
     }
+    
+    func getDuration() -> String {
+        let minutes = String(Int(track.durationS / 60))
+        var seconds = String(track.durationS % 60)
+        if track.durationS % 60 < 10 {
+            seconds = "0" + seconds
+        }
+        return minutes + ":" + seconds
+    }
 }
 
+// swiftlint:disable type_name
 struct TracksTableRowView_Preview: PreviewProvider {
     static var previews: some View {
         TracksTableRow(track: SharedTrack(id: "1488", artists: ["Rammstein", "Nietsmmar"], title: "Sonne", durationS: 355))

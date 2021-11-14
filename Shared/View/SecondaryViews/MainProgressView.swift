@@ -31,6 +31,7 @@ struct MainProgressView: View {
     }
 }
 
+// swiftlint:disable type_name
 struct MainProgressView_Preview: PreviewProvider {
     static let model: TransferManager = {
         let model = TransferManager.shared

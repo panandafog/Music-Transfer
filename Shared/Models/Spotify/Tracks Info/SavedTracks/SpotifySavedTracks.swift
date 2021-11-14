@@ -6,6 +6,8 @@
 //  Copyright © 2020 panandafog. All rights reserved.
 //
 
+// swiftlint:disable discouraged_optional_boolean
+
 import Foundation
 
 enum SpotifySavedTracks {
@@ -59,8 +61,8 @@ enum SpotifySavedTracks {
     }
     
     enum AlbumTypeEnum: String, Codable {
-        case album = "album"
-        case single = "single"
+        case album
+        case single
     }
     
     // MARK: - Artist
@@ -77,7 +79,7 @@ enum SpotifySavedTracks {
     }
     
     enum ArtistType: String, Codable {
-        case artist = "artist"
+        case artist
     }
     
     // MARK: - Image
@@ -93,6 +95,6 @@ enum SpotifySavedTracks {
     }
     
     enum TrackType: String, Codable {
-        case track = "track"
+        case track
     }
 }
