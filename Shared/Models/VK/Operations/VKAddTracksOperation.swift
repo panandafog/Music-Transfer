@@ -8,6 +8,7 @@
 import Foundation
 
 class VKAddTracksOperation: TransferOperation {
+    
     var id = NSUUID().uuidString
     
     var searchSuboperaion: VKSearchTracksSuboperation
@@ -15,6 +16,14 @@ class VKAddTracksOperation: TransferOperation {
     
     var suboperations: [TransferSuboperation] {
         [searchSuboperaion, likeSuboperation]
+    }
+    
+    var tracksCount: Int? {
+        guard likeSuboperation.completed != nil else {
+            return nil
+        }
+  
+        return likeSuboperation.tracksToLike.count
     }
     
     init(
@@ -27,8 +36,8 @@ class VKAddTracksOperation: TransferOperation {
     
     init(tracksToAdd: [SharedTrack]) {
         searchSuboperaion = VKSearchTracksSuboperation(
-            started: false,
-            completed: false,
+            started: nil,
+            completed: nil,
             tracks: tracksToAdd.map {
                 VKSearchedTrack(
                     trackToSearch: $0,
@@ -38,8 +47,8 @@ class VKAddTracksOperation: TransferOperation {
         )
         
         likeSuboperation = VKLikeTracksSuboperation(
-            started: false,
-            completed: false,
+            started: nil,
+            completed: nil,
             tracksToLike: [],
             notFoundTracks: [],
             duplicates: []

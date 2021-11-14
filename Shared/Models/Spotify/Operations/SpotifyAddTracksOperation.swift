@@ -8,6 +8,7 @@
 import Foundation
 
 class SpotifyAddTracksOperation: TransferOperation {
+    
     var id = NSUUID().uuidString
     
     var searchSuboperaion: SpotifySearchTracksSuboperation
@@ -15,6 +16,18 @@ class SpotifyAddTracksOperation: TransferOperation {
     
     var suboperations: [TransferSuboperation] {
         [searchSuboperaion, likeSuboperation]
+    }
+    
+    var tracksCount: Int? {
+        guard likeSuboperation.completed != nil else {
+            return nil
+        }
+        
+        var count = 0
+        likeSuboperation.trackPackagesToLike.forEach {
+            count += $0.tracks.count
+        }
+        return count
     }
     
     init(
@@ -27,8 +40,8 @@ class SpotifyAddTracksOperation: TransferOperation {
     
     init(tracksToAdd: [SharedTrack]) {
         searchSuboperaion = SpotifySearchTracksSuboperation(
-            started: false,
-            completed: false,
+            started: nil,
+            completed: nil,
             tracks: tracksToAdd.map {
                 SpotifySearchedTrack(
                     trackToSearch: $0,
@@ -38,8 +51,8 @@ class SpotifyAddTracksOperation: TransferOperation {
         )
         
         likeSuboperation = SpotifyLikeTracksSuboperation(
-            started: false,
-            completed: false,
+            started: nil,
+            completed: nil,
             trackPackagesToLike: [],
             notFoundTracks: []
         )

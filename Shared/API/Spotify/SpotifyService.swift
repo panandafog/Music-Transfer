@@ -308,7 +308,7 @@ final class SpotifyService: APIService {
             TransferManager.shared.operationInProgress = true
         }
         
-        operation.searchSuboperaion.started = true
+        operation.searchSuboperaion.started = Date()
         updateHandler(operation)
         
         let tracks = operation.searchSuboperaion.tracks.map { $0.trackToSearch }
@@ -370,8 +370,8 @@ final class SpotifyService: APIService {
                     packages.append(package)
                 }
                 
-                operation.searchSuboperaion.completed = true
-                operation.likeSuboperation.started = true
+                operation.searchSuboperaion.completed = Date()
+                operation.likeSuboperation.started = Date()
                 operation.likeSuboperation.trackPackagesToLike = packages.map {
                     SpotifyTracksPackageToLike(
                         tracks: $0,
@@ -393,7 +393,7 @@ final class SpotifyService: APIService {
                         packageID += 1
                         
                     }, finalCompletion: {
-                        operation.likeSuboperation.completed = true
+                        operation.likeSuboperation.completed = Date()
                         updateHandler(operation)
                         
                         if !filtered.notFoundTracks.isEmpty {

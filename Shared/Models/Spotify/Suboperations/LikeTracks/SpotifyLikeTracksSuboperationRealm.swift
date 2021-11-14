@@ -12,8 +12,8 @@ class SpotifyLikeTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
     
-    @objc dynamic var started = false
-    @objc dynamic var completed = false
+    @objc dynamic var started: NSDate?
+    @objc dynamic var completed: NSDate?
     
     let trackPackagesToLike = List<SpotifyTracksPackageToLikeRealm>()
     let notFoundTracks = List<SharedTrackRealm>()
@@ -27,8 +27,8 @@ extension SpotifyLikeTracksSuboperationRealm {
     var spotifyLikeTracksSuboperation: SpotifyLikeTracksSuboperation {
         SpotifyLikeTracksSuboperation(
             id: id,
-            started: started,
-            completed: completed,
+            started: started as Date?,
+            completed: completed as Date?,
             trackPackagesToLike: trackPackagesToLike.map { $0.tracksPackage },
             notFoundTracks: notFoundTracks.map { $0.sharedTrack }
         )
@@ -39,8 +39,8 @@ extension SpotifyLikeTracksSuboperationRealm {
         
         id = spotifyLikeTracksSuboperation.id
         
-        started = spotifyLikeTracksSuboperation.started
-        completed = spotifyLikeTracksSuboperation.completed
+        started = spotifyLikeTracksSuboperation.started as NSDate?
+        completed = spotifyLikeTracksSuboperation.completed as NSDate?
         
         trackPackagesToLike.append(objectsIn: spotifyLikeTracksSuboperation.trackPackagesToLike.map { SpotifyTracksPackageToLikeRealm($0) })
         notFoundTracks.append(objectsIn: spotifyLikeTracksSuboperation.notFoundTracks.map { SharedTrackRealm($0) })

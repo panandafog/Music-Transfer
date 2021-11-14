@@ -12,8 +12,8 @@ class VKSearchTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
     
-    @objc dynamic var started = false
-    @objc dynamic var completed = false
+    @objc dynamic var started: NSDate?
+    @objc dynamic var completed: NSDate?
     
     let tracks = List<VKSearchedTrackRealm>()
     
@@ -26,8 +26,8 @@ extension VKSearchTracksSuboperationRealm {
     var vkSearchTracksSuboperation: VKSearchTracksSuboperation {
         VKSearchTracksSuboperation(
             id: id,
-            started: started,
-            completed: completed,
+            started: started as Date?,
+            completed: completed as Date?,
             tracks: tracks.map { $0.searchedTrack }
         )
     }
@@ -37,8 +37,8 @@ extension VKSearchTracksSuboperationRealm {
         
         id = vkSearchTracksSuboperation.id
         
-        started = vkSearchTracksSuboperation.started
-        completed = vkSearchTracksSuboperation.completed
+        started = vkSearchTracksSuboperation.started as NSDate?
+        completed = vkSearchTracksSuboperation.completed as NSDate?
         tracks.append(objectsIn: vkSearchTracksSuboperation.tracks.map { VKSearchedTrackRealm($0) })
     }
 }

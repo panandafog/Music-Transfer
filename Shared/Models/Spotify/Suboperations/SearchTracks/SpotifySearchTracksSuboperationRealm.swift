@@ -12,8 +12,8 @@ class SpotifySearchTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
     
-    @objc dynamic var started = false
-    @objc dynamic var completed = false
+    @objc dynamic var started: NSDate?
+    @objc dynamic var completed: NSDate?
     
     let tracks = List<SpotifySearchedTrackRealm>()
     
@@ -26,8 +26,8 @@ extension SpotifySearchTracksSuboperationRealm {
     var spotifySearchTracksSuboperation: SpotifySearchTracksSuboperation {
         SpotifySearchTracksSuboperation(
             id: id,
-            started: started,
-            completed: completed,
+            started: started as Date?,
+            completed: completed as Date?,
             tracks: tracks.map { $0.searchedTrack }
         )
     }
@@ -37,8 +37,8 @@ extension SpotifySearchTracksSuboperationRealm {
         
         id = spotifySearchTracksSuboperation.id
         
-        started = spotifySearchTracksSuboperation.started
-        completed = spotifySearchTracksSuboperation.completed
+        started = spotifySearchTracksSuboperation.started as NSDate?
+        completed = spotifySearchTracksSuboperation.completed as NSDate?
         tracks.append(objectsIn: spotifySearchTracksSuboperation.tracks.map { SpotifySearchedTrackRealm($0) })
     }
 }

@@ -185,6 +185,9 @@ class TransferManager: ManagingDatabase, ObservableObject {
                 $0.vkAddTracksOperation
             } ?? []
         )
-        operationsHistory = newHistory
+        operationsHistory = newHistory.sorted { lhs, rhs in
+            lhs.started ?? Date.distantPast
+                > rhs.started ?? Date.distantPast
+        }
     }
 }

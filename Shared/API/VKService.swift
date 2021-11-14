@@ -103,7 +103,7 @@ final class VKService: APIService {
     ) {
 #if os(macOS)
         DispatchQueue.main.async {
-            TransferState.shared.operationInProgress = true
+            TransferManager.shared.operationInProgress = true
         }
 #endif
         
@@ -325,7 +325,7 @@ final class VKService: APIService {
             TransferManager.shared.operationInProgress = true
         }
         
-        operation.searchSuboperaion.started = true
+        operation.searchSuboperaion.started = Date()
         updateHandler(operation)
         
         var notFoundTracks = [SharedTrack]()
@@ -380,8 +380,8 @@ final class VKService: APIService {
                 notFoundTracks.append(contentsOf: filtered.notFoundTracks)
                 duplicates.append(contentsOf: filtered.duplicates)
                 
-                operation.searchSuboperaion.completed = true
-                operation.likeSuboperation.started = true
+                operation.searchSuboperaion.completed = Date()
+                operation.likeSuboperation.started = Date()
                 operation.likeSuboperation.tracksToLike = filtered.tracksToAdd.map {
                     VKTrackToLike(
                         track: $0,
@@ -419,7 +419,7 @@ final class VKService: APIService {
                         
                     },
                     finalCompletion: {
-                        operation.likeSuboperation.completed = true
+                        operation.likeSuboperation.completed = Date()
                         updateHandler(operation)
                         
                         DispatchQueue.main.async {

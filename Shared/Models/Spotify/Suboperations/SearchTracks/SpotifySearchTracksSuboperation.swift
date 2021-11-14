@@ -10,8 +10,8 @@ import Foundation
 struct SpotifySearchTracksSuboperation: TransferSuboperation {
     var id = NSUUID().uuidString
     
-    var started = false
-    var completed = false
+    var started: Date?
+    var completed: Date?
     
     var tracks: [SpotifySearchedTrack]
 }

@@ -11,6 +11,24 @@
 		0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15A725A6810E00ACB2C7 /* BrowserViewDelegate.swift */; };
 		0B02BC2026EEAE0300F395E6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B02BC1F26EEAE0300F395E6 /* View.swift */; };
 		0B02BC2126EEAF6000F395E6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B02BC1F26EEAE0300F395E6 /* View.swift */; };
+		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
+		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
+		0B1550992741C483000D0A38 /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
+		0B15509A2741C49E000D0A38 /* SpotifyAddTracksOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE80273707460024D4EC /* SpotifyAddTracksOperation.swift */; };
+		0B15509B2741C4A1000D0A38 /* SpotifyAddTracksOperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE87273734E00024D4EC /* SpotifyAddTracksOperationRealm.swift */; };
+		0B15509C2741C4B9000D0A38 /* VKAddTracksOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE85273733510024D4EC /* VKAddTracksOperation.swift */; };
+		0B15509D2741C4BC000D0A38 /* VKAddTracksOperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE89273738E30024D4EC /* VKAddTracksOperationRealm.swift */; };
+		0B15509E2741C4BE000D0A38 /* VKLikeTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE762735B0690024D4EC /* VKLikeTracksSuboperation.swift */; };
+		0B15509F2741C4C1000D0A38 /* VKLikeTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE782735B0790024D4EC /* VKLikeTracksSuboperationRealm.swift */; };
+		0B1550A02741C4C6000D0A38 /* VKSearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */; };
+		0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */; };
+		0B1550A22741C4CD000D0A38 /* VKTrackToLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE7B2735B2650024D4EC /* VKTrackToLike.swift */; };
+		0B1550A32741C4D0000D0A38 /* VKTrackToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE7D2735B3130024D4EC /* VKTrackToLikeRealm.swift */; };
+		0B1550A42741C4D6000D0A38 /* VKAlbumRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6E273552660024D4EC /* VKAlbumRealm.swift */; };
+		0B1550A52741C4D9000D0A38 /* VKArtistRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE70273552780024D4EC /* VKArtistRealm.swift */; };
+		0B1550A62741C4DC000D0A38 /* VKSavedItemRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6B27354E9C0024D4EC /* VKSavedItemRealm.swift */; };
+		0B1550A72741C4F8000D0A38 /* ManagingDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE8D27374C3C0024D4EC /* ManagingDatabase.swift */; };
+		0B1550A82741C508000D0A38 /* HistoryTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE902738243F0024D4EC /* HistoryTableRow.swift */; };
 		0B17559A25BF304D0094E75C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B17559925BF304D0094E75C /* LoginViewModel.swift */; };
 		0B1755A325BF3A1A0094E75C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15BC25A681B300ACB2C7 /* LoginView.swift */; };
 		0B2C14D625A6781400ACB2C7 /* TestsiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14D525A6781400ACB2C7 /* TestsiOS.swift */; };
@@ -1117,6 +1135,7 @@
 				0BB4F99D2725CACC003C7CE5 /* SpotifyLikeTracksSuboperation.swift in Sources */,
 				0B42353226E4D0F2007CAAB7 /* Captcha.swift in Sources */,
 				0B2C155425A67FB400ACB2C7 /* SpotifySearchTracks.swift in Sources */,
+				0B1550A42741C4D6000D0A38 /* VKAlbumRealm.swift in Sources */,
 				0B2C152625A67EDA00ACB2C7 /* VKService.swift in Sources */,
 				0BCF5AF4271BA8000019C5B1 /* SpotifyArtistRealm.swift in Sources */,
 				0B2C15D325A6821500ACB2C7 /* TracksTableRow.swift in Sources */,
@@ -1124,12 +1143,18 @@
 				0B2C153425A67F1C00ACB2C7 /* SpotifyBrowser.swift in Sources */,
 				0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */,
 				0BE6DCB127124CC1003BEC3B /* LogType.swift in Sources */,
+				0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */,
 				0B9DFB0E271C9D94008E3893 /* DatabaseManager.swift in Sources */,
+				0B15509A2741C49E000D0A38 /* SpotifyAddTracksOperation.swift in Sources */,
 				0B2C150C25A67E6000ACB2C7 /* APIService.swift in Sources */,
 				0B2C15B025A6811E00ACB2C7 /* CaptchaView.swift in Sources */,
+				0B1550A02741C4C6000D0A38 /* VKSearchedTrack.swift in Sources */,
 				0B2C156925A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
 				0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */,
+				0B1550A62741C4DC000D0A38 /* VKSavedItemRealm.swift in Sources */,
+				0B15509B2741C4A1000D0A38 /* SpotifyAddTracksOperationRealm.swift in Sources */,
 				0B02BC2126EEAF6000F395E6 /* View.swift in Sources */,
+				0B1550A82741C508000D0A38 /* HistoryTableRow.swift in Sources */,
 				0B9DFB0A271C9A16008E3893 /* List.swift in Sources */,
 				0B02BC1C26EEA4F400F395E6 /* LoginViewModel.swift in Sources */,
 				0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */,
@@ -1140,6 +1165,8 @@
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
 				0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */,
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
+				0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */,
+				0B15509D2741C4BC000D0A38 /* VKAddTracksOperationRealm.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */,
 				0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */,
@@ -1150,8 +1177,10 @@
 				0B9DFB06271C99FD008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
 				0BCF5AF5271BA8050019C5B1 /* SpotifySearchedItemRealm.swift in Sources */,
 				0B9DFB07271C9A01008E3893 /* TransferSuboperation.swift in Sources */,
+				0B1550992741C483000D0A38 /* VKSearchTracksSuboperation.swift in Sources */,
 				0BCF5AF3271BA7FD0019C5B1 /* SpotifyAlbumRealm.swift in Sources */,
 				0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */,
+				0B1550A22741C4CD000D0A38 /* VKTrackToLike.swift in Sources */,
 				0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */,
 				0BE6DCB227124CC4003BEC3B /* Logger.swift in Sources */,
 				0B2C157725A6802800ACB2C7 /* VKAddTrack.swift in Sources */,
@@ -1159,17 +1188,24 @@
 				0B42352C26E431A6007CAAB7 /* TransferManager.swift in Sources */,
 				0B2C14E625A6781400ACB2C7 /* TransferView.swift in Sources */,
 				0BD0B19B2725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift in Sources */,
+				0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */,
 				0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */,
 				0B2C160225A6841800ACB2C7 /* VKKeys.swift in Sources */,
 				0B2C153C25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
+				0B1550A72741C4F8000D0A38 /* ManagingDatabase.swift in Sources */,
 				0BE6DCB327124CC7003BEC3B /* NetworkService.swift in Sources */,
 				0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */,
 				0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
+				0B15509E2741C4BE000D0A38 /* VKLikeTracksSuboperation.swift in Sources */,
 				0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
+				0B1550A32741C4D0000D0A38 /* VKTrackToLikeRealm.swift in Sources */,
 				0BB4F9A62725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
+				0B15509F2741C4C1000D0A38 /* VKLikeTracksSuboperationRealm.swift in Sources */,
 				0B2C159225A680B400ACB2C7 /* MainProgressView.swift in Sources */,
+				0B15509C2741C4B9000D0A38 /* VKAddTracksOperation.swift in Sources */,
 				0B9DFB08271C9A06008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
+				0B1550A52741C4D9000D0A38 /* VKArtistRealm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

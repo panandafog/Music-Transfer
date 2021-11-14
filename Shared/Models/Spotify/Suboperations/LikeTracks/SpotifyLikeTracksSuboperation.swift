@@ -10,8 +10,8 @@ import Foundation
 struct SpotifyLikeTracksSuboperation: TransferSuboperation {
     var id = NSUUID().uuidString
     
-    var started = false
-    var completed = false
+    var started: Date?
+    var completed: Date?
     
     var trackPackagesToLike: [SpotifyTracksPackageToLike]
     var notFoundTracks: [SharedTrack]
