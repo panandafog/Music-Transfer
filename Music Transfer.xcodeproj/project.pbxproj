@@ -349,7 +349,6 @@
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
 				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
-				0BCF5AE1271B84C20019C5B1 /* RealmModels */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
@@ -670,13 +669,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		0B9DFAF8271C7EAE008E3893 /* Tracks Info */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Tracks Info";
-			sourceTree = "<group>";
-		};
 		0B9DFAF9271C8636008E3893 /* Tracks Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -692,13 +684,6 @@
 			children = (
 				0B5DCA3A272F4C8700E30A8A /* LikeTracks */,
 				0B5DCA38272F4C6C00E30A8A /* SearchTracks */,
-			);
-			path = Suboperations;
-			sourceTree = "<group>";
-		};
-		0B9DFB01271C8EE1008E3893 /* Suboperations */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Suboperations;
 			sourceTree = "<group>";
@@ -731,23 +716,6 @@
 			children = (
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		0BCF5AE1271B84C20019C5B1 /* RealmModels */ = {
-			isa = PBXGroup;
-			children = (
-				0BCF5AE4271B92170019C5B1 /* Spotify */,
-			);
-			path = RealmModels;
-			sourceTree = "<group>";
-		};
-		0BCF5AE4271B92170019C5B1 /* Spotify */ = {
-			isa = PBXGroup;
-			children = (
-				0B9DFB01271C8EE1008E3893 /* Suboperations */,
-				0B9DFAF8271C7EAE008E3893 /* Tracks Info */,
-			);
-			path = Spotify;
 			sourceTree = "<group>";
 		};
 		0BE6DCA6271249D0003BEC3B /* Logging */ = {

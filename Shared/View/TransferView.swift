@@ -43,11 +43,11 @@ struct TransferView: View {
                                 }
                             }
                         }, label: {
-                            Text(model.services[ind].apiName)
+                            Text(type(of: model.services[ind]).apiName)
                         })
                     }
                 } label: {
-                    Label(model.services[selectionFrom].apiName, systemImage: "chevron.down")
+                    Label(type(of: model.services[selectionFrom]).apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)
@@ -138,12 +138,12 @@ struct TransferView: View {
                         Button(action: {
                             selectionTo = ind
                         }, label: {
-                            Text(model.services[ind].apiName)
+                            Text(type(of: model.services[ind]).apiName)
                         })
                             .disabled(selectionFrom == ind)
                     }
                 } label: {
-                    Label(model.services[selectionTo].apiName, systemImage: "chevron.down")
+                    Label(type(of: model.services[selectionTo]).apiName, systemImage: "chevron.down")
                 }
                 .modify {
 #if os(macOS)

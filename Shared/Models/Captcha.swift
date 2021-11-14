@@ -24,9 +24,9 @@ struct Captcha {
     }
 }
 
+// MARK: - Extensions
+
 extension Captcha {
-    
-    // MARK: - Solved
     
     struct Solved {
         let sid: String

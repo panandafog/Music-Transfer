@@ -107,6 +107,8 @@ class MTQueue<OperationType: MTTask> {
     }
 }
 
+// MARK: - Extesions
+
 extension MTQueue {
     
     enum Mode {

@@ -10,22 +10,26 @@ import Foundation
 import SwiftUI
 
 final class VKService: APIService {
-    static var authorizationUrl: URL?
     
+    // MARK: - Constants
+    
+    static let authorizationUrl: URL? = nil
     static let authorizationRedirectUrl = "https://oauth.vk.com/blank.html"
+    static let state = randomString(length: stateLength)
+    static let apiName = "VK"
     
     private static let apiVersion = "5.116"
     private static let lang = "en"
     private static let stateLength = 100
     
-    static var state = randomString(length: stateLength)
-    
-    static var baseURL: URLComponents {
+    static var baseURL: URLComponents = {
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "api.vk.com"
         return tmp
-    }
+    }()
+    
+    // MARK: - Instance properties
     
     var isAuthorised = false {
         willSet {
@@ -42,8 +46,6 @@ final class VKService: APIService {
             }
         }
     }
-    
-    let apiName = "VK"
     
     var tokensInfo: TokensInfo?
     
@@ -63,6 +65,8 @@ final class VKService: APIService {
         TransferManager.shared
     }
     
+    // - Initialisers
+    
     init() {
         let defaults = UserDefaults.standard
         
@@ -80,6 +84,8 @@ final class VKService: APIService {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0 ..< length).map { _ in letters.randomElement() ?? "a" })
     }
+    
+    // MARK: - Authorization methods
     
     func authorize() -> AnyView {
         let model = LoginViewModel(twoFactor: false,
@@ -219,7 +225,10 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: getSavedTracks
+    // MARK: - Tracks management methods
+    
+    // MARK: Saved tracks
+    
     func getSavedTracks() {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
@@ -229,7 +238,7 @@ final class VKService: APIService {
         
         DispatchQueue.main.async {
             self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(self.apiName)"
+            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
             self.progressViewModel.determinate = false
             self.progressViewModel.active = true
         }
@@ -247,7 +256,6 @@ final class VKService: APIService {
         }
     }
     
-    // MARK: requestTracks
     private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
         let count = 5_000
         
@@ -307,7 +315,8 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: addTracks
+    // MARK: Adding tracks
+    
     func addTracks(
         operation: VKAddTracksOperation,
         updateHandler: @escaping TransferManager.VKAddTracksOperationHandler
@@ -328,7 +337,7 @@ final class VKService: APIService {
         DispatchQueue.main.async {
             self.progressViewModel.determinate = true
             self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
+            self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
             self.progressViewModel.active = true
         }
         
@@ -364,9 +373,9 @@ final class VKService: APIService {
                 
                 let allFoundTracks = operation.searchSuboperaion.tracks.map { $0.foundTracks ?? [] }
                 
-                let filtered = self.filterTracks(
-                    commonTracks: initialTracksToSearch,
-                    currentTracks: allFoundTracks
+                let filtered = self.filterFoundTracks(
+                    initialTracks: initialTracksToSearch,
+                    foundTracks: allFoundTracks
                 )
                 notFoundTracks.append(contentsOf: filtered.notFoundTracks)
                 duplicates.append(contentsOf: filtered.duplicates)
@@ -384,7 +393,7 @@ final class VKService: APIService {
                 DispatchQueue.main.async {
                     self.progressViewModel.determinate = true
                     self.progressViewModel.progressPercentage = 0.0
-                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                    self.progressViewModel.processName = "Adding tracks to \(Self.apiName)"
                     self.progressViewModel.active = true
                 }
                 
@@ -438,35 +447,6 @@ final class VKService: APIService {
         )
     }
     
-    // MARK: deleteAllTracks
-    func deleteAllTracks() {
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-        
-        DispatchQueue.main.async {
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
-            self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.determinate = true
-            self.progressViewModel.active = true
-        }
-        
-        deleteTracks(savedTracks,
-                     captcha: nil,
-                     completion: {(remaining: Int) in
-            DispatchQueue.main.async {
-                self.progressViewModel.progressPercentage
-                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
-            }
-        }, finalCompletion: {
-            DispatchQueue.main.async {
-                self.progressViewModel.off()
-            }
-            self.getSavedTracks()
-        })
-    }
-    
     func filterTracksToAdd(_ tracksToAdd: [SharedTrack]) -> [SharedTrack] {
         DispatchQueue.main.async {
             TransferManager.shared.operationInProgress = true
@@ -492,7 +472,6 @@ final class VKService: APIService {
         return filteredTracks
     }
     
-    // MARK: searchTracks
     private func searchTracks(
         _ tracks: [SharedTrack],
         attempt: Int,
@@ -613,22 +592,21 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: filterTracks
-    private func filterTracks(
-        commonTracks: [SharedTrack],
-        currentTracks: [[VKSavedTracks.Item]]
+    private func filterFoundTracks(
+        initialTracks: [SharedTrack],
+        foundTracks: [[VKSavedTracks.Item]]
     ) -> FilterResult {
         
         var tracksToAdd = [VKSavedTracks.Item]()
         var notFoundTracks = [SharedTrack]()
         var duplicates = [SharedTrack]()
         
-        if !commonTracks.isEmpty {
-            for index in 0...commonTracks.count - 1 {
-                if !currentTracks[index].isEmpty {
+        if !initialTracks.isEmpty {
+            for index in 0...initialTracks.count - 1 {
+                if !foundTracks[index].isEmpty {
                     var chosenTrack: VKSavedTracks.Item?
-                    for foundTrack in currentTracks[index] {
-                        if SharedTrack(from: foundTrack) == commonTracks[index] {
+                    for foundTrack in foundTracks[index] {
+                        if SharedTrack(from: foundTrack) == initialTracks[index] {
                             chosenTrack = foundTrack
                             break
                         }
@@ -661,13 +639,13 @@ final class VKService: APIService {
                         if !isDuplicate {
                             tracksToAdd.append(chosenTrack)
                         } else {
-                            duplicates.append(commonTracks[index])
+                            duplicates.append(initialTracks[index])
                         }
                     } else {
-                        notFoundTracks.append(commonTracks[index])
+                        notFoundTracks.append(initialTracks[index])
                     }
                 } else {
-                    notFoundTracks.append(commonTracks[index])
+                    notFoundTracks.append(initialTracks[index])
                 }
             }
         }
@@ -678,7 +656,6 @@ final class VKService: APIService {
         )
     }
     
-    // MARK: likeTracks
     private func likeTracks(
         _ tracks: [VKSavedTracks.Item],
         captcha: Captcha.Solved?,
@@ -778,7 +755,36 @@ final class VKService: APIService {
         task.resume()
     }
     
-    // MARK: deleteTrack
+    // MARK: Deleting tracks
+    
+    func deleteAllTracks() {
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+        }
+        
+        DispatchQueue.main.async {
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.determinate = true
+            self.progressViewModel.active = true
+        }
+        
+        deleteTracks(savedTracks,
+                     captcha: nil,
+                     completion: {(remaining: Int) in
+            DispatchQueue.main.async {
+                self.progressViewModel.progressPercentage
+                = Double(self.savedTracks.count - remaining) / Double(self.savedTracks.count) * 100
+            }
+        }, finalCompletion: {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+            }
+            self.getSavedTracks()
+        })
+    }
+    
     private func deleteTracks(
         _ tracks: [SharedTrack],
         captcha: Captcha.Solved?,
@@ -883,9 +889,9 @@ final class VKService: APIService {
     }
 }
 
+// MARK: - Extensions
+
 extension VKService {
-    
-    // MARK: - Info
     
     struct TokensInfo: Decodable {
         

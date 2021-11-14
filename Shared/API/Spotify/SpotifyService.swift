@@ -12,10 +12,13 @@ import SwiftUI
 
 final class SpotifyService: APIService {
     
-    static let authorizationRedirectUrl = "https://example.com/callback/"
-    static var state = NSUUID().uuidString
+    // MARK: - Constants
     
-    static var authorizationUrl: URL? {
+    static let authorizationRedirectUrl = "https://example.com/callback/"
+    static let state = NSUUID().uuidString
+    static let apiName = "Spotify"
+    
+    static let authorizationUrl: URL? = {
         
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -30,9 +33,9 @@ final class SpotifyService: APIService {
             URLQueryItem(name: "show_dialog", value: "true")
         ]
         return tmp.url
-    }
+    }()
     
-    private static var requestTokensURL: URL? {
+    private static let requestTokensURL: URL? = {
         
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -45,9 +48,10 @@ final class SpotifyService: APIService {
             URLQueryItem(name: "state", value: state)
         ]
         return tmp.url
-    }
+    }()
     
-    let apiName = "Spotify"
+    // MARK: - Instance properties
+    
     var isAuthorised = false {
         willSet {
             DispatchQueue.main.async {
@@ -55,6 +59,7 @@ final class SpotifyService: APIService {
             }
         }
     }
+    
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {
@@ -76,7 +81,7 @@ final class SpotifyService: APIService {
         TransferManager.shared
     }
     
-    // MARK: authorize
+    // MARK: - Authorization methods
     
     func authorize() -> AnyView {
         AnyView(
@@ -137,6 +142,10 @@ final class SpotifyService: APIService {
         task.resume()
     }
     
+    // MARK: - Tracks management methods
+    
+    // MARK: Saved tracks
+    
     func getSavedTracks() {
         guard let tokensInfo = self.tokensInfo else {
             return
@@ -151,7 +160,7 @@ final class SpotifyService: APIService {
         
         DispatchQueue.main.async {
             self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(self.apiName)"
+            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
             self.progressViewModel.determinate = false
             self.progressViewModel.active = true
         }
@@ -289,6 +298,8 @@ final class SpotifyService: APIService {
         task.resume()
     }
     
+    // MARK: Adding tracks
+    
     func addTracks(
         operation: SpotifyAddTracksOperation,
         updateHandler: @escaping TransferManager.SpotifyAddTracksOperationHandler
@@ -305,7 +316,7 @@ final class SpotifyService: APIService {
         DispatchQueue.main.async {
             self.progressViewModel.determinate = operation.searchSuboperaion.tracks.count > 10
             self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.processName = "Searching tracks in \(self.apiName)"
+            self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
             self.progressViewModel.active = true
         }
         
@@ -342,7 +353,7 @@ final class SpotifyService: APIService {
                 DispatchQueue.main.async {
                     self.progressViewModel.progressPercentage = 0.0
                     self.progressViewModel.determinate = filtered.tracksToAdd.count > 400
-                    self.progressViewModel.processName = "Adding tracks to \(self.apiName)"
+                    self.progressViewModel.processName = "Adding tracks to \(Self.apiName)"
                 }
                 
                 var packages = [[SpotifySearchTracks.Item]]()
@@ -402,51 +413,6 @@ final class SpotifyService: APIService {
             }
             searchedTrackIndex += 1
         }
-    }
-    
-    func deleteAllTracks() {
-        guard !self.savedTracks.isEmpty else {
-            return
-        }
-        
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Deleting tracks from \(self.apiName)"
-            self.progressViewModel.progressPercentage = 0.0
-            self.progressViewModel.determinate = self.savedTracks.count > 400
-            self.progressViewModel.active = true
-        }
-        
-        var packages = [[SharedTrack]]()
-        
-        var package = [SharedTrack]()
-        for track in savedTracks {
-            package.append(track)
-            if package.count == 50 {
-                packages.append(package)
-                package.removeAll()
-            }
-        }
-        if !package.isEmpty {
-            packages.append(package)
-        }
-        
-        self.deleteTracks(
-            packages,
-            completion: { (remaining: Int) in
-                DispatchQueue.main.async {
-                    self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
-                }
-            }, finalCompletion: {
-                DispatchQueue.main.async {
-                    self.progressViewModel.off()
-                    TransferManager.shared.operationInProgress = false
-                }
-                usleep(self.requestRepeatDelay)
-                self.getSavedTracks()
-            }
-        )
     }
     
     private func searchTracks(
@@ -549,73 +515,120 @@ final class SpotifyService: APIService {
         completion: @escaping ((_: Int) -> Void),
         finalCompletion: @escaping (() -> Void)
     ) {
-            guard !packages.isEmpty else {
-                finalCompletion()
+        guard !packages.isEmpty else {
+            finalCompletion()
+            return
+        }
+        
+        let tracks = packages[0]
+        
+        var ids = ""
+        var ind = 0
+        for track in tracks {
+            ind += 1
+            if track.id != tracks.last?.id {
+                ids += String(track.id) + ","
+            } else {
+                ids += String(track.id)
+            }
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "api.spotify.com"
+        tmp.path = "/v1/me/tracks"
+        tmp.queryItems = [
+            URLQueryItem(name: "ids", value: String(ids))
+        ]
+        
+        guard let url = tmp.url else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        
+        guard let access_token = self.tokensInfo?.access_token else {
+            return
+        }
+        
+        request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard error == nil else {
+                sleep(kFailedRequestReattemptDelay)
+                self.likeTracks(packages, completion: completion, finalCompletion: finalCompletion)
                 return
             }
             
-            let tracks = packages[0]
-            
-            var ids = ""
-            var ind = 0
-            for track in tracks {
-                ind += 1
-                if track.id != tracks.last?.id {
-                    ids += String(track.id) + ","
-                } else {
-                    ids += String(track.id)
-                }
-            }
-            
-            var tmp = URLComponents()
-            tmp.scheme = "https"
-            tmp.host = "api.spotify.com"
-            tmp.path = "/v1/me/tracks"
-            tmp.queryItems = [
-                URLQueryItem(name: "ids", value: String(ids))
-            ]
-            
-            guard let url = tmp.url else {
-                return
-            }
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = "PUT"
-            
-            guard let access_token = self.tokensInfo?.access_token else {
-                return
-            }
-            
-            request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                
-                guard error == nil else {
-                    sleep(kFailedRequestReattemptDelay)
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 429 {
+                    sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
                     self.likeTracks(packages, completion: completion, finalCompletion: finalCompletion)
                     return
-                }
-                
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode == 429 {
-                        sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
-                        self.likeTracks(packages, completion: completion, finalCompletion: finalCompletion)
-                        return
-                    } else {
-                        var remaining = packages
-                        remaining.remove(at: 0)
-                        completion(remaining.count)
-                        self.likeTracks(remaining, completion: completion, finalCompletion: finalCompletion)
-                        return
-                    }
-                }
-                
-                guard data != nil else {
+                } else {
+                    var remaining = packages
+                    remaining.remove(at: 0)
+                    completion(remaining.count)
+                    self.likeTracks(remaining, completion: completion, finalCompletion: finalCompletion)
                     return
                 }
             }
-            task.resume()
+            
+            guard data != nil else {
+                return
+            }
         }
+        task.resume()
+    }
+    
+    // MARK: Deleting tracks
+    
+    func deleteAllTracks() {
+        guard !self.savedTracks.isEmpty else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+            self.progressViewModel.off()
+            self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
+            self.progressViewModel.progressPercentage = 0.0
+            self.progressViewModel.determinate = self.savedTracks.count > 400
+            self.progressViewModel.active = true
+        }
+        
+        var packages = [[SharedTrack]]()
+        
+        var package = [SharedTrack]()
+        for track in savedTracks {
+            package.append(track)
+            if package.count == 50 {
+                packages.append(package)
+                package.removeAll()
+            }
+        }
+        if !package.isEmpty {
+            packages.append(package)
+        }
+        
+        self.deleteTracks(
+            packages,
+            completion: { (remaining: Int) in
+                DispatchQueue.main.async {
+                    self.progressViewModel.progressPercentage = Double(packages.count - remaining) / Double(packages.count) * 100
+                }
+            }, finalCompletion: {
+                DispatchQueue.main.async {
+                    self.progressViewModel.off()
+                    TransferManager.shared.operationInProgress = false
+                }
+                usleep(self.requestRepeatDelay)
+                self.getSavedTracks()
+            }
+        )
+    }
     
     private func deleteTracks(
         _ packages: [[SharedTrack]],
@@ -690,6 +703,8 @@ final class SpotifyService: APIService {
         task.resume()
     }
 }
+
+// MARK: - Extensions
 
 extension SpotifyService: NSCopying {
     

@@ -9,8 +9,12 @@ import Foundation
 
 class SpotifyTracksRequestTask: MTTask {
     
+    // MARK: - Aliases
+    
     typealias CompletionResult = Result<TracksData, TracksRequestError>
     typealias Completion = (CompletionResult) -> Void
+    
+    // MARK: - Instance properties
     
     private let id: Int
     private let offset: Int
@@ -86,6 +90,8 @@ class SpotifyTracksRequestTask: MTTask {
         completed = true
     }
 }
+
+// MARK: - Extensions
 
 extension SpotifyTracksRequestTask: Equatable {
     

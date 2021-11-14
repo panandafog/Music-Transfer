@@ -43,8 +43,8 @@ struct ToolsView: View {
                     content: {
                         Alert(
                             title: Text("Are you sure you want to transfer all tracks?"),
-                            message: Text("All your tracks from \(model.services[selectionFrom].apiName) "
-                                          + "would be added to \(model.services[selectionTo].apiName)."),
+                            message: Text("All your tracks from \(type(of: model.services[selectionFrom]).apiName) "
+                                          + "would be added to \(type(of: model.services[selectionTo]).apiName)."),
                             primaryButton: .destructive(Text("Transfer")) {
                                 DispatchQueue.global(qos: .background).async { [self] in
                                     model.transfer(
