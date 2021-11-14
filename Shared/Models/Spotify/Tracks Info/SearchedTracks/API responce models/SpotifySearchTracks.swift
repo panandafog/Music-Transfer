@@ -47,7 +47,6 @@ enum SpotifySearchTracks {
     }
     
     enum ArtistType: String, Codable {
-        case artist = "artist"
+        case artist
     }
 }
-

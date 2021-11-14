@@ -10,7 +10,9 @@ import SwiftUI
 extension View {
     
     @inlinable
-    func modify<T: View>(@ViewBuilder modifier: (Self) -> T) -> T {
+    func modify<T: View>(
+        @ViewBuilder modifier: (Self) -> T
+    ) -> T {
         modifier(self)
     }
 }

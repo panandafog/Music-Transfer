@@ -50,7 +50,7 @@ class SpotifyTracksRequestTask: MTTask {
         
         request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
         
-        let task = URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+        let task = URLSession.shared.dataTask(with: request) { [self] data, response, error in
             
             guard error == nil else {
                 complete(result: .failure(.unknown))
@@ -58,7 +58,7 @@ class SpotifyTracksRequestTask: MTTask {
                 return
             }
             
-            guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
+            guard let data = data, String(data: data, encoding: .utf8) != nil else {
                 return
             }
             

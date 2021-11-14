@@ -58,7 +58,7 @@ extension SpotifySavedItemRealm {
         if let album = spotifySavedItem.track.album {
             self.album = SpotifyAlbumRealm(album)
         }
-        artists.append(objectsIn: spotifySavedItem.track.artists.map({ SpotifyArtistRealm($0) }))
+        artists.append(objectsIn: spotifySavedItem.track.artists.map { SpotifyArtistRealm($0) })
         addedAt = spotifySavedItem.added_at
     }
 }

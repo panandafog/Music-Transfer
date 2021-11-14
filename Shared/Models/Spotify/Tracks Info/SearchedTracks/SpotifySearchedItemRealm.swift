@@ -46,6 +46,6 @@ extension SpotifySearchedItemRealm {
         if let album = spotifySearchedItem.album {
             self.album = SpotifyAlbumRealm(album)
         }
-        artists.append(objectsIn: spotifySearchedItem.artists.map({ SpotifyArtistRealm($0) }))
+        artists.append(objectsIn: spotifySearchedItem.artists.map { SpotifyArtistRealm($0) })
     }
 }

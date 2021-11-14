@@ -58,7 +58,7 @@ class MTQueue<OperationType: MTTask> {
                 completion()
             }
         case .serial:
-            var rec: (() -> Void)? = nil
+            var rec: (() -> Void)?
             rec = { [self] in
                 guard let operation = pendingOperations.first else {
                     completed = true
@@ -70,10 +70,10 @@ class MTQueue<OperationType: MTTask> {
                         $0 == operation
                     }
                     completedOperations.append(operation)
-                    rec!()
+                    rec?()
                 }
             }
-            rec!()
+            rec?()
         }
     }
     

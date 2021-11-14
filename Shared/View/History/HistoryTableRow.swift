@@ -11,19 +11,19 @@ struct HistoryTableRow: View {
     
     var operation: TransferOperation
     
-    func getName() -> String {
-        if ((operation as? SpotifyAddTracksOperation) != nil) {
-            return "Transfer to Spotify"
-        }
-        if ((operation as? VKAddTracksOperation) != nil) {
-            return "Transfer to VK"
-        }
-        return "..."
-    }
-    
     var body: some View {
         HStack {
             Text(getName())
         }
+    }
+    
+    func getName() -> String {
+        if (operation as? SpotifyAddTracksOperation) != nil {
+            return "Transfer to Spotify"
+        }
+        if (operation as? VKAddTracksOperation) != nil {
+            return "Transfer to VK"
+        }
+        return "..."
     }
 }

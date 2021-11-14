@@ -12,7 +12,7 @@ struct HistoryView: View {
     @ObservedObject private var model = TransferManager.shared
     
     var body: some View {
-        VStack(alignment: .leading, spacing: /*@START_MENU_TOKEN@*/nil/*@END_MENU_TOKEN@*/, content: {
+        VStack(alignment: .leading, spacing: nil) {
             HStack {
                 Text("History")
                     .font(.body)
@@ -24,8 +24,8 @@ struct HistoryView: View {
                     HistoryTableRow(operation: operation)
                 }
             }
-        })
-            .padding()
+        }
+        .padding()
     }
 }
 

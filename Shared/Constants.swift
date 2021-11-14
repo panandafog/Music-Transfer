@@ -8,4 +8,4 @@
 
 import Foundation
 
-let failedRequestReattemptDelay: UInt32 = 5
+let kFailedRequestReattemptDelay: UInt32 = 5

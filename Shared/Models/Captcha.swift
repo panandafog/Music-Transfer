@@ -22,6 +22,9 @@ struct Captcha {
         self.errorMessage = errorMessage
         self.solveCompletion = solveCompletion
     }
+}
+
+extension Captcha {
     
     // MARK: - Solved
     

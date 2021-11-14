@@ -10,10 +10,10 @@ import RealmSwift
 
 extension Object {
     
-    static func incrementedPK(primaryKey: String = "id") -> Int {
-        let realm = try! Realm()
+    static func incrementedPK(primaryKey: String = "id") -> Int? {
+        let realm = try? Realm()
         
-        return realm
+        return realm?
             .objects(Self.self)
             .max(ofProperty: primaryKey)
         as Int? ?? 0 + 1

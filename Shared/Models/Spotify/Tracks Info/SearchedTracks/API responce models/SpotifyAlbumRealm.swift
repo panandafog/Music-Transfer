@@ -49,7 +49,7 @@ extension SpotifyAlbumRealm {
         
         id = spotifySearchedAlbum.id
         name = spotifySearchedAlbum.name
-        artists.append(objectsIn: spotifySearchedAlbum.artists.map({ SpotifyArtistRealm($0) }))
+        artists.append(objectsIn: spotifySearchedAlbum.artists.map { SpotifyArtistRealm($0) })
     }
     
     convenience init(_ spotifySavedAlbum: SpotifySavedTracks.Album) {
@@ -57,6 +57,6 @@ extension SpotifyAlbumRealm {
         
         id = spotifySavedAlbum.id
         name = spotifySavedAlbum.name
-        artists.append(objectsIn: spotifySavedAlbum.artists.map({ SpotifyArtistRealm($0) }))
+        artists.append(objectsIn: spotifySavedAlbum.artists.map { SpotifyArtistRealm($0) })
     }
 }

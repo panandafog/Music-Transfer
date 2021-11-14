@@ -16,7 +16,7 @@ struct BrowserView<Browser: APIBrowser>: View {
     var body: some View {
         HStack {
             self.browser
-                .onAppear() {
+                .onAppear {
                     self.browser.load()
                 }
                 .onReceive(browser.viewDismissalModePublisher) { shouldDismiss in

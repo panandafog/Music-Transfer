@@ -5,6 +5,8 @@
 //  Created by panandafog on 05.11.2021.
 //
 
+// swiftlint:disable force_unwrapping
+
 import RealmSwift
 
 class VKTrackToLikeRealm: Object {

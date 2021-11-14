@@ -31,13 +31,15 @@ struct SharedTrack: Identifiable {
         let patterns = [" feat. ", " ft. "]
         do {
             for pattern in patterns {
-                let regEx = try NSRegularExpression (pattern: pattern, options: [])
+                let regEx = try NSRegularExpression(pattern: pattern, options: [])
                 let nsString = artistsStr as NSString
-                let range = NSMakeRange(0, nsString.length)
-                artistsStr = regEx.stringByReplacingMatches(in: artistsStr,
-                                                            options: .withTransparentBounds,
-                                                            range: range,
-                                                            withTemplate: ", ")
+                let range = NSRange(location: 0, length: nsString.length)
+                artistsStr = regEx.stringByReplacingMatches(
+                    in: artistsStr,
+                    options: .withTransparentBounds,
+                    range: range,
+                    withTemplate: ", "
+                )
             }
         } catch _ as NSError {
             print("Matching failed")
@@ -60,7 +62,7 @@ struct SharedTrack: Identifiable {
         self.id = track.id
         self.artists = artists
         self.title = track.name
-        self.durationS = track.duration_ms / 1000
+        self.durationS = track.duration_ms / 1_000
     }
     
     init(from item: SpotifySavedTracks.Item) {
@@ -77,7 +79,28 @@ struct SharedTrack: Identifiable {
         self.id = item.id
         self.artists = artists
         self.title = item.name
-        self.durationS = item.duration_ms / 1000
+        self.durationS = item.duration_ms / 1_000
+    }
+    
+    // MARK: makeArray
+    static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {
+        var res = [SharedTrack]()
+        
+        list.items.forEach {
+            res.append(SharedTrack(from: $0))
+        }
+        
+        return res
+    }
+    
+    static func makeArray(from list: VKSavedTracks.TracksList) -> [SharedTrack] {
+        var res = [SharedTrack]()
+        
+        list.response.items.forEach {
+            res.append(SharedTrack(from: $0))
+        }
+        
+        return res
     }
     
     // MARK: strArtists
@@ -88,30 +111,9 @@ struct SharedTrack: Identifiable {
                 res.append(artists[index] + ", ")
             }
         }
-        if !artists.isEmpty {
-            res.append(artists.last!)
+        if !artists.isEmpty, let last = artists.last {
+            res.append(last)
         }
-        return res
-    }
-    
-    // MARK: makeArray
-    static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {
-        var res = [SharedTrack]()
-        
-        list.items.forEach({
-            res.append(SharedTrack(from: $0))
-        })
-        
-        return res
-    }
-    
-    static func makeArray(from list: VKSavedTracks.TracksList) -> [SharedTrack] {
-        var res = [SharedTrack]()
-        
-        list.response.items.forEach({
-            res.append(SharedTrack(from: $0))
-        })
-        
         return res
     }
 }
@@ -127,14 +129,14 @@ extension SharedTrack: Equatable {
         }
         
         var lhsArtists = [String]()
-        lhs.artists.forEach({
+        lhs.artists.forEach {
             lhsArtists.append($0.lowercased())
-        })
+        }
         
         var rhsArtists = [String]()
-        rhs.artists.forEach({
+        rhs.artists.forEach {
             rhsArtists.append($0.lowercased())
-        })
+        }
         
         var equalArtistsL = true
         let artistL = lhsArtists[0]
@@ -179,14 +181,14 @@ extension SharedTrack: Equatable {
         }
         
         var lhsArtists = [String]()
-        lhs.artists.forEach({
+        lhs.artists.forEach {
             lhsArtists.append($0.lowercased())
-        })
+        }
         
         var rhsArtists = [String]()
-        rhs.artists.forEach({
+        rhs.artists.forEach {
             rhsArtists.append($0.lowercased())
-        })
+        }
         
         var equalArtistsL = true
         let artistL = lhsArtists[0]
@@ -257,13 +259,15 @@ extension SharedTrack: Equatable {
         let patterns = ["\\ *\\(.*\\)", "\\ *\\[.*\\]"]
         do {
             for pattern in patterns {
-                let regEx = try NSRegularExpression (pattern: pattern, options: [])
+                let regEx = try NSRegularExpression(pattern: pattern, options: [])
                 let nsString = title as NSString
-                let range = NSMakeRange(0, nsString.length)
-                title = regEx.stringByReplacingMatches(in: title,
-                                                       options: .withTransparentBounds,
-                                                       range: range,
-                                                       withTemplate: "")
+                let range = NSRange(location: 0, length: nsString.length)
+                title = regEx.stringByReplacingMatches(
+                    in: title,
+                    options: .withTransparentBounds,
+                    range: range,
+                    withTemplate: ""
+                )
             }
         } catch _ as NSError {
         }

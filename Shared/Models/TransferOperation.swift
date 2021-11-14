@@ -14,19 +14,15 @@ protocol TransferOperation {
 
 extension TransferOperation {
     var started: Bool {
-        for suboperation in suboperations {
-            if suboperation.started {
-                return true
-            }
+        for suboperation in suboperations where suboperation.started {
+            return true
         }
         return false
     }
     
     var completed: Bool {
-        for suboperation in suboperations {
-            if !suboperation.completed {
-                return false
-            }
+        for suboperation in suboperations where !suboperation.completed {
+            return false
         }
         return true
     }

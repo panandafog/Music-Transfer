@@ -24,13 +24,13 @@ struct CaptchaView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 }
-                .frame(width: 180, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                .frame(width: 180, alignment: .center)
             }
             HStack {
                 Spacer()
                 HStack {
                     TextField("Captcha", text: $key)
-                    Button("Apply", action: {
+                    Button("Apply") {
                         captcha.solveCompletion(
                             Captcha.Solved(
                                 sid: captcha.errorMessage.error.captcha_sid,
@@ -38,7 +38,7 @@ struct CaptchaView: View {
                             )
                         )
                         solveAction?()
-                    })
+                    }
                 }
                 .frame(width: 180)
                 Spacer()
@@ -49,20 +49,22 @@ struct CaptchaView: View {
     }
 }
 
+// swiftlint:disable type_name
 struct CaptchaView_Preview: PreviewProvider {
     static var previews: some View {
         CaptchaView(
-            captcha: .init(
-                errorMessage: VKCaptcha.ErrorMessage(
-                    error: VKCaptcha.Error(
-                        error_code: 123,
-                        error_msg: "Captcha needed",
-                        request_params: [VKCaptcha.RequestParam](),
-                        captcha_sid: "149876991953",
-                        captcha_img: "https://api.vk.com/captcha.php?sid=149876991953&s=1")
-                ),
-                solveCompletion: {_ in }
-            )
+            captcha: Captcha(
+                errorMessage:
+                    VKCaptcha.ErrorMessage(
+                        error: VKCaptcha.Error(
+                            error_code: 123,
+                            error_msg: "Captcha needed",
+                            request_params: [VKCaptcha.RequestParam](),
+                            captcha_sid: "149876991953",
+                            captcha_img: "https://api.vk.com/captcha.php?sid=149876991953&s=1"
+                        )
+                    )
+            ) { _ in }
         )
     }
 }
