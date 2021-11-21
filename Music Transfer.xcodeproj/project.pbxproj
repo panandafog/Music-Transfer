@@ -86,6 +86,8 @@
 		0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
 		0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */; };
 		0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* MainProgressView.swift */; };
+		0B7D8AA2274ADA8B00E0321A /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */; };
+		0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */; };
 		0B81BE6527354D960024D4EC /* VKSearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */; };
 		0B81BE6827354E180024D4EC /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
 		0B81BE6A27354E5C0024D4EC /* VKSearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */; };
@@ -234,6 +236,7 @@
 		0B42352A26E431A6007CAAB7 /* TransferManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferManager.swift; sourceTree = "<group>"; };
 		0B42353026E4D0F2007CAAB7 /* Captcha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Captcha.swift; sourceTree = "<group>"; };
 		0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaRequestView.swift; sourceTree = "<group>"; };
+		0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceView.swift; sourceTree = "<group>"; };
 		0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrack.swift; sourceTree = "<group>"; };
 		0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchTracksSuboperation.swift; sourceTree = "<group>"; };
 		0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrackRealm.swift; sourceTree = "<group>"; };
@@ -681,6 +684,7 @@
 			children = (
 				0B2C14BB25A6781300ACB2C7 /* TransferView.swift */,
 				0B2C158125A6806800ACB2C7 /* ToolsView.swift */,
+				0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */,
 				0B81BE8F273824210024D4EC /* History */,
 				0BC263C225BDA37B00820FE0 /* SecondaryViews */,
 			);
@@ -1095,6 +1099,7 @@
 				0BC2639F25BD9B7F00820FE0 /* SpotifyBrowser.swift in Sources */,
 				0B1755A325BF3A1A0094E75C /* LoginView.swift in Sources */,
 				0B2C154825A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
+				0B7D8AA2274ADA8B00E0321A /* ServiceView.swift in Sources */,
 				0BE6DCAF27124B49003BEC3B /* NetworkService.swift in Sources */,
 				0B81BE8A273738E30024D4EC /* VKAddTracksOperationRealm.swift in Sources */,
 				0B2C157625A6802800ACB2C7 /* VKAddTrack.swift in Sources */,
@@ -1167,6 +1172,7 @@
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */,
 				0B15509D2741C4BC000D0A38 /* VKAddTracksOperationRealm.swift in Sources */,
+				0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */,
 				0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */,

@@ -20,8 +20,26 @@ class TransferManager: ManagingDatabase, ObservableObject {
     
     // MARK: - Constants
     
-    private(set) var services: [APIService] = [SpotifyService(), VKService()]
+    var services: [APIService] = [SpotifyService(), VKService()]
     let objectWillChange = ObservableObjectPublisher()
+    
+    // MARK: - Services choosing
+    
+    @Published var selectionFrom = 0 {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published var selectionTo = 1 {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
     
     // MARK: - Operation state
     

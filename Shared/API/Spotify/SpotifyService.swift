@@ -52,8 +52,16 @@ final class SpotifyService: APIService {
     
     // MARK: - Instance properties
     
+    var showingAuthorization = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var isAuthorised = false {
-        willSet {
+        didSet {
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
@@ -135,6 +143,7 @@ final class SpotifyService: APIService {
                 return
             }
             self.tokensInfo = tokensInfo
+            self.isAuthorised = true
             DispatchQueue.main.async {
                 TransferManager.shared.operationInProgress = false
             }

@@ -10,10 +10,14 @@ import Foundation
 
 class LoginViewModel: ObservableObject {
     
+    let service: VKService
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
     var shouldDismissView = false {
         didSet {
-            viewDismissalModePublisher.send(shouldDismissView)
+            DispatchQueue.main.async {
+                self.viewDismissalModePublisher.send(self.shouldDismissView)
+            }
+            service.showingAuthorization = !shouldDismissView
         }
     }
     
@@ -25,6 +29,7 @@ class LoginViewModel: ObservableObject {
     @Published var completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
     
     init(
+        service: VKService,
         twoFactor: Bool,
         captcha: Captcha.Solved?,
         login: String? = nil,
@@ -32,6 +37,7 @@ class LoginViewModel: ObservableObject {
         code: String? = nil,
         completion: @escaping ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
     ) {
+        self.service = service
         self.login = login ?? ""
         self.password = password ?? ""
         self.code = code ?? ""

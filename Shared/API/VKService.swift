@@ -31,8 +31,18 @@ final class VKService: APIService {
     
     // MARK: - Instance properties
     
+    var showingAuthorization = false {
+        didSet {
+            print("-=- vk showing: \(isAuthorised)")
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var isAuthorised = false {
-        willSet {
+        didSet {
+            print("-=- vk auth: \(isAuthorised)")
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
@@ -88,10 +98,13 @@ final class VKService: APIService {
     // MARK: - Authorization methods
     
     func authorize() -> AnyView {
-        let model = LoginViewModel(twoFactor: false,
-                                   captcha: nil,
-                                   completion: requestTokens(username:password:code:captcha:))
-        self.loginViewModel = model
+        let model = LoginViewModel(
+            service: self,
+            twoFactor: false,
+            captcha: nil,
+            completion: requestTokens(username:password:code:captcha:)
+        )
+        loginViewModel = model
         return AnyView(LoginView(model: model))
     }
     
@@ -101,11 +114,7 @@ final class VKService: APIService {
         code: String?,
         captcha: Captcha.Solved?
     ) {
-#if os(macOS)
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-#endif
+        TransferManager.shared.operationInProgress = true
         
         var tmp = URLComponents()
         tmp.scheme = "https"
@@ -162,9 +171,7 @@ final class VKService: APIService {
             }
             
             guard let data = data, String(data: data, encoding: .utf8) != nil else {
-                DispatchQueue.main.async {
-                    TransferManager.shared.operationInProgress = false
-                }
+                TransferManager.shared.operationInProgress = false
                 return
             }
             
@@ -173,9 +180,7 @@ final class VKService: APIService {
             if tokensInfo != nil {
                 
                 guard let tokensInfo = tokensInfo else {
-                    DispatchQueue.main.async {
-                        TransferManager.shared.operationInProgress = false
-                    }
+                    TransferManager.shared.operationInProgress = false
                     return
                 }
                 
@@ -191,6 +196,7 @@ final class VKService: APIService {
                 }
                 
                 self.isAuthorised = true
+                TransferManager.shared.operationInProgress = false
                 
             } else {
                 
@@ -566,14 +572,14 @@ final class VKService: APIService {
                 if (response as? HTTPURLResponse) != nil {
                     if let error = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
                         let captcha = Captcha(errorMessage: error) {(_ solvedCaptcha: Captcha.Solved) in
-                                self.searchTracks(
-                                    tracks,
-                                    attempt: attempt,
-                                    own: own,
-                                    captcha: solvedCaptcha,
-                                    completion: completion,
-                                    finalCompletion: finalCompletion
-                                )
+                            self.searchTracks(
+                                tracks,
+                                attempt: attempt,
+                                own: own,
+                                captcha: solvedCaptcha,
+                                completion: completion,
+                                finalCompletion: finalCompletion
+                            )
                         }
                         TransferManager.shared.captcha = captcha
                         

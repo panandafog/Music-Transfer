@@ -95,7 +95,6 @@ public extension SpotifyBrowser {
                     return
                 }
                 
-                service.isAuthorised = true
                 service.requestTokens(code: codeValue)
                 
                 decisionHandler(.cancel)
