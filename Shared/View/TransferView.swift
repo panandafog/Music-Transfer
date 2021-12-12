@@ -18,13 +18,13 @@ struct TransferView: View {
                 CaptchaRequestView {
                     model.solvingCaptcha = true
                 }
-                    .padding()
-                    .sheet(isPresented: $model.solvingCaptcha) {
-                        CaptchaView(captcha: captcha) {
-                            model.solvingCaptcha = false
-                            model.captcha = nil
-                        }
+                .padding()
+                .sheet(isPresented: $model.solvingCaptcha) {
+                    CaptchaView(captcha: captcha) {
+                        model.solvingCaptcha = false
+                        model.captcha = nil
                     }
+                }
             } else {
                 if model.active {
                     MainProgressView()
@@ -53,5 +53,6 @@ struct TransferView: View {
             
             bottomView
         }
+        .navigationTitle("Transfer")
     }
 }

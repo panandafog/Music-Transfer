@@ -12,20 +12,26 @@ struct HistoryView: View {
     @ObservedObject private var model = TransferManager.shared
     
     var body: some View {
-        VStack(alignment: .leading, spacing: nil) {
-            HStack {
-                Text("History")
-                    .font(.body)
-                Spacer()
-                Text("count: \(model.operationsHistory.count)")
-            }
-            ZStack {
-                List(model.operationsHistory, id: \.id) { operation in
-                    HistoryTableRow(operation: operation)
-                }
+#if os(macOS)
+        NavigationView {
+            listView
+        }
+        .navigationTitle("History")
+        .padding([.top], defaultToolbarPadding)
+#else
+        listView
+            .navigationTitle("History")
+#endif
+    }
+    
+    var listView: some View {
+        List(model.operationsHistory, id: \.id) { operation in
+            NavigationLink(
+                destination: TransferOperationTracksView(operation: operation)
+            ) {
+                HistoryTableRow(operation: operation)
             }
         }
-        .padding()
     }
 }
 

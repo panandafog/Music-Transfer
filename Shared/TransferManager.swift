@@ -20,7 +20,7 @@ class TransferManager: ManagingDatabase, ObservableObject {
     
     // MARK: - Constants
     
-    var services: [APIService] = [SpotifyService(), VKService()]
+    var services: [APIService] = [SpotifyService(), VKService(), LastFmService()]
     let objectWillChange = ObservableObjectPublisher()
     
     // MARK: - Services choosing

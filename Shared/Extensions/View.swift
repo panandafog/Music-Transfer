@@ -9,6 +9,10 @@ import SwiftUI
 
 extension View {
     
+    var defaultToolbarPadding: CGFloat {
+        1
+    }
+    
     @inlinable
     func modify<T: View>(
         @ViewBuilder modifier: (Self) -> T

@@ -10,7 +10,7 @@ import Foundation
 
 class LoginViewModel: ObservableObject {
     
-    let service: VKService
+    var service: APIService
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
     var shouldDismissView = false {
         didSet {
@@ -29,7 +29,7 @@ class LoginViewModel: ObservableObject {
     @Published var completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
     
     init(
-        service: VKService,
+        service: APIService,
         twoFactor: Bool,
         captcha: Captcha.Solved?,
         login: String? = nil,

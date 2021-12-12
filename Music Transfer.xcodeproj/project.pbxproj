@@ -11,6 +11,16 @@
 		0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15A725A6810E00ACB2C7 /* BrowserViewDelegate.swift */; };
 		0B02BC2026EEAE0300F395E6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B02BC1F26EEAE0300F395E6 /* View.swift */; };
 		0B02BC2126EEAF6000F395E6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B02BC1F26EEAE0300F395E6 /* View.swift */; };
+		0B0352C1276557C000835F56 /* LastFmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C0276557C000835F56 /* LastFmService.swift */; };
+		0B0352C2276557C000835F56 /* LastFmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C0276557C000835F56 /* LastFmService.swift */; };
+		0B0352C42765588500835F56 /* LastFmKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C32765588500835F56 /* LastFmKeys.swift */; };
+		0B0352C52765588500835F56 /* LastFmKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C32765588500835F56 /* LastFmKeys.swift */; };
+		0B0352C927655F5900835F56 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C827655F5900835F56 /* MD5.swift */; };
+		0B0352CA27655F5900835F56 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352C827655F5900835F56 /* MD5.swift */; };
+		0B0352CC276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */; };
+		0B0352CD276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */; };
+		0B0352CF2765682B00835F56 /* LastFmSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CE2765682B00835F56 /* LastFmSession.swift */; };
+		0B0352D02765682B00835F56 /* LastFmSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CE2765682B00835F56 /* LastFmSession.swift */; };
 		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
 		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
 		0B1550992741C483000D0A38 /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
@@ -169,6 +179,8 @@
 		0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC127134FE3003BEC3B /* MTTask.swift */; };
 		0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
 		0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */; };
+		0BF0658A2752DF4B006A81F3 /* TransferOperationTracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF065892752DF4B006A81F3 /* TransferOperationTracksView.swift */; };
+		0BF0658B2752DF4B006A81F3 /* TransferOperationTracksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF065892752DF4B006A81F3 /* TransferOperationTracksView.swift */; };
 		2607A0709AF3086D4A5E4DE3 /* libPods-Music Transfer (macOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DB681A3095AF8D37663C632 /* libPods-Music Transfer (macOS).a */; };
 		314539FD730124145C93A290 /* libPods-Music Transfer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = 629641A98D20EF95679CDC47 /* libPods-Music Transfer (iOS).a */; };
 /* End PBXBuildFile section */
@@ -193,6 +205,11 @@
 /* Begin PBXFileReference section */
 		068347EF6AFEE41CD72D6222 /* Pods-Music Transfer (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).release.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).release.xcconfig"; sourceTree = "<group>"; };
 		0B02BC1F26EEAE0300F395E6 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		0B0352C0276557C000835F56 /* LastFmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmService.swift; sourceTree = "<group>"; };
+		0B0352C32765588500835F56 /* LastFmKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmKeys.swift; sourceTree = "<group>"; };
+		0B0352C827655F5900835F56 /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
+		0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAuthorizationResponse.swift; sourceTree = "<group>"; };
+		0B0352CE2765682B00835F56 /* LastFmSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSession.swift; sourceTree = "<group>"; };
 		0B17559925BF304D0094E75C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferApp.swift; sourceTree = "<group>"; };
 		0B2C14BB25A6781300ACB2C7 /* TransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferView.swift; sourceTree = "<group>"; };
@@ -284,6 +301,7 @@
 		0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTQueue.swift; sourceTree = "<group>"; };
 		0BE6DCC127134FE3003BEC3B /* MTTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTTask.swift; sourceTree = "<group>"; };
 		0BE6DCC627137FB7003BEC3B /* SpotifyTracksRequestTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksRequestTask.swift; sourceTree = "<group>"; };
+		0BF065892752DF4B006A81F3 /* TransferOperationTracksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferOperationTracksView.swift; sourceTree = "<group>"; };
 		149A4CF6F407C6434FD1A272 /* Pods-Music Transfer (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (iOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (iOS)/Pods-Music Transfer (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		5510CCAA480DA343AE145ED6 /* Pods-Music Transfer (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music Transfer (macOS).debug.xcconfig"; path = "Target Support Files/Pods-Music Transfer (macOS)/Pods-Music Transfer (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 		629641A98D20EF95679CDC47 /* libPods-Music Transfer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Music Transfer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -336,6 +354,24 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		0B0352C627655B2C00835F56 /* Last.fm */ = {
+			isa = PBXGroup;
+			children = (
+				0B0352C0276557C000835F56 /* LastFmService.swift */,
+				0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */,
+				0B0352CE2765682B00835F56 /* LastFmSession.swift */,
+			);
+			path = Last.fm;
+			sourceTree = "<group>";
+		};
+		0B0352C727655F3D00835F56 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				0B0352C827655F5900835F56 /* MD5.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		0B0AB42625B8A35F003254E8 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +407,7 @@
 				0BE6DCA6271249D0003BEC3B /* Logging */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
+				0B0352C727655F3D00835F56 /* Security */,
 				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
 				0B2C15DF25A682A000ACB2C7 /* Constants.swift */,
@@ -432,6 +469,7 @@
 		0B2C150625A67E2700ACB2C7 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				0B0352C627655B2C00835F56 /* Last.fm */,
 				0BE6DCC527137E8C003BEC3B /* Spotify */,
 				0B2C150A25A67E6000ACB2C7 /* APIService.swift */,
 				0B2C152425A67EDA00ACB2C7 /* VKService.swift */,
@@ -443,6 +481,7 @@
 		0B2C150725A67E3900ACB2C7 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
+				0B0352C32765588500835F56 /* LastFmKeys.swift */,
 				0B2C160725A6843000ACB2C7 /* SpotifyKeys.swift */,
 				0B2C160025A6841800ACB2C7 /* VKKeys.swift */,
 			);
@@ -675,6 +714,7 @@
 			children = (
 				0BC2635B25BD815300820FE0 /* HistoryView.swift */,
 				0B81BE902738243F0024D4EC /* HistoryTableRow.swift */,
+				0BF065892752DF4B006A81F3 /* TransferOperationTracksView.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -1052,8 +1092,11 @@
 				0B81BE86273733510024D4EC /* VKAddTracksOperation.swift in Sources */,
 				0BB4F9A52725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
 				0BB4F99F2725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */,
+				0B0352CC276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */,
 				0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */,
+				0B0352C1276557C000835F56 /* LastFmService.swift in Sources */,
 				0BE6DCA827124A20003BEC3B /* Log.swift in Sources */,
+				0B0352C42765588500835F56 /* LastFmKeys.swift in Sources */,
 				0BC2639A25BD9B7B00820FE0 /* APIBrowser.swift in Sources */,
 				0BE6DCB527124D65003BEC3B /* RequestError.swift in Sources */,
 				0B81BE792735B0790024D4EC /* VKLikeTracksSuboperationRealm.swift in Sources */,
@@ -1070,7 +1113,9 @@
 				0B2C160825A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
 				0B81BE6827354E180024D4EC /* VKSearchTracksSuboperation.swift in Sources */,
 				0B2C150B25A67E6000ACB2C7 /* APIService.swift in Sources */,
+				0B0352CF2765682B00835F56 /* LastFmSession.swift in Sources */,
 				0B81BE88273734E00024D4EC /* SpotifyAddTracksOperationRealm.swift in Sources */,
+				0B0352C927655F5900835F56 /* MD5.swift in Sources */,
 				0B81BE912738243F0024D4EC /* HistoryTableRow.swift in Sources */,
 				0B9DFAFE271C88CE008E3893 /* TransferSuboperation.swift in Sources */,
 				0B2C156825A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
@@ -1094,6 +1139,7 @@
 				0B81BE83273708810024D4EC /* TransferOperation.swift in Sources */,
 				0B81BE71273552780024D4EC /* VKArtistRealm.swift in Sources */,
 				0BC8D85F260A890000AC204E /* CaptchaViewModel.swift in Sources */,
+				0BF0658A2752DF4B006A81F3 /* TransferOperationTracksView.swift in Sources */,
 				0B81BE7C2735B2650024D4EC /* VKTrackToLike.swift in Sources */,
 				0BE6DCC227134FE3003BEC3B /* MTTask.swift in Sources */,
 				0BC2639F25BD9B7F00820FE0 /* SpotifyBrowser.swift in Sources */,
@@ -1146,6 +1192,7 @@
 				0B2C15D325A6821500ACB2C7 /* TracksTableRow.swift in Sources */,
 				0B2C160925A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
 				0B2C153425A67F1C00ACB2C7 /* SpotifyBrowser.swift in Sources */,
+				0B0352CA27655F5900835F56 /* MD5.swift in Sources */,
 				0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */,
 				0BE6DCB127124CC1003BEC3B /* LogType.swift in Sources */,
 				0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */,
@@ -1171,6 +1218,7 @@
 				0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */,
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */,
+				0B0352D02765682B00835F56 /* LastFmSession.swift in Sources */,
 				0B15509D2741C4BC000D0A38 /* VKAddTracksOperationRealm.swift in Sources */,
 				0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
@@ -1178,6 +1226,7 @@
 				0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */,
 				0BE6DCB927125705003BEC3B /* String.swift in Sources */,
 				0B2C154925A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
+				0B0352C52765588500835F56 /* LastFmKeys.swift in Sources */,
 				0BE6DCB027124CBE003BEC3B /* Log.swift in Sources */,
 				0B2C158325A6806800ACB2C7 /* ToolsView.swift in Sources */,
 				0B9DFB06271C99FD008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
@@ -1190,8 +1239,10 @@
 				0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */,
 				0BE6DCB227124CC4003BEC3B /* Logger.swift in Sources */,
 				0B2C157725A6802800ACB2C7 /* VKAddTrack.swift in Sources */,
+				0B0352C2276557C000835F56 /* LastFmService.swift in Sources */,
 				0B2C15CC25A681EC00ACB2C7 /* TracksTable.swift in Sources */,
 				0B42352C26E431A6007CAAB7 /* TransferManager.swift in Sources */,
+				0BF0658B2752DF4B006A81F3 /* TransferOperationTracksView.swift in Sources */,
 				0B2C14E625A6781400ACB2C7 /* TransferView.swift in Sources */,
 				0BD0B19B2725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift in Sources */,
 				0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */,
@@ -1200,6 +1251,7 @@
 				0B2C153C25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
 				0B1550A72741C4F8000D0A38 /* ManagingDatabase.swift in Sources */,
 				0BE6DCB327124CC7003BEC3B /* NetworkService.swift in Sources */,
+				0B0352CD276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */,
 				0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */,
 				0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,

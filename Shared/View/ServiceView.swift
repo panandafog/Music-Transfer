@@ -99,10 +99,17 @@ struct ServiceView: View {
                     .disabled(!service.isAuthorised
                               || model.operationInProgress)
 #if !os(macOS)
-                NavigationLink("View saved tracks", destination:
-                                TracksTable(tracks: .init(get: {
-                    service.savedTracks
-                }, set: { _ in }), name: "Saved tracks:"))
+                NavigationLink(
+                    "View saved tracks",
+                    destination: TracksTable(
+                        tracks: .init(
+                            get: {
+                                service.savedTracks
+                            },
+                            set: { _ in }
+                        ),
+                        name: "Saved tracks:")
+                )
                     .disabled(!service.gotTracks
                               || model.operationInProgress)
 #endif
