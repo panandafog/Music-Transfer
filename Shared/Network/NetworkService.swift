@@ -13,6 +13,16 @@ enum NetworkService {
     private static let wrongCredsStatusCode = 401
     
     static func perform<DataType: Codable>(request: URLRequest, completion: @escaping (Result<DataType, RequestError>) -> Void) {
+        var requestBodyString = "none"
+        if let body = request.httpBody, let decoded = String(data: body, encoding: .utf8) {
+            requestBodyString = decoded
+        }
+        
+        Logger.write(
+            to: .network,
+            "Sending request \(String(describing: request))",
+            "Body: \(requestBodyString)"
+        )
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {

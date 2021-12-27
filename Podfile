@@ -1,6 +1,7 @@
 target 'Music Transfer (iOS)' do
   platform :ios, '14.0'
 
+  pod "PromiseKit", "~> 6.15.3"
   pod 'RealmSwift', '~> 10.8.0', :modular_headers => true
   pod 'Realm', '~> 10.8.0', :modular_headers => true
   pod 'SwiftLint'
@@ -11,6 +12,7 @@ end
 target 'Music Transfer (macOS)' do
   platform :macos, '11.0'
 
+  pod "PromiseKit", "~> 6.15.3"
   pod 'RealmSwift', '~> 10.8.0', :modular_headers => true
   pod 'Realm', '~> 10.8.0', :modular_headers => true
   pod 'SwiftLint'

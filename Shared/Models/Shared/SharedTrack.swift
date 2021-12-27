@@ -88,6 +88,13 @@ struct SharedTrack: Identifiable {
         self.durationS = item.duration_ms / 1_000
     }
     
+    init(from track: LastFmLovedTracks.Track) {
+        self.id = track.mbid
+        self.artists = [track.artist.name]
+        self.title = track.name
+        self.durationS = 0
+    }
+    
     // MARK: - Making array methods
     
     static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {
@@ -104,6 +111,20 @@ struct SharedTrack: Identifiable {
         var res = [SharedTrack]()
         
         list.response.items.forEach {
+            res.append(SharedTrack(from: $0))
+        }
+        
+        return res
+    }
+    
+    static func makeArray(from lovedTracks: LastFmLovedTracks) -> [SharedTrack] {
+        makeArray(from: lovedTracks.lovedtracks)
+    }
+    
+    static func makeArray(from lovedTracks: LastFmLovedTracks.LovedTracks) -> [SharedTrack] {
+        var res = [SharedTrack]()
+        
+        lovedTracks.track.forEach {
             res.append(SharedTrack(from: $0))
         }
         

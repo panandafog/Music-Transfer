@@ -6,11 +6,13 @@
 //
 
 import Foundation
+
 import var CommonCrypto.CC_MD5_DIGEST_LENGTH
 import func CommonCrypto.CC_MD5
 import typealias CommonCrypto.CC_LONG
 import CryptoKit
 
+import PromiseKit
 import RealmSwift
 import SwiftUI
 
@@ -20,11 +22,12 @@ final class LastFmService: APIService {
     
     static let apiName = "Last.fm"
     
-    var isAuthorised = false
+    var isAuthorised: Bool {
+        session != nil
+    }
     
     var showingAuthorization = false {
         didSet {
-            print("-=- last.fm showing: \(isAuthorised)")
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
@@ -79,52 +82,148 @@ final class LastFmService: APIService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, String(data: data, encoding: .utf8) != nil else {
-                TransferManager.shared.operationInProgress = false
-                return
-            }
-            
-            let response = try? JSONDecoder().decode(LastFmAuthorizationResponse.self, from: data)
-            
-            if response != nil {
-                
-                guard let response = response else {
-                    TransferManager.shared.operationInProgress = false
-                    return
-                }
-                
+        let resultHandler: (Swift.Result<LastFmAuthorizationResponse, RequestError>) -> Void = { result in
+            switch result {
+            case .success(let response):
                 self.session = response.session
                 
                 DispatchQueue.main.async {
                     self.loginViewModel?.shouldDismissView = true
                 }
                 
-                self.isAuthorised = true
                 TransferManager.shared.operationInProgress = false
-                
-            } else {
-                
-                print("error")
+            case .failure(let error):
+                print(error.message ?? "error")
             }
         }
-        task.resume()
+        
+        NetworkService.perform(request: request, completion: resultHandler)
     }
     
-    func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
+    private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
         let md5string = queryItems.map { $0.name + ($0.value ?? "") }.sorted().joined() + LastFmKeys.sharedSecret
         
         return URLQueryItem(
             name: "api_sig",
             value: Insecure.MD5.hash(
                 data: md5string.data(using: .utf8) ?? Data()
-            ).map {
-                String(format: "%02hhx", $0)
-            }.joined()
+            )
+                .map {
+                    String(format: "%02hhx", $0)
+                }
+                .joined()
         )
     }
     
     func getSavedTracks() {
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+        }
+        self.gotTracks = false
+        self.savedTracks = [SharedTrack]()
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.off()
+            TransferManager.shared.processName = "Receiving tracks from \(Self.apiName)"
+            TransferManager.shared.determinate = false
+            TransferManager.shared.active = true
+        }
+        
+        let completionHandler: () -> Void = {
+            DispatchQueue.main.async {
+                TransferManager.shared.off()
+                TransferManager.shared.operationInProgress = false
+#if os(macOS)
+                NSApp.requestUserAttention(.informationalRequest)
+#else
+                print("а это вообще можно сделать?")
+#endif
+            }
+        }
+        
+        let errorHandler: (Error) -> Void = { error in
+            print(error.localizedDescription)
+        }
+        
+        var totalPages = 0
+        getSavedTracksPage(page: 1)
+            .done { firstPage in
+                self.savedTracks.append(contentsOf: SharedTrack.makeArray(from: firstPage))
+                if let total = Int(firstPage.lovedtracks.attr.totalPages) {
+                    totalPages = total
+                }
+            }
+            .catch { error in
+                errorHandler(error)
+            }
+            .finally {
+                if totalPages > 1 {
+                    when(fulfilled: (2...totalPages).map { self.getSavedTracksPage(page: $0) })
+                        .done { (results: [LastFmLovedTracks]) in
+                            self.savedTracks.append(contentsOf: results.flatMap { SharedTrack.makeArray(from: $0) })
+                        }
+                        .catch { error in
+                            errorHandler(error)
+                        }
+                        .finally {
+                            self.gotTracks = true
+                            completionHandler()
+                        }
+                } else {
+                    self.gotTracks = false
+                    self.savedTracks = [SharedTrack]()
+                    completionHandler()
+                }
+            }
+    }
+    
+    private func getSavedTracksPage(page: Int, perPage: Int? = nil) -> Promise<LastFmLovedTracks> {
+        guard let session = session else {
+            return Promise<LastFmLovedTracks> { seal in
+                seal.reject(RequestError.unauthorized(message: nil))
+            }
+        }
+        
+        var queryItems = [
+            URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
+            URLQueryItem(name: "method", value: "user.getlovedtracks"),
+            URLQueryItem(name: "user", value: session.name),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "page", value: String(page))
+        ]
+        
+        if let perPage = perPage {
+            queryItems.append(URLQueryItem(name: "limit", value: String(perPage)))
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "ws.audioscrobbler.com"
+        tmp.path = "/2.0"
+        tmp.queryItems = queryItems
+        
+        guard let url = tmp.url else {
+            return Promise<LastFmLovedTracks> { seal in
+                seal.reject(RequestError.clientError(message: "Cannot make url"))
+            }
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        return Promise<LastFmLovedTracks> { seal in
+            let resultHandler: (Swift.Result<LastFmLovedTracks, RequestError>) -> Void = { result in
+                switch result {
+                case .success(let response):
+                    seal.fulfill(response)
+                    
+                case .failure(let error):
+                    seal.reject(error)
+                }
+            }
+            
+            NetworkService.perform(request: request, completion: resultHandler)
+        }
     }
     
     func deleteAllTracks() {
