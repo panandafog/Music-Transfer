@@ -16,6 +16,7 @@ protocol ManagingDatabase {
 }
 
 extension ManagingDatabase {
+    
     var databaseManager: DatabaseManager {
         DatabaseManagerImpl(configuration: .defaultConfiguration)
     }
@@ -29,6 +30,12 @@ extension ManagingDatabase {
     func save(_ operation: VKAddTracksOperation) {
         databaseManager.write([
             VKAddTracksOperationRealm(operation)
+        ])
+    }
+    
+    func save(_ operation: LastFmAddTracksOperation) {
+        databaseManager.write([
+            LastFmAddTracksOperationRealm(operation)
         ])
     }
     
@@ -53,6 +60,18 @@ extension ManagingDatabase {
     func save(_ suboperation: SpotifyLikeTracksSuboperation) {
         databaseManager.write([
             SpotifyLikeTracksSuboperationRealm(suboperation)
+        ])
+    }
+    
+    func save(_ suboperation: LastFmSearchTracksSuboperation) {
+        databaseManager.write([
+            LastFmSearchTracksSuboperationRealm(suboperation)
+        ])
+    }
+    
+    func save(_ suboperation: LastFmLikeTracksSuboperation) {
+        databaseManager.write([
+            LastFmLikeTracksSuboperationRealm(suboperation)
         ])
     }
 }

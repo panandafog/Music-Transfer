@@ -130,6 +130,8 @@ final class LastFmService: APIService {
         }
         
         let completionHandler: () -> Void = {
+            self.gotTracks = true
+            
             DispatchQueue.main.async {
                 TransferManager.shared.off()
                 TransferManager.shared.operationInProgress = false
@@ -166,12 +168,9 @@ final class LastFmService: APIService {
                             errorHandler(error)
                         }
                         .finally {
-                            self.gotTracks = true
                             completionHandler()
                         }
                 } else {
-                    self.gotTracks = false
-                    self.savedTracks = [SharedTrack]()
                     completionHandler()
                 }
             }
@@ -219,6 +218,146 @@ final class LastFmService: APIService {
                     
                 case .failure(let error):
                     seal.reject(error)
+                }
+            }
+            
+            NetworkService.perform(request: request, completion: resultHandler)
+        }
+    }
+    
+    func addTracks(
+        operation: LastFmAddTracksOperation,
+        updateHandler: @escaping TransferManager.LastFmAddTracksOperationHandler
+    ) {
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+        }
+        
+        operation.searchSuboperaion.started = Date()
+        updateHandler(operation)
+        
+        let tracks = operation.searchSuboperaion.tracks.map { $0.trackToSearch }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.determinate = tracks.count > 10
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.processName = "Searching tracks in \(Self.apiName)"
+            TransferManager.shared.active = true
+        }
+        
+        var currentTrack = -1
+        let tracksCount = tracks.count
+        
+        when(fulfilled: tracks.map { track -> Promise<LastFmTrackSearchResult> in
+            currentTrack += 1
+            
+            DispatchQueue.main.async {
+                TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+            }
+            
+            return self.searchTrack(track)
+        })
+            .done { (results: [LastFmTrackSearchResult]) in
+                DispatchQueue.main.async {
+                    TransferManager.shared.progressPercentage = 0.0
+                    TransferManager.shared.determinate = false
+                    TransferManager.shared.processName = "Processing search results"
+                    TransferManager.shared.active = true
+                }
+                print("-=-=-=-\(String(describing: results))")
+            }
+            .catch { error in
+                DispatchQueue.main.async {
+                    TransferManager.shared.progressPercentage = 0.0
+                    TransferManager.shared.determinate = false
+                    TransferManager.shared.active = false
+                }
+                print(error.localizedDescription)
+            }
+    }
+    
+    private func searchTrack(_ track: SharedTrack, page: Int = 1, perPage: Int? = nil) -> Promise<LastFmTrackSearchResult> {
+        var queryItems = [
+            URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
+            URLQueryItem(name: "method", value: "track.search"),
+            URLQueryItem(name: "track", value: track.title + " " + track.strArtists()),
+            URLQueryItem(name: "format", value: "json"),
+            URLQueryItem(name: "page", value: String(page))
+        ]
+        
+        if let perPage = perPage {
+            queryItems.append(URLQueryItem(name: "limit", value: String(perPage)))
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "ws.audioscrobbler.com"
+        tmp.path = "/2.0"
+        tmp.queryItems = queryItems
+        
+        guard let url = tmp.url else {
+            return Promise<LastFmTrackSearchResult> { seal in
+                seal.reject(RequestError.clientError(message: "Cannot make url"))
+            }
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        return Promise<LastFmTrackSearchResult> { seal in
+            let resultHandler: (Swift.Result<LastFmTrackSearchResult, RequestError>) -> Void = { result in
+                switch result {
+                case .success(let response):
+                    seal.fulfill(response)
+                    
+                case .failure(let error):
+                    seal.reject(error)
+                }
+            }
+            
+            NetworkService.perform(request: request, completion: resultHandler)
+        }
+    }
+    
+    private func likeTrack(_ track: SharedTrack) -> Promise<Void> {
+        guard let session = session else {
+            return Promise<Void> { seal in
+                seal.reject(RequestError.unauthorized(message: nil))
+            }
+        }
+        
+        var queryItems = [
+            URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
+            URLQueryItem(name: "sk", value: session.key),
+            URLQueryItem(name: "method", value: "track.love"),
+            URLQueryItem(name: "track", value: "Herzeleid"),
+            URLQueryItem(name: "artist", value: "Rammstein")
+        ]
+        
+        queryItems.append(getSignature(from: queryItems))
+        queryItems.append(URLQueryItem(name: "format", value: "json"))
+        
+        var tmp = URLComponents()
+        tmp.scheme = "https"
+        tmp.host = "ws.audioscrobbler.com"
+        tmp.path = "/2.0"
+        tmp.queryItems = queryItems
+        
+        guard let url = tmp.url else {
+            return Promise<Void> { seal in
+                seal.reject(RequestError.clientError(message: "Cannot make url"))
+            }
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        return Promise<Void> { seal in
+            let resultHandler: (RequestError?) -> Void = { error in
+                if let error = error {
+                    seal.reject(error)
+                } else {
+                    seal.fulfill(())
                 }
             }
             

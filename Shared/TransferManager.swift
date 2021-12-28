@@ -12,6 +12,7 @@ import SwiftUI
 class TransferManager: ManagingDatabase, ObservableObject {
     
     typealias SpotifyAddTracksOperationHandler = (SpotifyAddTracksOperation) -> Void
+    typealias LastFmAddTracksOperationHandler = (LastFmAddTracksOperation) -> Void
     typealias VKAddTracksOperationHandler = (VKAddTracksOperation) -> Void
     
     // MARK: - Singleton
@@ -115,17 +116,24 @@ class TransferManager: ManagingDatabase, ObservableObject {
     
     private var spotifyAddOperations: Results<SpotifyAddTracksOperationRealm>?
     private var vkAddOperations: Results<VKAddTracksOperationRealm>?
+    private var lastFmAddOperations: Results<LastFmAddTracksOperationRealm>?
     
     private var spotifyAddOperationsHistoryToken: NotificationToken?
     private var vkAddOperationsHistoryToken: NotificationToken?
+    private var lastFmAddOperationsHistoryToken: NotificationToken?
     
     private init() {
         spotifyAddOperations = databaseManager.read()
         vkAddOperations = databaseManager.read()
+        lastFmAddOperations = databaseManager.read()
+        
         spotifyAddOperationsHistoryToken = spotifyAddOperations?.observe { [self] _ in
             updateOperationsHistory()
         }
         vkAddOperationsHistoryToken = vkAddOperations?.observe { [self] _ in
+            updateOperationsHistory()
+        }
+        lastFmAddOperationsHistoryToken = lastFmAddOperations?.observe { [self] _ in
             updateOperationsHistory()
         }
     }
@@ -189,6 +197,18 @@ class TransferManager: ManagingDatabase, ObservableObject {
                 updateHandler: operationUpdateHandler
             )
         }
+        
+        if let lastFmService = destinationService as? LastFmService {
+            let operation = LastFmAddTracksOperation(tracksToAdd: departureService.savedTracks)
+            let operationUpdateHandler: LastFmAddTracksOperationHandler = { [self] operation in
+                save(operation)
+                
+            }
+            lastFmService.addTracks(
+                operation: operation,
+                updateHandler: operationUpdateHandler
+            )
+        }
     }
     
     private func updateOperationsHistory() {
@@ -201,6 +221,11 @@ class TransferManager: ManagingDatabase, ObservableObject {
         newHistory.append(
             contentsOf: vkAddOperations?.map {
                 $0.vkAddTracksOperation
+            } ?? []
+        )
+        newHistory.append(
+            contentsOf: lastFmAddOperations?.map {
+                $0.lastFmAddTracksOperation
             } ?? []
         )
         operationsHistory = newHistory.sorted { lhs, rhs in
