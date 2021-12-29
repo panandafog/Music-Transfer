@@ -95,6 +95,13 @@ struct SharedTrack: Identifiable {
         self.durationS = 0
     }
     
+    init(from track: LastFmTrackSearchResult.Track) {
+        self.id = track.mbid
+        self.artists = [track.artist]
+        self.title = track.name
+        self.durationS = 0
+    }
+    
     // MARK: - Making array methods
     
     static func makeArray(from list: SpotifySavedTracks.TracksList) -> [SharedTrack] {

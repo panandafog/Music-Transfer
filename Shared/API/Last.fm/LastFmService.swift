@@ -42,6 +42,8 @@ final class LastFmService: APIService {
     
     private (set) var session: LastFmSession?
     
+    private let requestRepeatDelay: UInt32 = 1_000_000
+    
     // MARK: - Authorization methods
     
     func authorize() -> AnyView {
@@ -144,7 +146,7 @@ final class LastFmService: APIService {
         }
         
         let errorHandler: (Error) -> Void = { error in
-            print(error.localizedDescription)
+            print("-=-=- \(error.localizedDescription)")
         }
         
         var totalPages = 0
@@ -160,7 +162,18 @@ final class LastFmService: APIService {
             }
             .finally {
                 if totalPages > 1 {
-                    when(fulfilled: (2...totalPages).map { self.getSavedTracksPage(page: $0) })
+                    var pagesIterator = (2...totalPages).makeIterator()
+                    let promiseGenerator = AnyIterator<Promise<LastFmLovedTracks>> {
+                        guard let page = pagesIterator.next() else {
+                            return nil
+                        }
+                        return self.getSavedTracksPage(page: page)
+                    }
+                    
+                    when(
+                        fulfilled: promiseGenerator,
+                        concurrently: 1
+                    )
                         .done { (results: [LastFmLovedTracks]) in
                             self.savedTracks.append(contentsOf: results.flatMap { SharedTrack.makeArray(from: $0) })
                         }
@@ -170,6 +183,7 @@ final class LastFmService: APIService {
                         .finally {
                             completionHandler()
                         }
+                    
                 } else {
                     completionHandler()
                 }
@@ -245,26 +259,48 @@ final class LastFmService: APIService {
             TransferManager.shared.active = true
         }
         
-        var currentTrack = -1
+        var currentTrack = 0
         let tracksCount = tracks.count
+        var tracksIterator = tracks.makeIterator()
         
-        when(fulfilled: tracks.map { track -> Promise<LastFmTrackSearchResult> in
-            currentTrack += 1
-            
-            DispatchQueue.main.async {
-                TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+        let getSearchPromise: (SharedTrack) -> Promise<LastFmSearchedTrack> = { track in
+            return Promise<LastFmSearchedTrack> { seal in
+                self.searchTrack(track)
+                    .done { searchResults in
+                        seal.fulfill(
+                            LastFmSearchedTrack(
+                                trackToSearch: track,
+                                foundTracks: searchResults.results.trackmatches.track
+                            )
+                        )
+                    }
+                    .catch { error in
+                        seal.reject(error)
+                    }
+                    .finally {
+                        currentTrack += 1
+                        
+                        DispatchQueue.main.async {
+                            TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+                        }
+                    }
             }
-            
-            return self.searchTrack(track)
-        })
-            .done { (results: [LastFmTrackSearchResult]) in
-                DispatchQueue.main.async {
-                    TransferManager.shared.progressPercentage = 0.0
-                    TransferManager.shared.determinate = false
-                    TransferManager.shared.processName = "Processing search results"
-                    TransferManager.shared.active = true
-                }
-                print("-=-=-=-\(String(describing: results))")
+        }
+        
+        let promiseGenerator = AnyIterator<Promise<LastFmSearchedTrack>> {
+            guard let track = tracksIterator.next() else {
+                return nil
+            }
+            return getSearchPromise(track)
+        }
+        
+        when(
+            fulfilled: promiseGenerator,
+            concurrently: 1
+        )
+            .done { (results: [LastFmSearchedTrack]) in
+                print("-=-=- done 00")
+                self.addTracks(operation: operation, updateHandler: updateHandler, searchResults: results)
             }
             .catch { error in
                 DispatchQueue.main.async {
@@ -272,8 +308,110 @@ final class LastFmService: APIService {
                     TransferManager.shared.determinate = false
                     TransferManager.shared.active = false
                 }
-                print(error.localizedDescription)
+                print("-=-=- \(error.localizedDescription)")
             }
+    }
+    
+    private func addTracks(
+        operation: LastFmAddTracksOperation,
+        updateHandler: @escaping TransferManager.LastFmAddTracksOperationHandler,
+        searchResults: [LastFmSearchedTrack]
+    ) {
+        if searchResults.count > 1_000 {
+            DispatchQueue.main.async {
+                TransferManager.shared.progressPercentage = 0.0
+                TransferManager.shared.determinate = false
+                TransferManager.shared.processName = "Processing search results"
+                TransferManager.shared.active = true
+            }
+        }
+        let filteredSearchResults = filterTracks(searchResults: searchResults)
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.determinate = filteredSearchResults.found.count > 5
+            TransferManager.shared.processName = "Adding tracks to \(Self.apiName)"
+        }
+        
+        operation.searchSuboperaion.completed = Date()
+        operation.likeSuboperation.started = Date()
+        operation.likeSuboperation.tracksToLike = filteredSearchResults.found.map { LastFmTrackToLike(track: $0, liked: false) }
+        operation.likeSuboperation.notFoundTracks = filteredSearchResults.notFound
+        updateHandler(operation)
+        
+        var currentTrack = 0
+        let tracksCount = filteredSearchResults.found.count
+        var tracksIterator = filteredSearchResults.found.makeIterator()
+        
+        let updateProgress: () -> Void = {
+            currentTrack += 1
+            DispatchQueue.main.async {
+                TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+            }
+        }
+        
+        let getLikePromise: (LastFmTrackSearchResult.Track) -> Promise<Void> = { track in
+            return Promise<Void> { seal in
+                self.likeTrack(SharedTrack(from: track))
+                    .done {
+                        operation.likeSuboperation.tracksToLike[currentTrack].liked = true
+                        updateHandler(operation)
+                        
+                        updateProgress()
+                        seal.fulfill(())
+                    }
+                    .catch { error in
+                        updateProgress()
+                        seal.reject(error)
+                    }
+            }
+        }
+        
+        let promiseGenerator = AnyIterator<Promise<Void>> {
+            guard let track = tracksIterator.next() else {
+                return nil
+            }
+            return getLikePromise(track)
+        }
+        
+        when(
+            fulfilled: promiseGenerator,
+            concurrently: 1
+        )
+            .done { _ in
+                operation.likeSuboperation.completed = Date()
+                updateHandler(operation)
+                
+                if !operation.likeSuboperation.notFoundTracks.isEmpty {
+#if os(macOS)
+                    TracksTableViewDelegate.shared.open(tracks: operation.likeSuboperation.notFoundTracks, name: "Not found tracks")
+#else
+                    print("сделать таблички")
+#endif
+                }
+                DispatchQueue.main.async {
+                    TransferManager.shared.off()
+                }
+                usleep(self.requestRepeatDelay)
+                self.getSavedTracks()
+            }
+            .catch { error in
+                print("-=-=- \(error.localizedDescription)")
+            }
+    }
+    
+    private func filterTracks(searchResults: [LastFmSearchedTrack]) -> (found: [LastFmTrackSearchResult.Track], notFound: [SharedTrack]) {
+        var found = [LastFmTrackSearchResult.Track]()
+        var notFound = [SharedTrack]()
+        
+        searchResults.forEach { result in
+            if let chosen = result.foundTracks?.first {
+                found.append(chosen)
+            } else {
+                notFound.append(result.trackToSearch)
+            }
+        }
+        return (found: found, notFound: notFound)
     }
     
     private func searchTrack(_ track: SharedTrack, page: Int = 1, perPage: Int? = nil) -> Promise<LastFmTrackSearchResult> {
@@ -330,8 +468,8 @@ final class LastFmService: APIService {
             URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
             URLQueryItem(name: "sk", value: session.key),
             URLQueryItem(name: "method", value: "track.love"),
-            URLQueryItem(name: "track", value: "Herzeleid"),
-            URLQueryItem(name: "artist", value: "Rammstein")
+            URLQueryItem(name: "track", value: track.title),
+            URLQueryItem(name: "artist", value: track.strArtists())
         ]
         
         queryItems.append(getSignature(from: queryItems))

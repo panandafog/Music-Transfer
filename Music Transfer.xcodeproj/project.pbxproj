@@ -98,6 +98,8 @@
 		0B3AD991277B2F5E00BA692B /* LastFmLikeTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD990277B2F5E00BA692B /* LastFmLikeTracksSuboperationRealm.swift */; };
 		0B3AD994277B30C400BA692B /* LastFmAddTracksOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD993277B30C400BA692B /* LastFmAddTracksOperation.swift */; };
 		0B3AD996277B34AE00BA692B /* LastFmAddTracksOperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD995277B34AE00BA692B /* LastFmAddTracksOperationRealm.swift */; };
+		0B3AD999277B59AA00BA692B /* LastFmTrackToLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD998277B59AA00BA692B /* LastFmTrackToLike.swift */; };
+		0B3AD99B277B5A5900BA692B /* LastFmTrackToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD99A277B5A5900BA692B /* LastFmTrackToLikeRealm.swift */; };
 		0B42352B26E431A6007CAAB7 /* TransferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42352A26E431A6007CAAB7 /* TransferManager.swift */; };
 		0B42352C26E431A6007CAAB7 /* TransferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42352A26E431A6007CAAB7 /* TransferManager.swift */; };
 		0B42353126E4D0F2007CAAB7 /* Captcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353026E4D0F2007CAAB7 /* Captcha.swift */; };
@@ -272,6 +274,8 @@
 		0B3AD990277B2F5E00BA692B /* LastFmLikeTracksSuboperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmLikeTracksSuboperationRealm.swift; sourceTree = "<group>"; };
 		0B3AD993277B30C400BA692B /* LastFmAddTracksOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAddTracksOperation.swift; sourceTree = "<group>"; };
 		0B3AD995277B34AE00BA692B /* LastFmAddTracksOperationRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAddTracksOperationRealm.swift; sourceTree = "<group>"; };
+		0B3AD998277B59AA00BA692B /* LastFmTrackToLike.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTrackToLike.swift; sourceTree = "<group>"; };
+		0B3AD99A277B5A5900BA692B /* LastFmTrackToLikeRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTrackToLikeRealm.swift; sourceTree = "<group>"; };
 		0B42352A26E431A6007CAAB7 /* TransferManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferManager.swift; sourceTree = "<group>"; };
 		0B42353026E4D0F2007CAAB7 /* Captcha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Captcha.swift; sourceTree = "<group>"; };
 		0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaRequestView.swift; sourceTree = "<group>"; };
@@ -581,6 +585,7 @@
 		0B3AD97D277B0ECE00BA692B /* Tracks info */ = {
 			isa = PBXGroup;
 			children = (
+				0B3AD997277B599700BA692B /* TracksToLike */,
 				0B3AD983277B17A300BA692B /* SearchedTracks */,
 				0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */,
 				0B3AD97E277B0F1000BA692B /* LastFmTrackSearchResult.swift */,
@@ -632,6 +637,15 @@
 				0B3AD995277B34AE00BA692B /* LastFmAddTracksOperationRealm.swift */,
 			);
 			path = Operations;
+			sourceTree = "<group>";
+		};
+		0B3AD997277B599700BA692B /* TracksToLike */ = {
+			isa = PBXGroup;
+			children = (
+				0B3AD998277B59AA00BA692B /* LastFmTrackToLike.swift */,
+				0B3AD99A277B5A5900BA692B /* LastFmTrackToLikeRealm.swift */,
+			);
+			path = TracksToLike;
 			sourceTree = "<group>";
 		};
 		0B5DCA38272F4C6C00E30A8A /* SearchTracks */ = {
@@ -1262,6 +1276,7 @@
 				0BCF5AE3271B84E30019C5B1 /* SharedTrackRealm.swift in Sources */,
 				0B42352B26E431A6007CAAB7 /* TransferManager.swift in Sources */,
 				0B2C14E325A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
+				0B3AD999277B59AA00BA692B /* LastFmTrackToLike.swift in Sources */,
 				0BC2634925BCE91000820FE0 /* TracksTable.swift in Sources */,
 				0BE6DCAC27124A56003BEC3B /* LogType.swift in Sources */,
 				0BE6DCC027134CD8003BEC3B /* MTQueue.swift in Sources */,
@@ -1269,6 +1284,7 @@
 				0B17559A25BF304D0094E75C /* LoginViewModel.swift in Sources */,
 				0B2C155A25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0BC2634425BCE90C00820FE0 /* TracksTableRow.swift in Sources */,
+				0B3AD99B277B5A5900BA692B /* LastFmTrackToLikeRealm.swift in Sources */,
 				0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */,
 				0B81BE81273707460024D4EC /* SpotifyAddTracksOperation.swift in Sources */,
 			);

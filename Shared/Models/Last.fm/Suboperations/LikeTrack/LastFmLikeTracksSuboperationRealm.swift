@@ -15,7 +15,7 @@ class LastFmLikeTracksSuboperationRealm: Object {
     @objc dynamic var started: NSDate?
     @objc dynamic var completed: NSDate?
     
-    let tracksToLike = List<LastFmTrackRealm>()
+    let tracksToLike = List<LastFmTrackToLikeRealm>()
     let notFoundTracks = List<SharedTrackRealm>()
     
     override class func primaryKey() -> String? {
@@ -29,7 +29,7 @@ extension LastFmLikeTracksSuboperationRealm {
             id: id,
             started: started as Date?,
             completed: completed as Date?,
-            tracksToLike: tracksToLike.map { $0.lastFmTrack },
+            tracksToLike: tracksToLike.map { $0.trackToLike },
             notFoundTracks: notFoundTracks.map { $0.sharedTrack }
         )
     }
@@ -42,7 +42,7 @@ extension LastFmLikeTracksSuboperationRealm {
         started = lastFmLikeTracksSuboperation.started as NSDate?
         completed = lastFmLikeTracksSuboperation.completed as NSDate?
         
-        tracksToLike.append(objectsIn: lastFmLikeTracksSuboperation.tracksToLike.map { LastFmTrackRealm($0) })
+        tracksToLike.append(objectsIn: lastFmLikeTracksSuboperation.tracksToLike.map { LastFmTrackToLikeRealm($0) })
         notFoundTracks.append(objectsIn: lastFmLikeTracksSuboperation.notFoundTracks.map { SharedTrackRealm($0) })
     }
 }

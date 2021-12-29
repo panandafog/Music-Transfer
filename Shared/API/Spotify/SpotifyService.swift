@@ -387,6 +387,7 @@ final class SpotifyService: APIService {
                         liked: false
                     )
                 }
+                operation.likeSuboperation.notFoundTracks = filtered.notFoundTracks
                 updateHandler(operation)
                 
                 var packageID = 0

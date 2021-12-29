@@ -14,6 +14,6 @@ struct LastFmLikeTracksSuboperation: TransferSuboperation {
     var started: Date?
     var completed: Date?
     
-    var tracksToLike: [LastFmTrackSearchResult.Track]
+    var tracksToLike: [LastFmTrackToLike]
     var notFoundTracks: [SharedTrack]
 }
