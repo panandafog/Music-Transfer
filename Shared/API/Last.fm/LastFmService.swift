@@ -354,7 +354,7 @@ final class LastFmService: APIService {
         
         let getLikePromise: (LastFmTrackSearchResult.Track) -> Promise<Void> = { track in
             return Promise<Void> { seal in
-                self.likeTrack(SharedTrack(from: track))
+                self.loveTrack(SharedTrack(from: track), love: true)
                     .done {
                         operation.likeSuboperation.tracksToLike[currentTrack].liked = true
                         updateHandler(operation)
@@ -459,7 +459,7 @@ final class LastFmService: APIService {
         }
     }
     
-    private func likeTrack(_ track: SharedTrack) -> Promise<Void> {
+    private func loveTrack(_ track: SharedTrack, love: Bool) -> Promise<Void> {
         guard let session = session else {
             return Promise<Void> { seal in
                 seal.reject(RequestError.unauthorized(message: nil))
@@ -469,7 +469,7 @@ final class LastFmService: APIService {
         var queryItems = [
             URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
             URLQueryItem(name: "sk", value: session.key),
-            URLQueryItem(name: "method", value: "track.love"),
+            URLQueryItem(name: "method", value: love ? "track.love" : "track.unlove"),
             URLQueryItem(name: "track", value: track.title),
             URLQueryItem(name: "artist", value: track.strArtists())
         ]
@@ -506,5 +506,62 @@ final class LastFmService: APIService {
     }
     
     func deleteAllTracks() {
+        guard !savedTracks.isEmpty else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.determinate = self.savedTracks.count > 10
+            TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
+            TransferManager.shared.active = true
+        }
+        
+        var currentTrack = 0
+        let tracksCount = savedTracks.count
+        var tracksIterator = savedTracks.makeIterator()
+        
+        let updateProgress: () -> Void = {
+            currentTrack += 1
+            DispatchQueue.main.async {
+                TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+            }
+        }
+        
+        let getLikePromise: (SharedTrack) -> Promise<Void> = { track in
+            return Promise<Void> { seal in
+                self.loveTrack(track, love: false)
+                    .done {
+                        updateProgress()
+                        seal.fulfill(())
+                    }
+                    .catch { error in
+                        updateProgress()
+                        seal.reject(error)
+                    }
+            }
+        }
+        
+        let promiseGenerator = AnyIterator<Promise<Void>> {
+            guard let track = tracksIterator.next() else {
+                return nil
+            }
+            return getLikePromise(track)
+        }
+        
+        when(
+            fulfilled: promiseGenerator,
+            concurrently: 1
+        )
+            .done { _ in
+                DispatchQueue.main.async {
+                    TransferManager.shared.off()
+                }
+                usleep(self.requestRepeatDelay)
+                self.getSavedTracks()
+            }
+            .catch { error in
+                print("-=-=- \(error.localizedDescription)")
+            }
     }
 }
