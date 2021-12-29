@@ -263,10 +263,19 @@ final class LastFmService: APIService {
         let tracksCount = tracks.count
         var tracksIterator = tracks.makeIterator()
         
+        let updateProgress: () -> Void = {
+            currentTrack += 1
+            
+            DispatchQueue.main.async {
+                TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
+            }
+        }
+        
         let getSearchPromise: (SharedTrack) -> Promise<LastFmSearchedTrack> = { track in
             return Promise<LastFmSearchedTrack> { seal in
                 self.searchTrack(track)
                     .done { searchResults in
+                        updateProgress()
                         seal.fulfill(
                             LastFmSearchedTrack(
                                 trackToSearch: track,
@@ -275,14 +284,8 @@ final class LastFmService: APIService {
                         )
                     }
                     .catch { error in
+                        updateProgress()
                         seal.reject(error)
-                    }
-                    .finally {
-                        currentTrack += 1
-                        
-                        DispatchQueue.main.async {
-                            TransferManager.shared.progressPercentage = Double(currentTrack) / Double(tracksCount) * 100.0
-                        }
                     }
             }
         }
@@ -299,7 +302,6 @@ final class LastFmService: APIService {
             concurrently: 1
         )
             .done { (results: [LastFmSearchedTrack]) in
-                print("-=-=- done 00")
                 self.addTracks(operation: operation, updateHandler: updateHandler, searchResults: results)
             }
             .catch { error in
