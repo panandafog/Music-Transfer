@@ -13,7 +13,6 @@ final class VKService: APIService {
     
     // MARK: - Constants
     
-    static let authorizationUrl: URL? = nil
     static let authorizationRedirectUrl = "https://oauth.vk.com/blank.html"
     static let state = randomString(length: stateLength)
     static let apiName = "VK"
@@ -61,7 +60,13 @@ final class VKService: APIService {
     
     var savedTracks = [SharedTrack]()
     
-    var loginViewModel: LoginViewModel?
+    private (set) lazy var loginViewModel = LoginViewModel(
+        service: self,
+        twoFactor: false,
+        captcha: nil,
+        completion: requestTokens(username:password:code:captcha:)
+    )
+    
     var captchaViewModel: CaptchaViewModel?
     
     private let databaseManager: DatabaseManager = DatabaseManagerImpl(configuration: .defaultConfiguration)
@@ -96,17 +101,6 @@ final class VKService: APIService {
     }
     
     // MARK: - Authorization methods
-    
-    func authorize() -> AnyView {
-        let model = LoginViewModel(
-            service: self,
-            twoFactor: false,
-            captcha: nil,
-            completion: requestTokens(username:password:code:captcha:)
-        )
-        loginViewModel = model
-        return AnyView(LoginView(model: model))
-    }
     
     func requestTokens(
         username: String,
@@ -192,7 +186,7 @@ final class VKService: APIService {
                 defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
                 
                 DispatchQueue.main.async {
-                    self.loginViewModel?.shouldDismissView = true
+                    self.loginViewModel.shouldDismissView = true
                 }
                 
                 self.isAuthorised = true
@@ -203,8 +197,8 @@ final class VKService: APIService {
                 if let twoFactorError = try? JSONDecoder().decode(VKErrors.Need2FactorError.self, from: data) {
                     if twoFactorError.validate() {
                         DispatchQueue.main.async {
-                            self.loginViewModel?.twoFactor = true
-                            self.loginViewModel?.captcha = captcha
+                            self.loginViewModel.twoFactor = true
+                            self.loginViewModel.captcha = captcha
                         }
                     } else {
                         if let capthcaError = try? JSONDecoder().decode(VKCaptcha.ErrorMessage.self, from: data) {
@@ -217,8 +211,8 @@ final class VKService: APIService {
                             let commonError = try? JSONDecoder().decode(VKErrors.CommonError.self, from: data)
                             if commonError != nil && commonError?.isWrongCredentialsError() ?? false {
                                 DispatchQueue.main.async {
-                                    self.loginViewModel?.twoFactor = code != nil
-                                    self.loginViewModel?.captcha = captcha
+                                    self.loginViewModel.twoFactor = code != nil
+                                    self.loginViewModel.captcha = captcha
                                 }
                             } else {
                                 print("unknown error")

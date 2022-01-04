@@ -18,8 +18,6 @@ import SwiftUI
 
 final class LastFmService: APIService {
     
-    static let authorizationUrl: URL? = nil
-    
     static let apiName = "Last.fm"
     
     var isAuthorised: Bool {
@@ -35,27 +33,21 @@ final class LastFmService: APIService {
     }
     
     var gotTracks = false
-    
     var savedTracks: [SharedTrack] = []
     
-    var loginViewModel: LoginViewModel?
+    private (set) lazy var loginViewModel = LoginViewModel(
+        service: self,
+        twoFactor: false,
+        captcha: nil,
+        completion: authorize(username:password:unused1:unused2:)
+    )
     
     private (set) var session: LastFmSession?
     
     private let requestRepeatDelay: UInt32 = 1_000_000
+    private let determinateElementsCount = 5
     
     // MARK: - Authorization methods
-    
-    func authorize() -> AnyView {
-        let model = LoginViewModel(
-            service: self,
-            twoFactor: false,
-            captcha: nil,
-            completion: authorize(username:password:unused1:unused2:)
-        )
-        loginViewModel = model
-        return AnyView(LoginView(model: model))
-    }
     
     private func authorize(username: String, password: String, unused1: String?, unused2: Captcha.Solved?) {
         TransferManager.shared.operationInProgress = true
@@ -77,29 +69,28 @@ final class LastFmService: APIService {
         tmp.queryItems = queryItems
         
         guard let url = tmp.url else {
-            print("url error")
+            handleError(RequestError(type: .encoding, message: "Cannot make url"))
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let resultHandler: (Swift.Result<LastFmAuthorizationResponse, RequestError>) -> Void = { result in
+        let resultHandler: (Swift.Result<LastFmAuthorizationResponse, Error>) -> Void = { result in
             switch result {
             case .success(let response):
                 self.session = response.session
                 
                 DispatchQueue.main.async {
-                    self.loginViewModel?.shouldDismissView = true
+                    self.loginViewModel.shouldDismissView = true
                 }
                 
                 TransferManager.shared.operationInProgress = false
             case .failure(let error):
-                print(error.message ?? "error")
+                DispatchQueue.main.async {
+                    self.loginViewModel.error = error
+                }
             }
         }
         
-        NetworkService.perform(request: request, completion: resultHandler)
+        NetworkClient.perform(url: url, method: .post, body: nil, errorType: LastFmError.self, completion: resultHandler)
     }
     
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
@@ -146,7 +137,7 @@ final class LastFmService: APIService {
         }
         
         let errorHandler: (Error) -> Void = { error in
-            print("-=-=- \(error.localizedDescription)")
+            self.handleError(error)
         }
         
         var totalPages = 0
@@ -193,7 +184,7 @@ final class LastFmService: APIService {
     private func getSavedTracksPage(page: Int, perPage: Int? = nil) -> Promise<LastFmLovedTracks> {
         guard let session = session else {
             return Promise<LastFmLovedTracks> { seal in
-                seal.reject(RequestError.unauthorized(message: nil))
+                seal.reject(RequestError(type: .unauthorized, message: nil))
             }
         }
         
@@ -217,15 +208,12 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<LastFmLovedTracks> { seal in
-                seal.reject(RequestError.clientError(message: "Cannot make url"))
+                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
             }
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
         return Promise<LastFmLovedTracks> { seal in
-            let resultHandler: (Swift.Result<LastFmLovedTracks, RequestError>) -> Void = { result in
+            let resultHandler: (Swift.Result<LastFmLovedTracks, Error>) -> Void = { result in
                 switch result {
                 case .success(let response):
                     seal.fulfill(response)
@@ -234,8 +222,7 @@ final class LastFmService: APIService {
                     seal.reject(error)
                 }
             }
-            
-            NetworkService.perform(request: request, completion: resultHandler)
+            NetworkClient.perform(url: url, method: .get, body: nil, errorType: LastFmError.self, completion: resultHandler)
         }
     }
     
@@ -310,7 +297,7 @@ final class LastFmService: APIService {
                     TransferManager.shared.determinate = false
                     TransferManager.shared.active = false
                 }
-                print("-=-=- \(error.localizedDescription)")
+                self.handleError(error)
             }
     }
     
@@ -331,7 +318,7 @@ final class LastFmService: APIService {
         
         DispatchQueue.main.async {
             TransferManager.shared.progressPercentage = 0.0
-            TransferManager.shared.determinate = filteredSearchResults.found.count > 5
+            TransferManager.shared.determinate = filteredSearchResults.found.count > self.determinateElementsCount
             TransferManager.shared.processName = "Adding tracks to \(Self.apiName)"
         }
         
@@ -398,7 +385,7 @@ final class LastFmService: APIService {
                 self.getSavedTracks()
             }
             .catch { error in
-                print("-=-=- \(error.localizedDescription)")
+                self.handleError(error)
             }
     }
     
@@ -437,15 +424,12 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<LastFmTrackSearchResult> { seal in
-                seal.reject(RequestError.clientError(message: "Cannot make url"))
+                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
             }
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
         return Promise<LastFmTrackSearchResult> { seal in
-            let resultHandler: (Swift.Result<LastFmTrackSearchResult, RequestError>) -> Void = { result in
+            let resultHandler: (Swift.Result<LastFmTrackSearchResult, Error>) -> Void = { result in
                 switch result {
                 case .success(let response):
                     seal.fulfill(response)
@@ -455,14 +439,14 @@ final class LastFmService: APIService {
                 }
             }
             
-            NetworkService.perform(request: request, completion: resultHandler)
+            NetworkClient.perform(url: url, method: .get, body: nil, errorType: LastFmError.self, completion: resultHandler)
         }
     }
     
     private func loveTrack(_ track: SharedTrack, love: Bool) -> Promise<Void> {
         guard let session = session else {
             return Promise<Void> { seal in
-                seal.reject(RequestError.unauthorized(message: nil))
+                seal.reject(RequestError(type: .unauthorized, message: nil))
             }
         }
         
@@ -485,23 +469,21 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<Void> { seal in
-                seal.reject(RequestError.clientError(message: "Cannot make url"))
+                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
             }
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
         return Promise<Void> { seal in
-            let resultHandler: (RequestError?) -> Void = { error in
-                if let error = error {
-                    seal.reject(error)
-                } else {
+            let resultHandler: (Swift.Result<Void, Error>) -> Void = { result in
+                switch result {
+                case .success(()):
                     seal.fulfill(())
+                case .failure(let error):
+                    seal.reject(error)
                 }
             }
             
-            NetworkService.perform(request: request, completion: resultHandler)
+            NetworkClient.perform(url: url, method: .post, body: nil, errorType: LastFmError.self, completion: resultHandler)
         }
     }
     
@@ -512,7 +494,7 @@ final class LastFmService: APIService {
         
         DispatchQueue.main.async {
             TransferManager.shared.progressPercentage = 0.0
-            TransferManager.shared.determinate = self.savedTracks.count > 10
+            TransferManager.shared.determinate = self.savedTracks.count > self.determinateElementsCount
             TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
             TransferManager.shared.active = true
         }
@@ -561,7 +543,7 @@ final class LastFmService: APIService {
                 self.getSavedTracks()
             }
             .catch { error in
-                print("-=-=- \(error.localizedDescription)")
+                self.handleError(error)
             }
     }
 }

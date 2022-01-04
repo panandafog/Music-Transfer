@@ -87,7 +87,7 @@ struct ServiceView: View {
                     Text("Authorize")
                 })
                     .sheet(isPresented: $model.services[selection].showingAuthorization) {
-                        service.authorize()
+                        AuthorizationView(service: $model.services[selection])
                     }
                 Button(action: {
                     DispatchQueue.global(qos: .background).async {

@@ -6,12 +6,15 @@
 //  Copyright © 2020 panandafog. All rights reserved.
 //
 
+import AlertToast
 import SwiftUI
 import URLImage
 
 struct LoginView: View {
     
     @ObservedObject var model: LoginViewModel
+    @ObservedObject var alertsManager = AlertsManager.shared
+    
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
@@ -37,6 +40,34 @@ struct LoginView: View {
             if shouldDismiss {
                 self.presentationMode.wrappedValue.dismiss()
             }
+        }
+//        .toast(
+//            isPresenting: Binding<Bool>(
+//                get: {
+//                    model.error != nil
+//                },
+//                set: { presenting in
+//                    if !presenting {
+//                        model.error = nil
+//                    }
+//                }
+//            )
+//        ) {
+//            AlertToast(type: .regular, title: String(describing: model.error))
+//        }
+        .alert(
+            isPresented: Binding<Bool>(
+                get: {
+                    model.error != nil
+                },
+                set: { presenting in
+                    if !presenting {
+                        model.error = nil
+                    }
+                }
+            )
+        ) {
+            Alert(title: Text(String(describing: model.error)), dismissButton: .default(Text("Dismiss")))
         }
     }
 }

@@ -10,6 +10,8 @@ import Foundation
 
 class LoginViewModel: ObservableObject {
     
+    typealias CredentialsHandler = (_: String, _: String, _: String?, _: Captcha.Solved?) -> Void
+    
     var service: APIService
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
     var shouldDismissView = false {
@@ -26,7 +28,15 @@ class LoginViewModel: ObservableObject {
     @Published var code = ""
     @Published var twoFactor: Bool
     @Published var captcha: Captcha.Solved?
-    @Published var completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
+    @Published var completion: CredentialsHandler
+    
+    @Published var error: Error? {
+        didSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
     
     init(
         service: APIService,
@@ -35,7 +45,7 @@ class LoginViewModel: ObservableObject {
         login: String? = nil,
         password: String? = nil,
         code: String? = nil,
-        completion: @escaping ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
+        completion: @escaping CredentialsHandler
     ) {
         self.service = service
         self.login = login ?? ""

@@ -117,7 +117,7 @@ closure_body_length: 100
 
 function_parameter_count: 6
 
-warning_threshold: 100
+warning_threshold: 1000
 
 file_name:
   suffix_pattern: "Extensions?|\\+.*"

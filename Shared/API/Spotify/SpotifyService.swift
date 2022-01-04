@@ -89,15 +89,13 @@ final class SpotifyService: APIService {
         TransferManager.shared
     }
     
-    // MARK: - Authorization methods
+    // MARK: - Authorization
     
-    func authorize() -> AnyView {
-        AnyView(
-            BrowserView<SpotifyBrowser>(
-                browser: SpotifyBrowser(
-                    url: SpotifyService.authorizationUrl,
-                    service: self
-                )
+    var authorizationView: BrowserView<SpotifyBrowser> {
+        BrowserView<SpotifyBrowser>(
+            browser: SpotifyBrowser(
+                url: SpotifyService.authorizationUrl,
+                service: self
             )
         )
     }

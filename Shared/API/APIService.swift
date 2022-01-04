@@ -8,16 +8,15 @@
 
 import SwiftUI
 
-protocol APIService {
-    static var authorizationUrl: URL? { get }
+protocol APIService: ShowingAlerts {
+    
     static var apiName: String { get }
     
     var isAuthorised: Bool { get }
     var showingAuthorization: Bool { get set }
     var gotTracks: Bool { get }
-    var savedTracks: [SharedTrack] { get }
     
-    func authorize() -> AnyView
+    var savedTracks: [SharedTrack] { get }
     
     func getSavedTracks()
     func deleteAllTracks()
