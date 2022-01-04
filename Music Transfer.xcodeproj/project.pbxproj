@@ -193,8 +193,8 @@
 		0BE6DCB127124CC1003BEC3B /* LogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCAB27124A56003BEC3B /* LogType.swift */; };
 		0BE6DCB227124CC4003BEC3B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA927124A43003BEC3B /* Logger.swift */; };
 		0BE6DCB327124CC7003BEC3B /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCAE27124B49003BEC3B /* NetworkClient.swift */; };
-		0BE6DCB527124D65003BEC3B /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB427124D65003BEC3B /* RequestError.swift */; };
-		0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB427124D65003BEC3B /* RequestError.swift */; };
+		0BE6DCB527124D65003BEC3B /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB427124D65003BEC3B /* NetworkError.swift */; };
+		0BE6DCB627124D86003BEC3B /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB427124D65003BEC3B /* NetworkError.swift */; };
 		0BE6DCB8271251C6003BEC3B /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB7271251C6003BEC3B /* String.swift */; };
 		0BE6DCB927125705003BEC3B /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCB7271251C6003BEC3B /* String.swift */; };
 		0BE6DCBC27125A7D003BEC3B /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */; };
@@ -341,7 +341,7 @@
 		0BE6DCA927124A43003BEC3B /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		0BE6DCAB27124A56003BEC3B /* LogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogType.swift; sourceTree = "<group>"; };
 		0BE6DCAE27124B49003BEC3B /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		0BE6DCB427124D65003BEC3B /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		0BE6DCB427124D65003BEC3B /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		0BE6DCB7271251C6003BEC3B /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		0BE6DCBB27125A7D003BEC3B /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		0BE6DCBF27134CD8003BEC3B /* MTQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTQueue.swift; sourceTree = "<group>"; };
@@ -441,7 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				0B27CE5F2783499D002A59BA /* DisplayableError.swift */,
-				0BE6DCB427124D65003BEC3B /* RequestError.swift */,
+				0BE6DCB427124D65003BEC3B /* NetworkError.swift */,
 				0B27CE5B27834682002A59BA /* LastFmError.swift */,
 				0B27CE6227834A58002A59BA /* NetworkErrorType.swift */,
 			);
@@ -1246,7 +1246,7 @@
 				0B27CE5C27834682002A59BA /* LastFmError.swift in Sources */,
 				0B0352C42765588500835F56 /* LastFmKeys.swift in Sources */,
 				0BC2639A25BD9B7B00820FE0 /* APIBrowser.swift in Sources */,
-				0BE6DCB527124D65003BEC3B /* RequestError.swift in Sources */,
+				0BE6DCB527124D65003BEC3B /* NetworkError.swift in Sources */,
 				0B81BE792735B0790024D4EC /* VKLikeTracksSuboperationRealm.swift in Sources */,
 				0B42353126E4D0F2007CAAB7 /* Captcha.swift in Sources */,
 				0B2C155325A67FB400ACB2C7 /* SpotifySearchTracks.swift in Sources */,
@@ -1423,7 +1423,7 @@
 				0B1550A72741C4F8000D0A38 /* ManagingDatabase.swift in Sources */,
 				0BE6DCB327124CC7003BEC3B /* NetworkClient.swift in Sources */,
 				0B0352CD276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */,
-				0BE6DCB627124D86003BEC3B /* RequestError.swift in Sources */,
+				0BE6DCB627124D86003BEC3B /* NetworkError.swift in Sources */,
 				0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0B15509E2741C4BE000D0A38 /* VKLikeTracksSuboperation.swift in Sources */,

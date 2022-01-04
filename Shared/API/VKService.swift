@@ -32,7 +32,6 @@ final class VKService: APIService {
     
     var showingAuthorization = false {
         didSet {
-            print("-=- vk showing: \(isAuthorised)")
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
@@ -41,7 +40,6 @@ final class VKService: APIService {
     
     var isAuthorised = false {
         didSet {
-            print("-=- vk auth: \(isAuthorised)")
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }

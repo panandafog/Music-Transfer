@@ -69,7 +69,7 @@ final class LastFmService: APIService {
         tmp.queryItems = queryItems
         
         guard let url = tmp.url else {
-            handleError(RequestError(type: .encoding, message: "Cannot make url"))
+            handleError(NetworkError(type: .encoding, message: "Cannot make url"))
             return
         }
         
@@ -184,7 +184,7 @@ final class LastFmService: APIService {
     private func getSavedTracksPage(page: Int, perPage: Int? = nil) -> Promise<LastFmLovedTracks> {
         guard let session = session else {
             return Promise<LastFmLovedTracks> { seal in
-                seal.reject(RequestError(type: .unauthorized, message: nil))
+                seal.reject(NetworkError(type: .unauthorized, message: nil))
             }
         }
         
@@ -208,7 +208,7 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<LastFmLovedTracks> { seal in
-                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
+                seal.reject(NetworkError(type: .encoding, message: "Cannot make url"))
             }
         }
         
@@ -424,7 +424,7 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<LastFmTrackSearchResult> { seal in
-                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
+                seal.reject(NetworkError(type: .encoding, message: "Cannot make url"))
             }
         }
         
@@ -446,7 +446,7 @@ final class LastFmService: APIService {
     private func loveTrack(_ track: SharedTrack, love: Bool) -> Promise<Void> {
         guard let session = session else {
             return Promise<Void> { seal in
-                seal.reject(RequestError(type: .unauthorized, message: nil))
+                seal.reject(NetworkError(type: .unauthorized, message: nil))
             }
         }
         
@@ -469,7 +469,7 @@ final class LastFmService: APIService {
         
         guard let url = tmp.url else {
             return Promise<Void> { seal in
-                seal.reject(RequestError(type: .encoding, message: "Cannot make url"))
+                seal.reject(NetworkError(type: .encoding, message: "Cannot make url"))
             }
         }
         

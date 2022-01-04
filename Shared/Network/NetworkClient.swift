@@ -137,7 +137,7 @@ enum NetworkClient {
                     "Request: \(request.description)",
                     "Response: \(response.description)"
                 )
-                let requestError = RequestError(
+                let requestError = NetworkError(
                     type: .invalidStatusCode(
                         code: response.statusCode
                     ),
@@ -167,10 +167,10 @@ enum NetworkClient {
                         "Response: \(response.description)",
                         "Data: \(String(describing: String(data: data, encoding: .utf8)))"
                     )
-                    dataCompletion?(.failure(RequestError(type: .decoding, message: nil)))
+                    dataCompletion?(.failure(NetworkError(type: .decoding, message: nil)))
                 }
             } else {
-                dataCompletion?(.failure(RequestError(type: .noData, message: nil)))
+                dataCompletion?(.failure(NetworkError(type: .noData, message: nil)))
             }
         }
     }
@@ -206,7 +206,7 @@ enum NetworkClient {
                     "Request: \(request.description)",
                     "Error: \(error.localizedDescription)"
                 )
-                errorHandler(RequestError(type: .unknown, message: error.localizedDescription))
+                errorHandler(NetworkError(type: .unknown, message: error.localizedDescription))
                 return
             }
 
@@ -217,7 +217,7 @@ enum NetworkClient {
                     "Got no response on URL request.",
                     "Request: \(request.description)"
                 )
-                errorHandler(RequestError(type: .noResponse, message: nil))
+                errorHandler(NetworkError(type: .noResponse, message: nil))
                 return
             }
 

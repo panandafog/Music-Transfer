@@ -23,7 +23,7 @@ struct SharedTrack: Identifiable {
     let durationS: Int
     
     // MARK: - Initializers
-
+    
     init(id: String, artists: [String], title: String, durationS: Int) {
         self.id = id
         self.artists = artists
@@ -273,7 +273,9 @@ extension SharedTrack: Equatable {
     }
     
     static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {
-        Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
+        guard rhs != 0 else { return lhs == rhs }
+        
+        return Int(Double(lhs) / Double(rhs) * 100.0) >= 100 - durationComparisonInaccuracy
         && Int(Double(lhs) / Double(rhs) * 100.0) <= 100 + durationComparisonInaccuracy
     }
     

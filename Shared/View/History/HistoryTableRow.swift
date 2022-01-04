@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HistoryTableRow: View {
     
-    private let defaultString = "..."
+    private let defaultString = "<UNKNOWN>"
     private let titleLabelBottomOffset: CGFloat = 10
     private let secondaryLabelsLeadingOffset: CGFloat = 10
     private let secondaryLabelsSectionOffset: CGFloat = 10
@@ -42,6 +42,9 @@ struct HistoryTableRow: View {
         }
         if (operation as? VKAddTracksOperation) != nil {
             return "Transfer to VK"
+        }
+        if (operation as? LastFmAddTracksOperation) != nil {
+            return "Transfer to last.fm"
         }
         return defaultString
     }

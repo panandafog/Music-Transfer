@@ -19,7 +19,7 @@ enum Logger {
         write(to: log, type: type, messages)
     }
     
-    static func write(_ error: RequestError) {
+    static func write(_ error: NetworkError) {
         writeErrorMessage(
             log: .network,
             "Request failed.",

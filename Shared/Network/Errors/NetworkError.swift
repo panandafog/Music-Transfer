@@ -1,11 +1,11 @@
 //
-//  RequestError.swift
+//  NetworkError.swift
 //  Music Transfer (iOS)
 //
 //  Created by panandafog on 10.10.2021.
 //
 
-struct RequestError {
+struct NetworkError {
     
     let type: NetworkErrorType
     private var providedMessage: String?
@@ -16,7 +16,7 @@ struct RequestError {
     }
 }
 
-extension RequestError: DisplayableError {
+extension NetworkError: DisplayableError {
     
     var message: String {
         providedMessage ?? type.name

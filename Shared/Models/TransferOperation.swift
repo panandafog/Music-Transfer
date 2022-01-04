@@ -34,6 +34,9 @@ extension TransferOperation {
         if let suboperation: VKSearchTracksSuboperation = getSuboperation() {
             return suboperation.tracks.map { $0.trackToSearch }
         }
+        if let suboperation: LastFmSearchTracksSuboperation = getSuboperation() {
+            return suboperation.tracks.map { $0.trackToSearch }
+        }
         return nil
     }
     
@@ -52,6 +55,9 @@ extension TransferOperation {
         if let suboperation: VKLikeTracksSuboperation = getSuboperation() {
             return suboperation.tracksToLike.map { SharedTrack(from: $0.track) }
         }
+        if let suboperation: LastFmLikeTracksSuboperation = getSuboperation() {
+            return suboperation.tracksToLike.map { SharedTrack(from: $0.track) }
+        }
         return nil
     }
     
@@ -60,6 +66,9 @@ extension TransferOperation {
             return []
         }
         if let suboperation: VKLikeTracksSuboperation = getSuboperation() {
+            return suboperation.notFoundTracks
+        }
+        if let suboperation: LastFmLikeTracksSuboperation = getSuboperation() {
             return suboperation.notFoundTracks
         }
         return nil
