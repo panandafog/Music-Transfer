@@ -73,7 +73,7 @@ final class LastFmService: APIService {
             return
         }
         
-        let resultHandler: (Swift.Result<LastFmAuthorizationResponse, Error>) -> Void = { result in
+        let resultHandler: (Swift.Result<LastFmAuthorizationResponse, Error>, HTTPURLResponse?) -> Void = { result, _ in
             switch result {
             case .success(let response):
                 self.session = response.session
@@ -90,11 +90,28 @@ final class LastFmService: APIService {
             }
         }
         
-        NetworkClient.perform(url: url, method: .post, body: nil, errorType: LastFmError.self, completion: resultHandler)
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .post,
+                body: nil,
+                headers: []
+            ),
+            errorType: LastFmError.self,
+            completion: resultHandler
+        )
     }
     
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
         let md5string = queryItems.map { $0.name + ($0.value ?? "") }.sorted().joined() + LastFmKeys.sharedSecret
+        let data = md5string.data(using: .utf8) ?? Data()
+        
+        Logger.write(
+            to: .debug,
+            "Made data from md5 string",
+            "String: \"\(md5string)\"",
+            "Data: \"\(String(data: data, encoding: .utf8) ?? "none")\""
+        )
         
         return URLQueryItem(
             name: "api_sig",
@@ -213,16 +230,25 @@ final class LastFmService: APIService {
         }
         
         return Promise<LastFmLovedTracks> { seal in
-            let resultHandler: (Swift.Result<LastFmLovedTracks, Error>) -> Void = { result in
+            let resultHandler: (Swift.Result<LastFmLovedTracks, Error>, HTTPURLResponse?) -> Void = { result, _ in
                 switch result {
                 case .success(let response):
                     seal.fulfill(response)
-                    
                 case .failure(let error):
                     seal.reject(error)
                 }
             }
-            NetworkClient.perform(url: url, method: .get, body: nil, errorType: LastFmError.self, completion: resultHandler)
+            
+            NetworkClient.perform(
+                request: .init(
+                    url: url,
+                    method: .get,
+                    body: nil,
+                    headers: []
+                ),
+                errorType: LastFmError.self,
+                completion: resultHandler
+            )
         }
     }
     
@@ -351,7 +377,8 @@ final class LastFmService: APIService {
                     }
                     .catch { error in
                         updateProgress()
-                        seal.reject(error)
+//                        seal.reject(error)
+                        seal.fulfill(())
                     }
             }
         }
@@ -429,7 +456,7 @@ final class LastFmService: APIService {
         }
         
         return Promise<LastFmTrackSearchResult> { seal in
-            let resultHandler: (Swift.Result<LastFmTrackSearchResult, Error>) -> Void = { result in
+            let resultHandler: (Swift.Result<LastFmTrackSearchResult, Error>, HTTPURLResponse?) -> Void = { result, _ in
                 switch result {
                 case .success(let response):
                     seal.fulfill(response)
@@ -439,7 +466,16 @@ final class LastFmService: APIService {
                 }
             }
             
-            NetworkClient.perform(url: url, method: .get, body: nil, errorType: LastFmError.self, completion: resultHandler)
+            NetworkClient.perform(
+                request: .init(
+                    url: url,
+                    method: .get,
+                    body: nil,
+                    headers: []
+                ),
+                errorType: LastFmError.self,
+                completion: resultHandler
+            )
         }
     }
     
@@ -454,8 +490,8 @@ final class LastFmService: APIService {
             URLQueryItem(name: "api_key", value: LastFmKeys.apiKey),
             URLQueryItem(name: "sk", value: session.key),
             URLQueryItem(name: "method", value: love ? "track.love" : "track.unlove"),
-            URLQueryItem(name: "track", value: track.title),
-            URLQueryItem(name: "artist", value: track.strArtists())
+            URLQueryItem(name: "track", value: track.title/*.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)*/),
+            URLQueryItem(name: "artist", value: track.strArtists()/*.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)*/)
         ]
         
         queryItems.append(getSignature(from: queryItems))
@@ -474,7 +510,7 @@ final class LastFmService: APIService {
         }
         
         return Promise<Void> { seal in
-            let resultHandler: (Swift.Result<Void, Error>) -> Void = { result in
+            let resultHandler: (Swift.Result<Void, Error>, HTTPURLResponse?) -> Void = { result, _ in
                 switch result {
                 case .success(()):
                     seal.fulfill(())
@@ -483,7 +519,16 @@ final class LastFmService: APIService {
                 }
             }
             
-            NetworkClient.perform(url: url, method: .post, body: nil, errorType: LastFmError.self, completion: resultHandler)
+            NetworkClient.perform(
+                request: .init(
+                    url: url,
+                    method: .post,
+                    body: nil,
+                    headers: []
+                ),
+                errorType: LastFmError.self,
+                completion: resultHandler
+            )
         }
     }
     
@@ -519,7 +564,8 @@ final class LastFmService: APIService {
                     }
                     .catch { error in
                         updateProgress()
-                        seal.reject(error)
+//                        seal.reject(error)
+                        seal.fulfill(())
                     }
             }
         }

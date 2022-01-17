@@ -89,14 +89,14 @@ struct SharedTrack: Identifiable {
     }
     
     init(from track: LastFmLovedTracks.Track) {
-        self.id = track.mbid
+        self.id = track.id
         self.artists = [track.artist.name]
         self.title = track.name
         self.durationS = 0
     }
     
     init(from track: LastFmTrackSearchResult.Track) {
-        self.id = track.mbid
+        self.id = track.id
         self.artists = [track.artist]
         self.title = track.name
         self.durationS = 0

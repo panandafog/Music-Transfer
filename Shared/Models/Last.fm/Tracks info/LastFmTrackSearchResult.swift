@@ -46,13 +46,50 @@ extension LastFmTrackSearchResult {
         let track: [Track]
     }
 
-    struct Track: Codable {
+    class Track: Codable {
+        let id: String
+        
         let name, artist: String
         let url: String
         let streamable: Streamable?
         let listeners: String?
         let image: [Image]?
         let mbid: String
+        
+        init(
+            id: String? = nil,
+            name: String,
+            artist: String,
+            url: String,
+            streamable: Streamable?,
+            listeners: String?,
+            image: [Image]?,
+            mbid: String
+        ) {
+            self.id = id ?? NSUUID().uuidString
+            
+            self.name = name
+            self.artist = artist
+            self.url = url
+            self.streamable = streamable
+            self.listeners = listeners
+            self.image = image
+            self.mbid = mbid
+        }
+        
+        required init(from decoder: Decoder) throws {
+            id = NSUUID().uuidString
+            
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            name = try container.decode(String.self, forKey: .name)
+            artist = try container.decode(String.self, forKey: .artist)
+            url = try container.decode(String.self, forKey: .url)
+            streamable = try container.decodeIfPresent(Streamable.self, forKey: .streamable)
+            listeners = try container.decodeIfPresent(String.self, forKey: .listeners)
+            image = try container.decodeIfPresent([Image].self, forKey: .image)
+            mbid = try container.decode(String.self, forKey: .mbid)
+        }
     }
 
     struct Image: Codable {
@@ -66,10 +103,10 @@ extension LastFmTrackSearchResult {
     }
 
     enum Size: String, Codable {
-        case extralarge = "extralarge"
-        case large = "large"
-        case medium = "medium"
-        case small = "small"
+        case extralarge
+        case large
+        case medium
+        case small
     }
 
     enum Streamable: String, Codable {

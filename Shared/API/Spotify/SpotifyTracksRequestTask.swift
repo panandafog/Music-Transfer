@@ -32,8 +32,6 @@ class SpotifyTracksRequestTask: MTTask {
     
     func execute(executeCompletion: QueueCompletion?) {
         
-        print(offset)
-        
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "api.spotify.com"

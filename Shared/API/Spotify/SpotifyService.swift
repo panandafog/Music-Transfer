@@ -111,11 +111,9 @@ final class SpotifyService: APIService {
         tmp.path = "/api/token"
         
         guard let url = tmp.url else {
+            handleError(NetworkError(type: .encoding, message: "Cannot make url"))
             return
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
         
         let postString = "grant_type=" + "authorization_code" + "&" +
         "client_id=" + SpotifyKeys.client_id + "&" +
@@ -123,30 +121,30 @@ final class SpotifyService: APIService {
         "redirect_uri=" + SpotifyService.authorizationRedirectUrl + "&" +
         "&client_secret=" + SpotifyKeys.client_secret
         
-        request.httpBody = postString.data(using: String.Encoding.utf8)
+        let bodyData = postString.data(using: String.Encoding.utf8)
         
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            
-            guard error == nil else {
-                sleep(kFailedRequestReattemptDelay)
-                self.requestTokens(code: code)
-                return
+        let resultHandler: (Swift.Result<TokensInfo, Error>, HTTPURLResponse?) -> Void = { result, _ in
+            switch result {
+            case .success(let newTokensInfo):
+                self.tokensInfo = newTokensInfo
+                self.isAuthorised = true
+            case .failure(let error):
+                self.handleError(error)
             }
-            
-            guard let data = data else {
-                return
-            }
-            
-            guard let tokensInfo = try? JSONDecoder().decode(TokensInfo.self, from: data) else {
-                return
-            }
-            self.tokensInfo = tokensInfo
-            self.isAuthorised = true
             DispatchQueue.main.async {
                 TransferManager.shared.operationInProgress = false
             }
         }
-        task.resume()
+        
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .post,
+                body: bodyData,
+                headers: []
+            ),
+            completion: resultHandler
+        )
     }
     
     // MARK: - Tracks management methods
@@ -154,12 +152,8 @@ final class SpotifyService: APIService {
     // MARK: Saved tracks
     
     func getSavedTracks() {
-        guard let tokensInfo = self.tokensInfo else {
-            return
-        }
-        
         DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
+            self.progressViewModel.operationInProgress = true
         }
         
         self.gotTracks = false
@@ -172,85 +166,30 @@ final class SpotifyService: APIService {
             self.progressViewModel.active = true
         }
         
-        var queue: MTQueue<SpotifyTracksRequestTask>?
-        var id = 0
-        let step = 50
-        var offset = 0
-        
-        var rec: (() -> SpotifyTracksRequestTask)?
-        rec = {
-            SpotifyTracksRequestTask(id: id, offset: offset, tokensInfo: tokensInfo) { result in
-                switch result {
-                case .success(let tracksData):
-                    self.savedTracks.append(contentsOf: tracksData.tracks)
-                    
-                    if tracksData.gotNext {
-                        usleep(self.requestRepeatDelay)
-                        id += 1
-                        offset += step
-                        
-                        if let operation = rec?() {
-                            try? queue?.addOperation(operation: operation)
-                        }
-                    }
-                case .failure(let error):
-                    switch error {
-                    case .needToWait(let seconds):
-                        sleep(UInt32(seconds))
-                        if let operation = rec?() {
-                            try? queue?.addOperation(operation: operation)
-                        }
-                    case .unknown:
-                        sleep(kFailedRequestReattemptDelay)
-                        if let operation = rec?() {
-                            try? queue?.addOperation(operation: operation)
-                        }
-                    }
-                }
+        requestTracks(offset: 0) {
+            DispatchQueue.main.async {
+                self.progressViewModel.off()
+                self.progressViewModel.operationInProgress = false
+                
+#if os(macOS)
+                NSApp.requestUserAttention(.informationalRequest)
+#else
+                print("а это вообще можно сделать?")
+#endif
             }
         }
-        
-        guard let tmpRec = rec else { return }
-        
-        let operations = [
-            tmpRec()
-        ]
-        
-        queue = MTQueue(
-            operations: operations,
-            mode: .serial,
-            completion: {
-                self.gotTracks = true
-                DispatchQueue.main.async {
-                    self.progressViewModel.off()
-                    TransferManager.shared.operationInProgress = false
-                    
-#if os(macOS)
-                    NSApp.requestUserAttention(.informationalRequest)
-#else
-                    print("а это вообще можно сделать?")
-#endif
-                }
-            },
-            progressHandler: { percentage in
-                self.progressViewModel.progressPercentage = percentage
-            }
-        )
-        
-        queue?.run()
     }
     
     private func requestTracks(offset: Int, completion: @escaping (() -> Void)) {
         let limit = 50
-        
-        print(offset)
+        let reattemptDelay = 10
         
         var tmp = URLComponents()
         tmp.scheme = "https"
         tmp.host = "api.spotify.com"
         tmp.path = "/v1/me/tracks"
         tmp.queryItems = [
-            URLQueryItem(name: "limit", value: "50"),
+            URLQueryItem(name: "limit", value: String(limit)),
             URLQueryItem(name: "offset", value: String(offset))
         ]
         
@@ -258,51 +197,53 @@ final class SpotifyService: APIService {
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
         guard let access_token = self.tokensInfo?.access_token else {
             return
         }
         
-        request.addValue("Bearer " + access_token, forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            guard error == nil else {
-                sleep(kFailedRequestReattemptDelay)
-                self.requestTracks(offset: offset, completion: completion)
-                return
-            }
-            
-            guard let data = data else {
-                return
-            }
-            
-            guard let tracksList = try? JSONDecoder().decode(SpotifySavedTracks.TracksList.self, from: data) else {
-                return
-            }
-            
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode == 429 {
-                    sleep(UInt32(httpResponse.value(forHTTPHeaderField: "Retry-After") ?? "10") ?? 10)
-                    self.requestTracks(offset: offset, completion: completion)
-                    return
+        let resultHandler: (Swift.Result<SpotifySavedTracks.TracksList, Error>, HTTPURLResponse?) -> Void = { result, response in
+            switch result {
+            case .success(let tracksList):
+                let tracks = SharedTrack.makeArray(from: tracksList)
+                self.savedTracks.append(contentsOf: tracks)
+                
+                if tracksList.next != nil {
+                    usleep(self.requestRepeatDelay)
+                    self.requestTracks(offset: offset + limit, completion: completion)
+                } else {
+                    self.gotTracks = true
+                    completion()
+                }
+            case .failure(let error):
+                if let networkError = error as? NetworkError {
+                    switch networkError.type {
+                    case .invalidStatusCode(let code):
+                        if code == 429 {
+                            sleep(
+                                UInt32(
+                                    response?.value(
+                                        forHTTPHeaderField: "Retry-After"
+                                    ) ?? String(reattemptDelay)
+                                ) ?? UInt32(reattemptDelay)
+                            )
+                            self.requestTracks(offset: offset, completion: completion)
+                        }
+                    default:
+                        break
+                    }
                 }
             }
-            
-            let tracks = SharedTrack.makeArray(from: tracksList)
-            self.savedTracks.append(contentsOf: tracks)
-            
-            if tracksList.next != nil {
-                usleep(self.requestRepeatDelay)
-                self.requestTracks(offset: offset + limit, completion: completion)
-            } else {
-                self.gotTracks = true
-                completion()
-            }
         }
-        task.resume()
+        
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .get,
+                body: nil,
+                headers: [("Authorization", "Bearer " + access_token)]
+            ),
+            completion: resultHandler
+        )
     }
     
     // MARK: Adding tracks

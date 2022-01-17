@@ -19,18 +19,47 @@ protocol DatabaseManager {
 
 class DatabaseManagerImpl: DatabaseManager {
     
-    private let configuration: Realm.Configuration
+    private var configuration: Realm.Configuration
     
     var realm: Realm {
         do {
             return try Realm(configuration: configuration)
         } catch {
-            fatalError("Realm can't be created")
+            guard let realmURL = configuration.fileURL else {
+                fatalError("Could not locate realm database to delete")
+            }
+            let realmURLs = [
+                realmURL,
+                realmURL.appendingPathExtension("lock"),
+                realmURL.appendingPathExtension("note"),
+                realmURL.appendingPathExtension("management")
+            ]
+            
+            for URL in realmURLs {
+                do {
+                    try FileManager.default.removeItem(at: URL)
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            do {
+                return try Realm(configuration: configuration)
+            } catch {
+                fatalError("Realm can't be created")
+            }
         }
     }
     
     init(configuration: Realm.Configuration) {
         self.configuration = configuration
+        
+        Logger.write(
+            to: .database,
+            "Initialized database manager",
+            "Configruration: \(String(describing: configuration))",
+            "Realm file location: \(realm.configuration.fileURL?.path ?? "null")"
+        )
     }
     
     // MARK: - Managing data methods

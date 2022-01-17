@@ -28,14 +28,51 @@ extension LastFmLovedTracks {
         let total: String
     }
 
-    struct Track: Codable {
+    class Track: Codable {
+        let id: String
+        
         let artist: Artist
         let date: DateClass
         let mbid: String
         let url: String
         let name: String
-        let image: [Image]
-        let streamable: Streamable
+        let image: [Image]?
+        let streamable: Streamable?
+        
+        init(
+            id: String? = nil,
+            name: String,
+            artist: Artist,
+            date: DateClass,
+            url: String,
+            streamable: Streamable?,
+            image: [Image]?,
+            mbid: String
+        ) {
+            self.id = id ?? NSUUID().uuidString
+            
+            self.name = name
+            self.artist = artist
+            self.date = date
+            self.url = url
+            self.streamable = streamable
+            self.image = image
+            self.mbid = mbid
+        }
+        
+        required init(from decoder: Decoder) throws {
+            id = NSUUID().uuidString
+            
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            name = try container.decode(String.self, forKey: .name)
+            artist = try container.decode(Artist.self, forKey: .artist)
+            date = try container.decode(DateClass.self, forKey: .date)
+            url = try container.decode(String.self, forKey: .url)
+            streamable = try container.decodeIfPresent(Streamable.self, forKey: .streamable)
+            image = try container.decodeIfPresent([Image].self, forKey: .image)
+            mbid = try container.decode(String.self, forKey: .mbid)
+        }
     }
 
     struct Artist: Codable {
@@ -63,10 +100,10 @@ extension LastFmLovedTracks {
     }
 
     enum Size: String, Codable {
-        case extralarge = "extralarge"
-        case large = "large"
-        case medium = "medium"
-        case small = "small"
+        case extralarge
+        case large
+        case medium
+        case small
     }
 
     struct Streamable: Codable {

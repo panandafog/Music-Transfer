@@ -14,19 +14,15 @@ enum NetworkClient {
 
     private static let emptyCodable: EmptyCodableError.Type? = nil
 
-    static func perform<DataType: Codable, ErrorType: Codable & Error>(
-        url: URL,
-        method: RequestMethod,
-        body: Data?,
+    static func perform<DataType: Decodable, ErrorType: Codable & Error>(
+        request: RequestInfo,
         errorType: ErrorType.Type,
-        completion: @escaping (Result<DataType, Error>) -> Void
+        completion: @escaping (Result<DataType, Error>, HTTPURLResponse?) -> Void
     ) {
         perform(
-            url: url,
-            method: method,
-            body: body,
-            errorHandler: { error in
-                completion(.failure(error))
+            request: request,
+            errorHandler: { error, response in
+                completion(.failure(error), response)
             },
             responseHandler: getResponseHandler(
                 dataType: DataType.self,
@@ -37,18 +33,14 @@ enum NetworkClient {
         )
     }
 
-    static func perform<DataType: Codable>(
-        url: URL,
-        method: RequestMethod,
-        body: Data?,
-        completion: @escaping (Result<DataType, Error>) -> Void
+    static func perform<DataType: Decodable>(
+        request: RequestInfo,
+        completion: @escaping (Result<DataType, Error>, HTTPURLResponse?) -> Void
     ) {
         perform(
-            url: url,
-            method: method,
-            body: body,
-            errorHandler: { error in
-                completion(.failure(error))
+            request: request,
+            errorHandler: { error, response in
+                completion(.failure(error), response)
             },
             responseHandler: getResponseHandler(
                 dataType: DataType.self,
@@ -60,22 +52,18 @@ enum NetworkClient {
     }
 
     static func perform<ErrorType: Codable & Error>(
-        url: URL,
-        method: RequestMethod,
-        body: Data?,
+        request: RequestInfo,
         errorType: ErrorType.Type,
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<Void, Error>, HTTPURLResponse?) -> Void
     ) {
         perform(
-            url: url,
-            method: method,
-            body: body,
-            errorHandler: { error in
-                completion(.failure(error))
+            request: request,
+            errorHandler: { error, response in
+                completion(.failure(error), response)
             },
             responseHandler: getResponseHandler(
                 dataType: emptyCodable,
-                errorType: emptyCodable,
+                errorType: errorType,
                 dataCompletion: nil,
                 emptyCompletion: completion
             )
@@ -83,17 +71,13 @@ enum NetworkClient {
     }
 
     static func perform(
-        url: URL,
-        method: RequestMethod,
-        body: Data?,
-        completion: @escaping (Result<Void, Error>) -> Void
+        request: RequestInfo,
+        completion: @escaping (Result<Void, Error>, HTTPURLResponse?) -> Void
     ) {
         perform(
-            url: url,
-            method: method,
-            body: body,
-            errorHandler: { error in
-                completion(.failure(error))
+            request: request,
+            errorHandler: { error, response in
+                completion(.failure(error), response)
             },
             responseHandler: getResponseHandler(
                 dataType: emptyCodable,
@@ -104,13 +88,83 @@ enum NetworkClient {
         )
     }
 
-    private static func getResponseHandler<DataType: Codable, ErrorType: Codable & Error>(
+    private static func perform(
+        request requestInfo: RequestInfo,
+        errorHandler: @escaping ((Error, HTTPURLResponse?) -> Void),
+        responseHandler: @escaping ((URLRequest, HTTPURLResponse, Data?) -> Void)
+    ) {
+        var request = URLRequest(url: requestInfo.url)
+        request.httpMethod = requestInfo.method.rawValue
+        request.httpBody = requestInfo.body
+
+        var requestBodyString = "none"
+        if let body = requestInfo.body, let decoded = String(data: body, encoding: .utf8) {
+            requestBodyString = decoded
+        }
+        
+        for header in requestInfo.headers {
+            request.addValue(header.value, forHTTPHeaderField: header.key)
+        }
+
+        Logger.write(
+            to: .network,
+            "Sending request \(String(describing: request))",
+            "Body: \(requestBodyString)"
+        )
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            let httpResponse = response as? HTTPURLResponse
+            
+            if let error = error {
+                Logger.write(
+                    to: .network,
+                    type: .error,
+                    "URL request failed.",
+                    "Request: \(request.description)",
+                    "Error: \(error.localizedDescription)"
+                )
+                errorHandler(
+                    NetworkError(type: .unknown, message: error.localizedDescription),
+                    httpResponse
+                )
+                return
+            }
+
+            guard let httpResponse = httpResponse else {
+                Logger.write(
+                    to: .network,
+                    type: .error,
+                    "Got no response on URL request.",
+                    "Request: \(request.description)"
+                )
+                errorHandler(
+                    NetworkError(type: .noResponse, message: nil),
+                    httpResponse
+                )
+                return
+            }
+
+            responseHandler(request, httpResponse, data)
+        }
+        .resume()
+    }
+    
+    private static func getResponseHandler<DataType: Decodable, ErrorType: Codable & Error>(
         dataType: DataType.Type? = nil,
         errorType: ErrorType.Type? = nil,
-        dataCompletion: ((Result<DataType, Error>) -> Void)? = nil,
-        emptyCompletion: ((Result<Void, Error>) -> Void)? = nil
+        dataCompletion: ((Result<DataType, Error>, HTTPURLResponse?) -> Void)? = nil,
+        emptyCompletion: ((Result<Void, Error>, HTTPURLResponse?) -> Void)? = nil
     ) -> ((URLRequest, HTTPURLResponse, Data?) -> Void) {
         { request, response, data in
+            Logger.write(
+                to: .network,
+                "Received response.",
+                "Request: \(request.description)",
+                "Code: \(response.statusCode)",
+                "Response: \(response.description)",
+                "Data: \(String(describing: String(data: data ?? Data(), encoding: .utf8)))"
+            )
+            
             if let data = data {
                 if let errorType = errorType, let decoded = try? JSONDecoder().decode(errorType.self, from: data) {
                     Logger.write(
@@ -122,8 +176,8 @@ enum NetworkClient {
                         "Error: \(String(describing: decoded))",
                         "Response: \(response.description)"
                     )
-                    dataCompletion?(.failure(decoded))
-                    emptyCompletion?(.failure(decoded))
+                    dataCompletion?(.failure(decoded), response)
+                    emptyCompletion?(.failure(decoded), response)
                     return
                 }
             }
@@ -143,20 +197,20 @@ enum NetworkClient {
                     ),
                     message: nil
                 )
-                dataCompletion?(.failure(requestError))
-                emptyCompletion?(.failure(requestError))
+                dataCompletion?(.failure(requestError), response)
+                emptyCompletion?(.failure(requestError), response)
                 return
             }
 
             guard let dataType = dataType else {
-                emptyCompletion?(.success(()))
+                emptyCompletion?(.success(()), response)
 
                 return
             }
 
             if let data = data {
                 if let decoded = try? JSONDecoder().decode(dataType.self, from: data) {
-                    dataCompletion?(.success(decoded))
+                    dataCompletion?(.success(decoded), response)
                 } else {
                     Logger.write(
                         to: .network,
@@ -167,63 +221,28 @@ enum NetworkClient {
                         "Response: \(response.description)",
                         "Data: \(String(describing: String(data: data, encoding: .utf8)))"
                     )
-                    dataCompletion?(.failure(NetworkError(type: .decoding, message: nil)))
+                    dataCompletion?(
+                        .failure(NetworkError(type: .decoding, message: nil)),
+                        response
+                    )
                 }
             } else {
-                dataCompletion?(.failure(NetworkError(type: .noData, message: nil)))
+                dataCompletion?(
+                    .failure(NetworkError(type: .noData, message: nil)),
+                    response
+                )
             }
         }
     }
+}
 
-    private static func perform(
-        url: URL,
-        method: RequestMethod,
-        body: Data?,
-        errorHandler: @escaping ((Error) -> Void),
-        responseHandler: @escaping ((URLRequest, HTTPURLResponse, Data?) -> Void)
-    ) {
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.httpBody = body
-
-        var requestBodyString = "none"
-        if let body = body, let decoded = String(data: body, encoding: .utf8) {
-            requestBodyString = decoded
-        }
-
-        Logger.write(
-            to: .network,
-            "Sending request \(String(describing: request))",
-            "Body: \(requestBodyString)"
-        )
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                Logger.write(
-                    to: .network,
-                    type: .error,
-                    "URL request failed.",
-                    "Request: \(request.description)",
-                    "Error: \(error.localizedDescription)"
-                )
-                errorHandler(NetworkError(type: .unknown, message: error.localizedDescription))
-                return
-            }
-
-            guard let httpResponse = response as? HTTPURLResponse else {
-                Logger.write(
-                    to: .network,
-                    type: .error,
-                    "Got no response on URL request.",
-                    "Request: \(request.description)"
-                )
-                errorHandler(NetworkError(type: .noResponse, message: nil))
-                return
-            }
-
-            responseHandler(request, httpResponse, data)
-        }
-        .resume()
+extension NetworkClient {
+    
+    struct RequestInfo {
+        let url: URL
+        let method: RequestMethod
+        let body: Data?
+        let headers: [(key: String, value: String)]
     }
 }
 

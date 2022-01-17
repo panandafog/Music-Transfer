@@ -56,12 +56,12 @@ extension TransferOperation {
             return suboperation.tracksToLike.map { SharedTrack(from: $0.track) }
         }
         if let suboperation: LastFmLikeTracksSuboperation = getSuboperation() {
-            return suboperation.tracksToLike.map { SharedTrack(from: $0.track) }
+            return suboperation.tracksToLike.filter { $0.liked }.map { SharedTrack(from: $0.track) }
         }
         return nil
     }
     
-    var notFoundTracks: [SharedTrack]? {
+    var notTransferredTracks: [SharedTrack]? {
         if let _: SpotifySearchTracksSuboperation = getSuboperation() {
             return []
         }
@@ -70,6 +70,9 @@ extension TransferOperation {
         }
         if let suboperation: LastFmLikeTracksSuboperation = getSuboperation() {
             return suboperation.notFoundTracks
+            + suboperation.tracksToLike
+                .filter { !$0.liked }
+                .map { SharedTrack(from: $0.track) }
         }
         return nil
     }
@@ -87,8 +90,8 @@ extension TransferOperation {
             return tracksToTransfer ?? []
         case .transferredTracks:
             return transferredTracks ?? []
-        case .notFoundTracks:
-            return notFoundTracks ?? []
+        case .notTransferredTracks:
+            return notTransferredTracks ?? []
         case .duplicates:
             return duplicates ?? []
         }
@@ -133,7 +136,7 @@ enum DateType {
 enum TracksInfoCategory: Int, CaseIterable {
     case tracksToTransfer
     case transferredTracks
-    case notFoundTracks
+    case notTransferredTracks
     case duplicates
     
     var displayableName: String {
@@ -142,8 +145,8 @@ enum TracksInfoCategory: Int, CaseIterable {
             return "Tracks to transfer"
         case .transferredTracks:
             return "Transferred tracks"
-        case .notFoundTracks:
-            return "Not found tracks"
+        case .notTransferredTracks:
+            return "Not transferred tracks"
         case .duplicates:
             return "Duplicates"
         }
