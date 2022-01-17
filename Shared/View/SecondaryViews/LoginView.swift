@@ -25,11 +25,17 @@ struct LoginView: View {
                 if model.twoFactor {
                     TextField("code", text: $model.code)
                 }
-                Button("Apply") {
-                    if !model.twoFactor {
-                        model.completion(model.login, model.password, nil, model.captcha)
-                    } else {
-                        model.completion(model.login, model.password, model.code, model.captcha)
+                HStack {
+                    Button("Cancel") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    Spacer(minLength: 10)
+                    Button("Apply") {
+                        if !model.twoFactor {
+                            model.completion(model.login, model.password, nil, model.captcha)
+                        } else {
+                            model.completion(model.login, model.password, model.code, model.captcha)
+                        }
                     }
                 }
             }

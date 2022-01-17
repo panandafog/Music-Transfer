@@ -38,39 +38,57 @@ struct Music_TransferApp: App {
 #endif
     }
     
-    var body: some Scene {
-        WindowGroup {
+    var transferMenu: some View {
+#if os(macOS)
+        NavigationView {
+            sidebarList
+            TransferView()
+        }
+        .onAppear {
+            self.selectedView = 1
+            //                        let device = UIDevice.current
+            //                        if device.model == "iPad" && device.orientation.isLandscape {
+            //                            self.selectedView = 1
+            //                        }
+            //                        if device.model == "iPhone" && device.orientation.isLandscape {
+            //                            self.selectedView = 1
+            //                        }
+        }
+#else
+        TabView {
             NavigationView {
-                sidebarList
                 TransferView()
             }
-            .onAppear {
-#if os(macOS)
-                self.selectedView = 1
-#else
-                let device = UIDevice.current
-                if device.model == "iPad" && device.orientation.isLandscape {
-                    self.selectedView = 1
-                }
-                if device.model == "iPhone" && device.orientation.isLandscape {
-                    self.selectedView = 1
-                }
+            .tabItem {
+                Label("Transfer", systemImage: "list.dash")
+            }
+            NavigationView {
+                HistoryView()
+            }
+            .tabItem {
+                Label("History", systemImage: "square.and.pencil")
+            }
+        }
 #endif
-            }
-            .alert(
-                isPresented: Binding<Bool>(
-                    get: {
-                        alertsManager.alert != nil
-                    },
-                    set: { presenting in
-                        if !presenting {
-                            alertsManager.alert = nil
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            transferMenu
+                .alert(
+                    isPresented: Binding<Bool>(
+                        get: {
+                            alertsManager.alert != nil
+                        },
+                        set: { presenting in
+                            if !presenting {
+                                alertsManager.alert = nil
+                            }
                         }
-                    }
-                )
-            ) {
-                alertsManager.alert ?? Alert(title: Text(""))
-            }
+                    )
+                ) {
+                    alertsManager.alert ?? Alert(title: Text(""))
+                }
         }
     }
 }

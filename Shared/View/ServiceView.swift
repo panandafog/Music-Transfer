@@ -22,6 +22,14 @@ struct ServiceView: View {
     var service: APIService {
         model.services[selection]
     }
+    var titleText: String {
+        switch serviceType {
+        case .primary:
+            return "From:"
+        case .secondary:
+            return "To:"
+        }
+    }
     
     @ObservedObject private var model = TransferManager.shared
     @State private var showingAlert = false
@@ -29,7 +37,7 @@ struct ServiceView: View {
     var body: some View {
         VStack(spacing: nil) {
             HStack {
-                Text("From:")
+                Text(titleText)
                     .font(.title)
 #if !os(macOS)
                 Spacer()

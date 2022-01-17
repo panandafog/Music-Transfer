@@ -11,7 +11,7 @@ struct AuthorizationView: View {
     
     @Binding var service: APIService
     
-    var body: some View {
+    var mainView: some View {
         if let vkService = service as? VKService {
             return AnyView(LoginView(model: vkService.loginViewModel))
         }
@@ -22,5 +22,9 @@ struct AuthorizationView: View {
             return AnyView(spotifyService.authorizationView)
         }
         return AnyView(EmptyView())
+    }
+    
+    var body: some View {
+        mainView
     }
 }

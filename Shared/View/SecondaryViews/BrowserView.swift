@@ -10,21 +10,36 @@ import SwiftUI
 
 struct BrowserView<Browser: APIBrowser>: View {
     
+    private let width: CGFloat = 500
+    private let height: CGFloat = 700
+    
     @ObservedObject var browser: Browser
     @Environment(\.presentationMode) private var presentationMode
     
     var body: some View {
-        HStack {
+        VStack {
             self.browser
                 .onAppear {
                     self.browser.load()
                 }
                 .onReceive(browser.viewDismissalModePublisher) { shouldDismiss in
                     if shouldDismiss {
-                        self.presentationMode.wrappedValue.dismiss()
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
+            Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            }
         }
-        .padding()
+        .modify {
+#if os(macOS)
+            $0
+                .frame(minWidth: width, minHeight: height)
+                .padding(10)
+#else
+            $0
+                .ignoresSafeArea()
+#endif
+        }
     }
 }
