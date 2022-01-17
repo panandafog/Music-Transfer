@@ -15,6 +15,7 @@ import Combine
 protocol APIBrowser: NSViewRepresentable, ObservableObject {
     var url: URL? { get }
     var viewDismissalModePublisher: PassthroughSubject<Bool, Never> { get }
+    
     func load()
 }
 
@@ -24,6 +25,7 @@ import Combine
 protocol APIBrowser: UIViewRepresentable, ObservableObject {
     var url: URL? { get }
     var viewDismissalModePublisher: PassthroughSubject<Bool, Never> { get }
+    
     func load()
 }
 

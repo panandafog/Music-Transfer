@@ -6,26 +6,16 @@
 //  Copyright © 2020 panandafog. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import WebKit
-import Combine
 
 public final class SpotifyBrowser: APIBrowser {
     
-    var url: URL? = nil
+    var url: URL?
+    let service: SpotifyService
     
-    private let webView: WKWebView = WKWebView()
-    
-    public func load() {
-        guard let url = self.url else {
-            return
-        }
-        webView.load(URLRequest(url: url))
-    }
-    
-    init(url: URL?) {
-        self.url = url
-    }
+    private let webView = WKWebView()
     
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
     private var shouldDismissView = false {
@@ -34,51 +24,66 @@ public final class SpotifyBrowser: APIBrowser {
         }
     }
     
-    public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+    init(url: URL?, service: SpotifyService) {
+        self.url = url
+        self.service = service
+    }
+    
+    public func load() {
+        guard let url = self.url else {
+            return
+        }
+        webView.load(URLRequest(url: url))
+    }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(browser: self, service: service)
+    }
+}
+
+public extension SpotifyBrowser {
+    class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+        let browser: SpotifyBrowser
+        let service: SpotifyService
         
-        var parent: SpotifyBrowser
-        private let spotifyFacade = SpotifyFacade.shared
-        
-        init(parent: SpotifyBrowser) {
-            self.parent = parent
+        init(browser: SpotifyBrowser, service: SpotifyService) {
+            self.browser = browser
+            self.service = service
         }
         
-        public func webView(_: WKWebView, didFail: WKNavigation!, withError: Error) {
-        }
-        
-        public func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) {
-        }
-        
-        public func webView(_: WKWebView, didFinish: WKNavigation!) {
-        }
-        
-        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        }
-        
-        public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        public func webView(
+            _ webView: WKWebView,
+            createWebViewWith configuration: WKWebViewConfiguration,
+            for navigationAction: WKNavigationAction,
+            windowFeatures: WKWindowFeatures
+        ) -> WKWebView? {
             if navigationAction.targetFrame == nil {
                 webView.load(navigationAction.request)
             }
             return nil
         }
         
-        public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationResponse: WKNavigationResponse,
+            decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+        ) {
             
             guard let url = navigationResponse.response.url else {
                 return
             }
             
             let currentUrlComponents = URLComponents(string: url.absoluteString)
-            let redirectUrlComponents = URLComponents(string: SpotifyFacade.authorizationRedirectUrl)
+            let redirectUrlComponents = URLComponents(string: SpotifyService.authorizationRedirectUrl)
             
             if currentUrlComponents?.host == redirectUrlComponents?.host {
                 let queryItems = currentUrlComponents?.queryItems
                 
-                let code = queryItems?.filter({$0.name == "code"}).first
-                let error = queryItems?.filter({$0.name == "error"}).first
-                let state = queryItems?.filter({$0.name == "state"}).first
+                let code = queryItems?.first { $0.name == "code" }
+                let error = queryItems?.first { $0.name == "error" }
+                let state = queryItems?.first { $0.name == "state" }
                 
-                guard state?.value == SpotifyFacade.state else {
+                guard state?.value == SpotifyService.state else {
                     return
                 }
                 
@@ -90,20 +95,15 @@ public final class SpotifyBrowser: APIBrowser {
                     return
                 }
                 
-                spotifyFacade.isAuthorised = true
-                spotifyFacade.requestTokens(code: codeValue)
+                service.requestTokens(code: codeValue)
                 
                 decisionHandler(.cancel)
-                parent.shouldDismissView = true
+                browser.shouldDismissView = true
                 
             } else {
                 decisionHandler(.allow)
             }
         }
-    }
-    
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self)
     }
 }
 

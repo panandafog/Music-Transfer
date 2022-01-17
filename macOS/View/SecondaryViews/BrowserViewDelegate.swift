@@ -6,7 +6,6 @@
 //  Copyright © 2020 panandafog. All rights reserved.
 //
 
-
 import SwiftUI
 
 class BrowserViewDelegate {
@@ -28,7 +27,9 @@ class BrowserViewDelegate {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 810, height: 850),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
+            backing: .buffered,
+            defer: false
+        )
         window.center()
         window.title = "Log in"
         window.setFrameAutosaveName("Log in Window")

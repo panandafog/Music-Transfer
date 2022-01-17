@@ -29,7 +29,9 @@ class TracksTableViewDelegate {
             let window = NSWindow(
                 contentRect: NSRect(x: 0, y: 0, width: 810, height: 850),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-                backing: .buffered, defer: false)
+                backing: .buffered,
+                defer: false
+            )
             window.center()
             window.title = name
             window.setFrameAutosaveName(name + " Window")

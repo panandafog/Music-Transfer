@@ -8,7 +8,11 @@
 import SwiftUI
 
 @main
+// swiftlint:disable type_name
 struct Music_TransferApp: App {
+    // swiftlint:enable type_name
+    
+    @ObservedObject private var alertsManager = AlertsManager.shared
     
     @State private var selectedView: Int?
     @State private var tst: Int? = 1
@@ -52,6 +56,20 @@ struct Music_TransferApp: App {
                     self.selectedView = 1
                 }
 #endif
+            }
+            .alert(
+                isPresented: Binding<Bool>(
+                    get: {
+                        alertsManager.alert != nil
+                    },
+                    set: { presenting in
+                        if !presenting {
+                            alertsManager.alert = nil
+                        }
+                    }
+                )
+            ) {
+                alertsManager.alert ?? Alert(title: Text(""))
             }
         }
     }

@@ -22,8 +22,11 @@ struct Captcha {
         self.errorMessage = errorMessage
         self.solveCompletion = solveCompletion
     }
-    
-    // MARK: - Solved
+}
+
+// MARK: - Extensions
+
+extension Captcha {
     
     struct Solved {
         let sid: String

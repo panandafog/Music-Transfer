@@ -5,15 +5,21 @@
 //  Created by panandafog on 25.01.2021.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class LoginViewModel: ObservableObject {
     
+    typealias CredentialsHandler = (_: String, _: String, _: String?, _: Captcha.Solved?) -> Void
+    
+    var service: APIService
     var viewDismissalModePublisher = PassthroughSubject<Bool, Never>()
     var shouldDismissView = false {
         didSet {
-            viewDismissalModePublisher.send(shouldDismissView)
+            DispatchQueue.main.async {
+                self.viewDismissalModePublisher.send(self.shouldDismissView)
+            }
+            service.showingAuthorization = !shouldDismissView
         }
     }
     
@@ -22,14 +28,26 @@ class LoginViewModel: ObservableObject {
     @Published var code = ""
     @Published var twoFactor: Bool
     @Published var captcha: Captcha.Solved?
-    @Published var completion: ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)
+    @Published var completion: CredentialsHandler
     
-    init(login: String? = nil,
-         password: String? = nil,
-         code: String? = nil,
-         twoFactor: Bool,
-         captcha: Captcha.Solved?,
-         completion: @escaping ((_: String, _: String, _: String?, _: Captcha.Solved?) -> Void)) {
+    @Published var error: Error? {
+        didSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
+    
+    init(
+        service: APIService,
+        twoFactor: Bool,
+        captcha: Captcha.Solved?,
+        login: String? = nil,
+        password: String? = nil,
+        code: String? = nil,
+        completion: @escaping CredentialsHandler
+    ) {
+        self.service = service
         self.login = login ?? ""
         self.password = password ?? ""
         self.code = code ?? ""

@@ -5,8 +5,8 @@
 //  Created by panandafog on 23.03.2021.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 class CaptchaViewModel: ObservableObject {
     
@@ -22,10 +22,12 @@ class CaptchaViewModel: ObservableObject {
     @Published var errorInfo: VKCaptcha.ErrorMessage
     @Published var completion: Captcha.CaptchaSolveCompletion
     
-    init(solution: String? = nil,
-         errorInfo: VKCaptcha.ErrorMessage,
-         url: URL,
-         completion: @escaping Captcha.CaptchaSolveCompletion) {
+    init(
+        errorInfo: VKCaptcha.ErrorMessage,
+        url: URL,
+        solution: String? = nil,
+        completion: @escaping Captcha.CaptchaSolveCompletion
+    ) {
         if let solution = solution {
             self.solution = solution
         }
