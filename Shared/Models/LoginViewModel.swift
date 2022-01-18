@@ -38,6 +38,10 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    var credentialsAreValid: Bool {
+        !login.isEmpty && !password.isEmpty
+    }
+    
     init(
         service: APIService,
         twoFactor: Bool,
@@ -54,5 +58,17 @@ class LoginViewModel: ObservableObject {
         self.twoFactor = twoFactor
         self.captcha = captcha
         self.completion = completion
+    }
+    
+    func complete() {
+        guard credentialsAreValid else {
+            return
+        }
+        
+        if !twoFactor {
+            completion(login, password, nil, captcha)
+        } else {
+            completion(login, password, code, captcha)
+        }
     }
 }

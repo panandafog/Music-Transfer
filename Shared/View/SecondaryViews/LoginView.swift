@@ -21,46 +21,59 @@ struct LoginView: View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .center)) {
             VStack {
                 TextField("login", text: $model.login)
+                    .textFieldStyle(.roundedBorder)
                 SecureField("password", text: $model.password)
+                    .textFieldStyle(.roundedBorder)
                 if model.twoFactor {
                     TextField("code", text: $model.code)
+                        .textFieldStyle(.roundedBorder)
                 }
                 HStack {
                     Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
+                        cancel()
                     }
                     Spacer(minLength: 10)
                     Button("Apply") {
-                        if !model.twoFactor {
-                            model.completion(model.login, model.password, nil, model.captcha)
-                        } else {
-                            model.completion(model.login, model.password, model.code, model.captcha)
-                        }
+                        model.complete()
                     }
+                    .disabled(!model.credentialsAreValid)
                 }
             }
             .padding()
             Spacer()
+        }
+        .modify {
+            #if os(macOS)
+            $0.background(
+                KeyEventHandling { event in
+                    if let characters = event.characters {
+                        handleKey(characters)
+                    }
+                }
+            )
+            #else
+            $0
+            #endif
         }
         .onReceive(model.viewDismissalModePublisher) { shouldDismiss in
             if shouldDismiss {
                 self.presentationMode.wrappedValue.dismiss()
             }
         }
-//        .toast(
-//            isPresenting: Binding<Bool>(
-//                get: {
-//                    model.error != nil
-//                },
-//                set: { presenting in
-//                    if !presenting {
-//                        model.error = nil
-//                    }
-//                }
-//            )
-//        ) {
-//            AlertToast(type: .regular, title: String(describing: model.error))
-//        }
+        //        .toast(
+        //            isPresenting: Binding<Bool>(
+        //                get: {
+        //                    model.error != nil
+        //                },
+        //                set: { presenting in
+        //                    if !presenting {
+        //                        model.error = nil
+        //                    }
+        //                }
+        //            )
+        //        ) {
+        //            AlertToast(type: .regular, title: String(describing: model.error))
+        //        }
         .alert(
             isPresented: Binding<Bool>(
                 get: {
@@ -75,5 +88,20 @@ struct LoginView: View {
         ) {
             Alert(title: Text(String(describing: model.error)), dismissButton: .default(Text("Dismiss")))
         }
+    }
+    
+    func handleKey(_ characters: String) {
+        switch characters {
+        case "\r":
+            model.complete()
+        case "\u{1B}":
+            cancel()
+        default:
+            break
+        }
+    }
+    
+    func cancel() {
+        presentationMode.wrappedValue.dismiss()
     }
 }

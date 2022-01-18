@@ -199,6 +199,7 @@
 		0BCF5AFB271BABAF0019C5B1 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCF5AFA271BABAF0019C5B1 /* List.swift */; };
 		0BD0B19A2725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD0B1992725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift */; };
 		0BD0B19B2725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD0B1992725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift */; };
+		0BDC12272796CAFD00BD919E /* KeyEventHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDC12252796CAFD00BD919E /* KeyEventHandling.swift */; };
 		0BE6DCA827124A20003BEC3B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA727124A20003BEC3B /* Log.swift */; };
 		0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCA927124A43003BEC3B /* Logger.swift */; };
 		0BE6DCAC27124A56003BEC3B /* LogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE6DCAB27124A56003BEC3B /* LogType.swift */; };
@@ -351,6 +352,7 @@
 		0BCF5AEB271B9BA70019C5B1 /* SpotifyArtistRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyArtistRealm.swift; sourceTree = "<group>"; };
 		0BCF5AFA271BABAF0019C5B1 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		0BD0B1992725FE700092F285 /* SpotifyTracksPackageToLikeRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyTracksPackageToLikeRealm.swift; sourceTree = "<group>"; };
+		0BDC12252796CAFD00BD919E /* KeyEventHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyEventHandling.swift; sourceTree = "<group>"; };
 		0BE6DCA727124A20003BEC3B /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		0BE6DCA927124A43003BEC3B /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		0BE6DCAB27124A56003BEC3B /* LogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogType.swift; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 		0B2C14B925A6781300ACB2C7 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0BDC12252796CAFD00BD919E /* KeyEventHandling.swift */,
 				0B46E5462784CB7A00181524 /* ShowingAlerts.swift */,
 				0B42352A26E431A6007CAAB7 /* TransferManager.swift */,
 				0B3AD99C277CA79C00BA692B /* Alerts */,
@@ -1427,6 +1430,7 @@
 				0B9DFB07271C9A01008E3893 /* TransferSuboperation.swift in Sources */,
 				0B1550992741C483000D0A38 /* VKSearchTracksSuboperation.swift in Sources */,
 				0BCF5AF3271BA7FD0019C5B1 /* SpotifyAlbumRealm.swift in Sources */,
+				0BDC12272796CAFD00BD919E /* KeyEventHandling.swift in Sources */,
 				0BE6DCBD27125AB8003BEC3B /* CacheManager.swift in Sources */,
 				0B1550A22741C4CD000D0A38 /* VKTrackToLike.swift in Sources */,
 				0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */,
@@ -1775,7 +1779,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Tests-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1797,7 +1801,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.1;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Tests-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
