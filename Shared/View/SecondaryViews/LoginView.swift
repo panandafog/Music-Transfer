@@ -86,7 +86,11 @@ struct LoginView: View {
                 }
             )
         ) {
-            Alert(title: Text(String(describing: model.error)), dismissButton: .default(Text("Dismiss")))
+            if let error = model.error {
+                return AlertsManager.makeAlert(error: error)
+            } else {
+                return Alert(title: Text("Unknown error"))
+            }
         }
     }
     

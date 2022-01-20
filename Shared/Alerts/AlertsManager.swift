@@ -21,15 +21,19 @@ class AlertsManager: ObservableObject {
     
     private init() { }
     
-    func showErrorAlert(_ error: Error) {
+    static func makeAlert(error: Error) -> Alert {
         var text = error.localizedDescription
         
         if let displayable = error as? DisplayableError {
             text = displayable.message
         }
         
+        return Alert(title: Text(text), dismissButton: .default(Text("Dismiss")))
+    }
+    
+    func showErrorAlert(_ error: Error) {
         DispatchQueue.main.async {
-            self.alert = Alert(title: Text(text), dismissButton: .default(Text("Dismiss")))
+            self.alert = Self.makeAlert(error: error)
         }
     }
 }
