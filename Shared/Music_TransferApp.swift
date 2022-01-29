@@ -38,8 +38,7 @@ struct Music_TransferApp: App {
 #endif
     }
     
-    var transferMenu: some View {
-#if os(macOS)
+    var bigTransferMenu: some View {
         NavigationView {
             sidebarList
             TransferView()
@@ -54,7 +53,9 @@ struct Music_TransferApp: App {
             //                            self.selectedView = 1
             //                        }
         }
-#else
+    }
+    
+    var smallTransferMenu: some View {
         TabView {
             NavigationView {
                 TransferView()
@@ -68,6 +69,17 @@ struct Music_TransferApp: App {
             .tabItem {
                 Label("History", systemImage: "square.and.pencil")
             }
+        }
+    }
+    
+    var transferMenu: some View {
+#if os(macOS)
+        return AnyView(bigTransferMenu)
+#else
+        if UIDevice.current.model == "iPad" {
+            return AnyView(bigTransferMenu)
+        } else {
+            return AnyView(smallTransferMenu)
         }
 #endif
     }
