@@ -47,31 +47,26 @@ struct ServiceView: View {
                         Button(action: {
                             switch serviceType {
                             case .primary:
-                                model.selectionFrom = index
                                 if model.selectionTo == index {
-                                    if model.selectionTo == model.services.count - 1 {
-                                        model.selectionTo = 0
-                                    } else {
-                                        model.selectionTo += 1
-                                    }
+                                    model.selectionTo = model.selectionFrom
                                 }
+                                model.selectionFrom = index
                             case .secondary:
+                                if model.selectionFrom == index {
+                                    model.selectionFrom = model.selectionTo
+                                }
                                 model.selectionTo = index
                             }
                         }, label: {
                             Text(type(of: model.services[index]).apiName)
                         })
-                            .modify {
-                                switch serviceType {
-                                case .primary:
-                                    $0
-                                case .secondary:
-                                    $0.disabled(selection == index)
-                                }
-                            }
                     }
                 } label: {
+#if os(macOS)
+                    Text(type(of: service).apiName)
+#else
                     Label(type(of: service).apiName, systemImage: "chevron.down")
+#endif
                 }
                 .modify {
 #if os(macOS)
