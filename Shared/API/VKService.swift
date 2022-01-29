@@ -797,22 +797,34 @@ final class VKService: APIService {
             finalCompletion()
             return
         }
+        let track = tracks[0]
         
-        //        guard let ownerID = tracks[0].ownerID else {
-        //            var remainingTracks = tracks
-        //            remainingTracks.remove(at: 0)
-        //            completion(remainingTracks.count)
-        //            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
-        //            return
-        //        }
+        var vkTrackData: SharedServicesData.VKTrackData?
+        servicesDataLoop: for serviceData in track.servicesData {
+            switch serviceData {
+            case .vk(let trackData):
+                vkTrackData = trackData
+                break servicesDataLoop
+            default:
+                break
+            }
+        }
+        
+        guard let ownerID = vkTrackData?.ownerID, let trackID = vkTrackData?.id else {
+            var remainingTracks = tracks
+            remainingTracks.remove(at: 0)
+            completion(remainingTracks.count)
+            deleteTracks(remainingTracks, captcha: nil, completion: completion, finalCompletion: finalCompletion)
+            return
+        }
         
         var tmp = VKService.baseURL
         tmp.path = "/method/audio.delete"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "v", value: VKService.apiVersion),
-            URLQueryItem(name: "audio_id", value: String(tracks[0].id))
-            //            URLQueryItem(name: "owner_id", value: String(ownerID))
+            URLQueryItem(name: "audio_id", value: trackID),
+            URLQueryItem(name: "owner_id", value: ownerID)
         ]
         
         if let captcha = captcha {

@@ -12,7 +12,14 @@ class SharedTrackRealm: Object {
     
     @objc dynamic var id = ""
     @objc dynamic var title = ""
-    @objc dynamic var durationS = 0
+    @objc dynamic var duration = 0
+    
+    @objc dynamic var spotifyID: String?
+    
+    @objc dynamic var lastFmID: String?
+    
+    @objc dynamic var vkID: String?
+    @objc dynamic var vkOwnerID: String?
     
     let artists = List<String>()
     
@@ -28,8 +35,27 @@ extension SharedTrackRealm {
             id: id,
             artists: Array(artists),
             title: title,
-            durationS: durationS
+            duration: duration,
+            servicesData: servicesData
         )
+    }
+    
+    var servicesData: [SharedServicesData] {
+        var data: [SharedServicesData] = []
+        
+        if let spotifyID = spotifyID {
+            data.append(.spotify(spotifyID))
+        }
+        
+        if let lastFmID = lastFmID {
+            data.append(.lastFM(lastFmID))
+        }
+        
+        if let vkID = vkID, let vkOwnerID = vkOwnerID {
+            data.append(.vk(.init(id: vkID, ownerID: vkOwnerID)))
+        }
+        
+        return data
     }
     
     convenience init(_ sharedTrack: SharedTrack) {
@@ -37,7 +63,7 @@ extension SharedTrackRealm {
         
         id = sharedTrack.id
         title = sharedTrack.title
-        durationS = sharedTrack.durationS
+        duration = sharedTrack.duration
         artists.append(objectsIn: sharedTrack.artists)
     }
 }

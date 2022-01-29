@@ -12,7 +12,7 @@ struct SharedTrack: Identifiable {
     
     // MARK: - Constants
     
-    /// in percents
+    /// percents
     static let durationComparisonInaccuracy = 10
     
     // MARK: - Instance properties
@@ -20,15 +20,20 @@ struct SharedTrack: Identifiable {
     var id = NSUUID().uuidString
     let artists: [String]
     let title: String
-    let durationS: Int
+    
+    /// seconds
+    let duration: Int
+    
+    let servicesData: [SharedServicesData]
     
     // MARK: - Initializers
     
-    init(id: String, artists: [String], title: String, durationS: Int) {
+    init(id: String, artists: [String], title: String, duration: Int, servicesData: [SharedServicesData]) {
         self.id = id
         self.artists = artists
         self.title = title
-        self.durationS = durationS
+        self.duration = duration
+        self.servicesData = servicesData
     }
     
     init(from track: VKSavedTracks.Item) {
@@ -53,10 +58,18 @@ struct SharedTrack: Identifiable {
         
         let artistsArray = artistsStr.components(separatedBy: ", ")
         
-        self.id = String(track.id)
         self.artists = artistsArray
         self.title = track.title
-        self.durationS = track.duration
+        self.duration = track.duration
+        
+        self.servicesData = [
+            .vk(
+                SharedServicesData.VKTrackData(
+                    id: String(track.id),
+                    ownerID: String(track.owner_id)
+                )
+            )
+        ]
     }
     
     init(from track: SpotifySavedTracks.Track) {
@@ -65,10 +78,13 @@ struct SharedTrack: Identifiable {
             artists.append(artist.name)
         }
         
-        self.id = track.id
         self.artists = artists
         self.title = track.name
-        self.durationS = track.duration_ms / 1_000
+        self.duration = track.duration_ms / 1_000
+        
+        self.servicesData = [
+            .spotify(track.id)
+        ]
     }
     
     init(from item: SpotifySavedTracks.Item) {
@@ -82,24 +98,33 @@ struct SharedTrack: Identifiable {
             artists.append(artist.name)
         }
         
-        self.id = item.id
         self.artists = artists
         self.title = item.name
-        self.durationS = item.duration_ms / 1_000
+        self.duration = item.duration_ms / 1_000
+        
+        self.servicesData = [
+            .spotify(item.id)
+        ]
     }
     
     init(from track: LastFmLovedTracks.Track) {
-        self.id = track.id
         self.artists = [track.artist.name]
         self.title = track.name
-        self.durationS = 0
+        self.duration = 0
+        
+        self.servicesData = [
+            .lastFM(track.id)
+        ]
     }
     
     init(from track: LastFmTrackSearchResult.Track) {
-        self.id = track.id
         self.artists = [track.artist]
         self.title = track.name
-        self.durationS = 0
+        self.duration = 0
+        
+        self.servicesData = [
+            .lastFM(track.id)
+        ]
     }
     
     // MARK: - Making array methods
@@ -154,7 +179,7 @@ struct SharedTrack: Identifiable {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Equatable
 
 extension SharedTrack: Equatable {
     
@@ -269,7 +294,7 @@ extension SharedTrack: Equatable {
         
         return equalArtists
         && titlesAreEqual(lhs: lhs.title, rhs: rhs.title)
-        && durationsAreEqual(lhs: lhs.durationS, rhs: rhs.durationS)
+        && durationsAreEqual(lhs: lhs.duration, rhs: rhs.duration)
     }
     
     static func durationsAreEqual(lhs: Int, rhs: Int) -> Bool {

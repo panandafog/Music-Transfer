@@ -591,14 +591,19 @@ final class SpotifyService: APIService {
         
         let tracks = packages[0]
         
-        var ids = ""
+        var ids: [String] = []
         var ind = 0
         for track in tracks {
             ind += 1
-            if track.id != tracks.last?.id {
-                ids += String(track.id) + ","
-            } else {
-                ids += String(track.id)
+            
+            servicesDataLoop: for serviceData in track.servicesData {
+                switch serviceData {
+                case .spotify(let trackID):
+                    ids.append(trackID)
+                    break servicesDataLoop
+                default:
+                    break
+                }
             }
         }
         
@@ -607,7 +612,7 @@ final class SpotifyService: APIService {
         tmp.host = "api.spotify.com"
         tmp.path = "/v1/me/tracks"
         tmp.queryItems = [
-            URLQueryItem(name: "ids", value: String(ids))
+            URLQueryItem(name: "ids", value: String(ids.joined(separator: ",")))
         ]
         
         guard let url = tmp.url else {

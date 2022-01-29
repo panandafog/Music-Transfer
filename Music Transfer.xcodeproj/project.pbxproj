@@ -21,6 +21,8 @@
 		0B0352CD276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */; };
 		0B0352CF2765682B00835F56 /* LastFmSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CE2765682B00835F56 /* LastFmSession.swift */; };
 		0B0352D02765682B00835F56 /* LastFmSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CE2765682B00835F56 /* LastFmSession.swift */; };
+		0B0BC82927A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
+		0B0BC82A27A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
 		0B11651E2779DE7A0089C962 /* LastFmLovedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */; };
 		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
 		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
@@ -251,6 +253,7 @@
 		0B0352C827655F5900835F56 /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
 		0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAuthorizationResponse.swift; sourceTree = "<group>"; };
 		0B0352CE2765682B00835F56 /* LastFmSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSession.swift; sourceTree = "<group>"; };
+		0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedServicesData.swift; sourceTree = "<group>"; };
 		0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmLovedTracks.swift; sourceTree = "<group>"; };
 		0B17559925BF304D0094E75C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		0B27CE5B27834682002A59BA /* LastFmError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmError.swift; sourceTree = "<group>"; };
@@ -768,6 +771,7 @@
 			children = (
 				0B2C153A25A67F5A00ACB2C7 /* SharedTrack.swift */,
 				0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */,
+				0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1319,6 +1323,7 @@
 				0BC2639F25BD9B7F00820FE0 /* SpotifyBrowser.swift in Sources */,
 				0B1755A325BF3A1A0094E75C /* LoginView.swift in Sources */,
 				0B2C154825A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
+				0B0BC82927A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */,
 				0B7D8AA2274ADA8B00E0321A /* ServiceView.swift in Sources */,
 				0B27CE6627835FFA002A59BA /* RequestMethod.swift in Sources */,
 				0BE6DCAF27124B49003BEC3B /* NetworkClient.swift in Sources */,
@@ -1409,6 +1414,7 @@
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
 				0B27CE6727835FFA002A59BA /* RequestMethod.swift in Sources */,
 				0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */,
+				0B0BC82A27A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */,
 				0B46E5492789C70800181524 /* LastFmAddTracksOperation.swift in Sources */,
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */,

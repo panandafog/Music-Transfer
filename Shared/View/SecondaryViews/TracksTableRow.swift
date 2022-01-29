@@ -22,9 +22,9 @@ struct TracksTableRow: View {
     }
     
     func getDuration() -> String {
-        let minutes = String(Int(track.durationS / 60))
-        var seconds = String(track.durationS % 60)
-        if track.durationS % 60 < 10 {
+        let minutes = String(Int(track.duration / 60))
+        var seconds = String(track.duration % 60)
+        if track.duration % 60 < 10 {
             seconds = "0" + seconds
         }
         return minutes + ":" + seconds
@@ -34,6 +34,6 @@ struct TracksTableRow: View {
 // swiftlint:disable type_name
 struct TracksTableRowView_Preview: PreviewProvider {
     static var previews: some View {
-        TracksTableRow(track: SharedTrack(id: "1488", artists: ["Rammstein", "Nietsmmar"], title: "Sonne", durationS: 355))
+        TracksTableRow(track: SharedTrack(id: "1488", artists: ["Rammstein", "Nietsmmar"], title: "Sonne", duration: 355, servicesData: []))
     }
 }
