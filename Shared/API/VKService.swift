@@ -54,7 +54,11 @@ final class VKService: APIService {
         }
     }
     
-    var tokensInfo: TokensInfo?
+    var tokensInfo: TokensInfo? {
+        didSet {
+            saveTokensInfo()
+        }
+    }
     
     var savedTracks = [SharedTrack]()
     
@@ -178,11 +182,6 @@ final class VKService: APIService {
                 
                 self.tokensInfo = tokensInfo
                 
-                let defaults = UserDefaults.standard
-                defaults.setValue(tokensInfo.access_token, forKey: "vk_access_token")
-                defaults.setValue(tokensInfo.expires_in, forKey: "vk_token_expires_in")
-                defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
-                
                 DispatchQueue.main.async {
                     self.loginViewModel.shouldDismissView = true
                 }
@@ -221,6 +220,17 @@ final class VKService: APIService {
             }
         }
         task.resume()
+    }
+    
+    func saveTokensInfo() {
+        guard let tokensInfo = tokensInfo else {
+            return
+        }
+
+        let defaults = UserDefaults.standard
+        defaults.setValue(tokensInfo.access_token, forKey: "vk_access_token")
+        defaults.setValue(tokensInfo.expires_in, forKey: "vk_token_expires_in")
+        defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
     }
     
     // MARK: - Tracks management methods

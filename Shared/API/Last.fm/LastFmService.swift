@@ -42,10 +42,20 @@ final class LastFmService: APIService {
         completion: authorize(username:password:unused1:unused2:)
     )
     
-    private (set) var session: LastFmSession?
+    private (set) var session: LastFmSession? {
+        didSet {
+            saveSession()
+        }
+    }
     
     private let requestRepeatDelay: UInt32 = 1_000_000
     private let determinateElementsCount = 5
+    
+    // - Initialisers
+    
+    init() {
+        session = getSavedSession()
+    }
     
     // MARK: - Authorization methods
     
@@ -100,6 +110,31 @@ final class LastFmService: APIService {
             errorType: LastFmError.self,
             completion: resultHandler
         )
+    }
+    
+    private func saveSession() {
+        guard let session = session else {
+            return
+        }
+
+        let defaults = UserDefaults.standard
+        defaults.setValue(session.name, forKey: "last.fm_session_name")
+        defaults.setValue(session.key, forKey: "last.fm_session_key")
+        defaults.setValue(session.subscriber, forKey: "last.fm_session_subscriber")
+    }
+    
+    private func getSavedSession() -> LastFmSession? {
+        let defaults = UserDefaults.standard
+        
+        if let sessionName = defaults.string(forKey: "last.fm_session_name"),
+           let sessionKey = defaults.string(forKey: "last.fm_session_key"),
+           let sessionSubscriberStr = defaults.string(forKey: "last.fm_session_subscriber"),
+           let sessionSubscriber = Int(sessionSubscriberStr) {
+            
+            return LastFmSession(name: sessionName, key: sessionKey, subscriber: sessionSubscriber)
+        } else {
+            return nil
+        }
     }
     
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
