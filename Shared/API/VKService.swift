@@ -406,12 +406,13 @@ final class VKService: APIService {
                 }
                 
                 var tracksFailedToAdd = [VKSavedTracks.Item]()
+                let tracksToAdd: [VKSavedTracks.Item] = filtered.tracksToAdd.reversed()
                 
                 self.likeTracks(
-                    filtered.tracksToAdd,
+                    tracksToAdd,
                     captcha: nil,
                     completion: { (notLikedTrack: VKSavedTracks.Item?, remaining: Int) in
-                        let likedTrackIndex = filtered.tracksToAdd.count - (remaining + 1)
+                        let likedTrackIndex = remaining
                         
                         DispatchQueue.main.async {
                             self.progressViewModel.progressPercentage

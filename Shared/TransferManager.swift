@@ -186,7 +186,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
         
         if let vkService = destinationService as? VKService {
             var tracksToAdd = vkService.filterTracksToAdd(departureService.savedTracks)
-            tracksToAdd.reverse()
             let operation = VKAddTracksOperation(tracksToAdd: tracksToAdd)
             let operationUpdateHandler: VKAddTracksOperationHandler = { [self] operation in
                 save(operation)

@@ -17,6 +17,7 @@ final class SpotifyService: APIService {
     static let authorizationRedirectUrl = "https://example.com/callback/"
     static let state = NSUUID().uuidString
     static let apiName = "Spotify"
+    static let tracksInLikePackage = 50
     
     static let authorizationUrl: URL? = {
         
@@ -309,7 +310,7 @@ final class SpotifyService: APIService {
                 var package = [SpotifySearchTracks.Item]()
                 for track in filtered.tracksToAdd {
                     package.append(track)
-                    if package.count == 50 {
+                    if package.count == Self.tracksInLikePackage {
                         packages.append(package)
                         package.removeAll()
                     }
@@ -317,6 +318,8 @@ final class SpotifyService: APIService {
                 if !package.isEmpty {
                     packages.append(package)
                 }
+                
+                packages.reverse()
                 
                 operation.searchSuboperaion.completed = Date()
                 operation.likeSuboperation.started = Date()
@@ -329,7 +332,7 @@ final class SpotifyService: APIService {
                 operation.likeSuboperation.notFoundTracks = filtered.notFoundTracks
                 updateHandler(operation)
                 
-                var packageID = 0
+                var packageID = packages.count - 1
                 self.likeTracks(
                     packages,
                     completion: { (remaining: Int) in
@@ -339,7 +342,7 @@ final class SpotifyService: APIService {
                         
                         operation.likeSuboperation.trackPackagesToLike[packageID].liked = true
                         updateHandler(operation)
-                        packageID += 1
+                        packageID -= 1
                         
                     }, finalCompletion: {
                         operation.likeSuboperation.completed = Date()
@@ -553,7 +556,7 @@ final class SpotifyService: APIService {
         var package = [SharedTrack]()
         for track in savedTracks {
             package.append(track)
-            if package.count == 50 {
+            if package.count == Self.tracksInLikePackage {
                 packages.append(package)
                 package.removeAll()
             }

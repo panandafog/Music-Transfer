@@ -20,6 +20,9 @@ final class LastFmService: APIService {
     
     static let apiName = "Last.fm"
     
+    private static let requestRepeatDelay: UInt32 = 1_000_000
+    private static let tracksAddingDelay: UInt32 = 0
+    
     var isAuthorised: Bool {
         session != nil
     }
@@ -48,7 +51,6 @@ final class LastFmService: APIService {
         }
     }
     
-    private let requestRepeatDelay: UInt32 = 1_000_000
     private let determinateElementsCount = 5
     
     // - Initialisers
@@ -391,7 +393,7 @@ final class LastFmService: APIService {
         
         var currentTrack = 0
         let tracksCount = filteredSearchResults.found.count
-        var tracksIterator = filteredSearchResults.found.makeIterator()
+        var tracksIterator = filteredSearchResults.found.reversed().makeIterator()
         
         let updateProgress: () -> Void = {
             currentTrack += 1
@@ -404,6 +406,7 @@ final class LastFmService: APIService {
             return Promise<Void> { seal in
                 self.loveTrack(SharedTrack(from: track), love: true)
                     .done {
+                        usleep(Self.tracksAddingDelay)
                         operation.likeSuboperation.tracksToLike[currentTrack].liked = true
                         updateHandler(operation)
                         
@@ -411,6 +414,7 @@ final class LastFmService: APIService {
                         seal.fulfill(())
                     }
                     .catch { error in
+                        usleep(Self.tracksAddingDelay)
                         updateProgress()
 //                        seal.reject(error)
                         seal.fulfill(())
@@ -443,7 +447,7 @@ final class LastFmService: APIService {
                 DispatchQueue.main.async {
                     TransferManager.shared.off()
                 }
-                usleep(self.requestRepeatDelay)
+                usleep(Self.requestRepeatDelay)
                 self.getSavedTracks()
             }
             .catch { error in
@@ -581,7 +585,7 @@ final class LastFmService: APIService {
         
         var currentTrack = 0
         let tracksCount = savedTracks.count
-        var tracksIterator = savedTracks.makeIterator()
+        var tracksIterator = savedTracks.reversed().makeIterator()
         
         let updateProgress: () -> Void = {
             currentTrack += 1
@@ -594,10 +598,12 @@ final class LastFmService: APIService {
             return Promise<Void> { seal in
                 self.loveTrack(track, love: false)
                     .done {
+                        usleep(Self.tracksAddingDelay)
                         updateProgress()
                         seal.fulfill(())
                     }
                     .catch { error in
+                        usleep(Self.tracksAddingDelay)
                         updateProgress()
 //                        seal.reject(error)
                         seal.fulfill(())
@@ -620,7 +626,7 @@ final class LastFmService: APIService {
                 DispatchQueue.main.async {
                     TransferManager.shared.off()
                 }
-                usleep(self.requestRepeatDelay)
+                usleep(Self.requestRepeatDelay)
                 self.getSavedTracks()
             }
             .catch { error in
