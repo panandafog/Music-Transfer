@@ -68,8 +68,13 @@ public extension SpotifyBrowser {
             decidePolicyFor navigationResponse: WKNavigationResponse,
             decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
         ) {
+            func handleError() {
+                decisionHandler(.cancel)
+                browser.shouldDismissView = true
+            }
             
             guard let url = navigationResponse.response.url else {
+                handleError()
                 return
             }
             
@@ -84,14 +89,17 @@ public extension SpotifyBrowser {
                 let state = queryItems?.first { $0.name == "state" }
                 
                 guard state?.value == SpotifyService.state else {
+                    handleError()
                     return
                 }
                 
                 guard error?.value == nil else {
+                    handleError()
                     return
                 }
                 
                 guard let codeValue = code?.value else {
+                    handleError()
                     return
                 }
                 
