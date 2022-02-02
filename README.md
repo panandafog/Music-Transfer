@@ -4,6 +4,7 @@ MacOS application for transferring songs between music services
 
 Currently supports the following services:
 - [Spotify](https://open.spotify.com/)
+- [VK](https://vk.com/)
 - [Last.fm](https://www.last.fm/)
 
 ### System requirements 

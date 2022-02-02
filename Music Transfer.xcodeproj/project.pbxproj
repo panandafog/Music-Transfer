@@ -24,6 +24,8 @@
 		0B0BC82927A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
 		0B0BC82A27A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
 		0B0BC82C27AADB0B00AF2D09 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */; };
+		0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82E27AB507300AF2D09 /* VKKeys.swift */; };
+		0B0BC83027AB507300AF2D09 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82E27AB507300AF2D09 /* VKKeys.swift */; };
 		0B11651E2779DE7A0089C962 /* LastFmLovedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */; };
 		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
 		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
@@ -253,6 +255,7 @@
 		0B0352CE2765682B00835F56 /* LastFmSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSession.swift; sourceTree = "<group>"; };
 		0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedServicesData.swift; sourceTree = "<group>"; };
 		0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-iOS.xcassets"; sourceTree = "<group>"; };
+		0B0BC82E27AB507300AF2D09 /* VKKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKKeys.swift; sourceTree = "<group>"; };
 		0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmLovedTracks.swift; sourceTree = "<group>"; };
 		0B17559925BF304D0094E75C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		0B27CE5B27834682002A59BA /* LastFmError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmError.swift; sourceTree = "<group>"; };
@@ -571,6 +574,7 @@
 			children = (
 				0B0352C32765588500835F56 /* LastFmKeys.swift */,
 				0B2C160725A6843000ACB2C7 /* SpotifyKeys.swift */,
+				0B0BC82E27AB507300AF2D09 /* VKKeys.swift */,
 			);
 			path = Keys;
 			sourceTree = "<group>";
@@ -1353,6 +1357,7 @@
 				0B2C155A25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0BC2634425BCE90C00820FE0 /* TracksTableRow.swift in Sources */,
 				0B3AD99B277B5A5900BA692B /* LastFmTrackToLikeRealm.swift in Sources */,
+				0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */,
 				0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */,
 				0B81BE81273707460024D4EC /* SpotifyAddTracksOperation.swift in Sources */,
 				0B48CA88277F7B6A00878DE9 /* AuthorizationView.swift in Sources */,
@@ -1383,6 +1388,7 @@
 				0B2C160925A6843000ACB2C7 /* SpotifyKeys.swift in Sources */,
 				0B2C153425A67F1C00ACB2C7 /* SpotifyBrowser.swift in Sources */,
 				0B0352CA27655F5900835F56 /* MD5.swift in Sources */,
+				0B0BC83027AB507300AF2D09 /* VKKeys.swift in Sources */,
 				0B2C15BE25A681B300ACB2C7 /* LoginView.swift in Sources */,
 				0BE6DCB127124CC1003BEC3B /* LogType.swift in Sources */,
 				0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */,

@@ -4,6 +4,7 @@
 
 В данный момент поддерживаются следующие сервисы:
 - [Spotify](https://open.spotify.com/)
+- [ВКонтакте](https://vk.com/)
 - [Last.fm](https://www.last.fm/)
 
 ### Системные требования
