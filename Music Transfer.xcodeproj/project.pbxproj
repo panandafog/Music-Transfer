@@ -23,6 +23,7 @@
 		0B0352D02765682B00835F56 /* LastFmSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0352CE2765682B00835F56 /* LastFmSession.swift */; };
 		0B0BC82927A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
 		0B0BC82A27A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */; };
+		0B0BC82C27AADB0B00AF2D09 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */; };
 		0B11651E2779DE7A0089C962 /* LastFmLovedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */; };
 		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
 		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
@@ -58,8 +59,7 @@
 		0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */; };
 		0B2C14E525A6781400ACB2C7 /* TransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BB25A6781300ACB2C7 /* TransferView.swift */; };
 		0B2C14E625A6781400ACB2C7 /* TransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C14BB25A6781300ACB2C7 /* TransferView.swift */; };
-		0B2C14E725A6781400ACB2C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B2C14BC25A6781300ACB2C7 /* Assets.xcassets */; };
-		0B2C14E825A6781400ACB2C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B2C14BC25A6781300ACB2C7 /* Assets.xcassets */; };
+		0B2C14E825A6781400ACB2C7 /* Assets-macOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B2C14BC25A6781300ACB2C7 /* Assets-macOS.xcassets */; };
 		0B2C150B25A67E6000ACB2C7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C150A25A67E6000ACB2C7 /* APIService.swift */; };
 		0B2C150C25A67E6000ACB2C7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C150A25A67E6000ACB2C7 /* APIService.swift */; };
 		0B2C151725A67E8800ACB2C7 /* APIBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C151525A67E8800ACB2C7 /* APIBrowser.swift */; };
@@ -254,6 +254,7 @@
 		0B0352CB276566F300835F56 /* LastFmAuthorizationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAuthorizationResponse.swift; sourceTree = "<group>"; };
 		0B0352CE2765682B00835F56 /* LastFmSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSession.swift; sourceTree = "<group>"; };
 		0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedServicesData.swift; sourceTree = "<group>"; };
+		0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-iOS.xcassets"; sourceTree = "<group>"; };
 		0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmLovedTracks.swift; sourceTree = "<group>"; };
 		0B17559925BF304D0094E75C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		0B27CE5B27834682002A59BA /* LastFmError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmError.swift; sourceTree = "<group>"; };
@@ -262,7 +263,7 @@
 		0B27CE6527835FFA002A59BA /* RequestMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_TransferApp.swift; sourceTree = "<group>"; };
 		0B2C14BB25A6781300ACB2C7 /* TransferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferView.swift; sourceTree = "<group>"; };
-		0B2C14BC25A6781300ACB2C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0B2C14BC25A6781300ACB2C7 /* Assets-macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-macOS.xcassets"; sourceTree = "<group>"; };
 		0B2C14C125A6781300ACB2C7 /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2C14C425A6781300ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2C14C925A6781300ACB2C7 /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -501,7 +502,8 @@
 				0B9D64A025B8AED800A0B0C8 /* View */,
 				0B2C15DF25A682A000ACB2C7 /* Constants.swift */,
 				0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */,
-				0B2C14BC25A6781300ACB2C7 /* Assets.xcassets */,
+				0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */,
+				0B2C14BC25A6781300ACB2C7 /* Assets-macOS.xcassets */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1140,7 +1142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C14E725A6781400ACB2C7 /* Assets.xcassets in Resources */,
+				0B0BC82C27AADB0B00AF2D09 /* Assets-iOS.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,7 +1150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2C14E825A6781400ACB2C7 /* Assets.xcassets in Resources */,
+				0B2C14E825A6781400ACB2C7 /* Assets-macOS.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1695,6 +1697,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				SDKROOT = macosx;
@@ -1720,6 +1723,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				SDKROOT = macosx;
