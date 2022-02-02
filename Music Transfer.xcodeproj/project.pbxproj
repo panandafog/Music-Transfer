@@ -1636,7 +1636,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1662,7 +1662,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1691,7 +1691,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				SDKROOT = macosx;
@@ -1717,7 +1717,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
 				PRODUCT_NAME = "Music Transfer";
 				SDKROOT = macosx;
