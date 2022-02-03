@@ -267,7 +267,7 @@
 		0B2C14BC25A6781300ACB2C7 /* Assets-macOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-macOS.xcassets"; sourceTree = "<group>"; };
 		0B2C14C125A6781300ACB2C7 /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2C14C425A6781300ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0B2C14C925A6781300ACB2C7 /* Music Transfer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B2C14C925A6781300ACB2C7 /* Music Transfer (ext.).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Transfer (ext.).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2C14CB25A6781300ACB2C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B2C14CC25A6781300ACB2C7 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		0B2C14D125A6781300ACB2C7 /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -512,7 +512,7 @@
 			isa = PBXGroup;
 			children = (
 				0B2C14C125A6781300ACB2C7 /* Music Transfer.app */,
-				0B2C14C925A6781300ACB2C7 /* Music Transfer.app */,
+				0B2C14C925A6781300ACB2C7 /* Music Transfer (ext.).app */,
 				0B2C14D125A6781300ACB2C7 /* Tests iOS.xctest */,
 				0B2C14DC25A6781400ACB2C7 /* Tests macOS.xctest */,
 			);
@@ -1052,7 +1052,7 @@
 			);
 			name = "Music Transfer (macOS)";
 			productName = "Music Transfer (macOS)";
-			productReference = 0B2C14C925A6781300ACB2C7 /* Music Transfer.app */;
+			productReference = 0B2C14C925A6781300ACB2C7 /* Music Transfer (ext.).app */;
 			productType = "com.apple.product-type.application";
 		};
 		0B2C14D025A6781300ACB2C7 /* Tests iOS */ = {
@@ -1643,7 +1643,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
+				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -1669,7 +1669,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
+				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -1698,8 +1698,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 0.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
-				PRODUCT_NAME = "Music Transfer";
+				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
+				PRODUCT_NAME = "Music Transfer (ext.)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -1724,8 +1724,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 0.1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer";
-				PRODUCT_NAME = "Music Transfer";
+				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
+				PRODUCT_NAME = "Music Transfer (ext.)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
