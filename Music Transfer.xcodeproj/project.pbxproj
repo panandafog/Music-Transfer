@@ -138,6 +138,8 @@
 		0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C159025A680B400ACB2C7 /* MainProgressView.swift */; };
 		0B7D8AA2274ADA8B00E0321A /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */; };
 		0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */; };
+		0B8045AA27AC8641004E5B8F /* TracksComparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8045A927AC8641004E5B8F /* TracksComparator.swift */; };
+		0B8045AB27ADD86E004E5B8F /* TracksComparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8045A927AC8641004E5B8F /* TracksComparator.swift */; };
 		0B81BE6527354D960024D4EC /* VKSearchedTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */; };
 		0B81BE6827354E180024D4EC /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
 		0B81BE6A27354E5C0024D4EC /* VKSearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */; };
@@ -316,6 +318,7 @@
 		0B46E5462784CB7A00181524 /* ShowingAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingAlerts.swift; sourceTree = "<group>"; };
 		0B48CA87277F7B6A00878DE9 /* AuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationView.swift; sourceTree = "<group>"; };
 		0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceView.swift; sourceTree = "<group>"; };
+		0B8045A927AC8641004E5B8F /* TracksComparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksComparator.swift; sourceTree = "<group>"; };
 		0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrack.swift; sourceTree = "<group>"; };
 		0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchTracksSuboperation.swift; sourceTree = "<group>"; };
 		0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrackRealm.swift; sourceTree = "<group>"; };
@@ -495,6 +498,7 @@
 				0B2C153925A67F3B00ACB2C7 /* Models */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0B0352C727655F3D00835F56 /* Security */,
+				0B8045A827AC862A004E5B8F /* Service */,
 				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
 				0B2C15DF25A682A000ACB2C7 /* Constants.swift */,
@@ -779,6 +783,14 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0B8045A827AC862A004E5B8F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				0B8045A927AC8641004E5B8F /* TracksComparator.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 		0B81BE6127354B7E0024D4EC /* Suboperations */ = {
@@ -1356,6 +1368,7 @@
 				0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */,
 				0B81BE81273707460024D4EC /* SpotifyAddTracksOperation.swift in Sources */,
 				0B48CA88277F7B6A00878DE9 /* AuthorizationView.swift in Sources */,
+				0B8045AA27AC8641004E5B8F /* TracksComparator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,6 +1405,7 @@
 				0B2C15B025A6811E00ACB2C7 /* CaptchaView.swift in Sources */,
 				0B1550A02741C4C6000D0A38 /* VKSearchedTrack.swift in Sources */,
 				0B2C156925A67FFE00ACB2C7 /* VKCaptcha.swift in Sources */,
+				0B8045AB27ADD86E004E5B8F /* TracksComparator.swift in Sources */,
 				0B27CE612783499D002A59BA /* DisplayableError.swift in Sources */,
 				0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */,
 				0B1550A62741C4DC000D0A38 /* VKSavedItemRealm.swift in Sources */,

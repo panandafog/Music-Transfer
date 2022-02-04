@@ -504,7 +504,7 @@ final class VKService: APIService {
                 if !foundTracks[index].isEmpty {
                     var chosenTrack: VKSavedTracks.Item?
                     for foundTrack in foundTracks[index] {
-                        if SharedTrack(from: foundTrack) == initialTracks[index] {
+                        if SharedTrack(from: foundTrack) ~= initialTracks[index] {
                             chosenTrack = foundTrack
                             break
                         }
