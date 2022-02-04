@@ -443,7 +443,7 @@ final class SpotifyService: APIService {
                 if !currentTracks[index].isEmpty {
                     var chosenTrack: SpotifySearchTracks.Item?
                     for foundTrack in currentTracks[index] {
-                        if SharedTrack(from: foundTrack) == commonTracks[index] {
+                        if SharedTrack(from: foundTrack) ~= commonTracks[index] {
                             chosenTrack = foundTrack
                             break
                         }
