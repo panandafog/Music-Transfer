@@ -26,6 +26,16 @@ struct SharedTrack: Identifiable {
     
     let servicesData: [SharedServicesData]
     
+    var descriptionString: String {
+        [
+            artists.joined(separator: ", "),
+            " – ",
+            title,
+            ", duration:",
+            String(duration)
+        ].joined()
+    }
+    
     // MARK: - Initializers
     
     init(id: String, artists: [String], title: String, duration: Int, servicesData: [SharedServicesData]) {
@@ -166,15 +176,6 @@ struct SharedTrack: Identifiable {
     // MARK: - Making string methods
     
     func strArtists() -> String {
-        var res = ""
-        if artists.count > 1 {
-            for index in 0...artists.count - 2 {
-                res.append(artists[index] + ", ")
-            }
-        }
-        if !artists.isEmpty, let last = artists.last {
-            res.append(last)
-        }
-        return res
+        artists.joined(separator: ", ")
     }
 }
