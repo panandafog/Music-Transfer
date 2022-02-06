@@ -11,6 +11,7 @@ enum Log: String {
     case database
     case debug
     case network
+    case tracksComparation
     case viewcycle
     case ui
 }

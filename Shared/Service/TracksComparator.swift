@@ -17,7 +17,7 @@ enum TracksComparator {
     static let defaultComparationMethod: ComparationMethod = .levenshtein
     
     static let titlesComparationAccuracy = 0.9
-    static let durationsComparationAccuracy = 0.9
+    static let durationsComparationInfelicity = 0.1
     
     static func compare(
         _ lhs: SharedTrack,
@@ -38,11 +38,27 @@ enum TracksComparator {
         _ lhs: SharedTrack,
         _ rhs: SharedTrack
     ) -> Bool {
-        let lhsString = lhs.string
-        let rhsString = rhs.string
+        let lhsString = lhs.comparationString
+        let rhsString = rhs.comparationString
         
         let stringsAccuracy = lhsString.levenshteinAccuracy(rhsString)
-        return (stringsAccuracy >= titlesComparationAccuracy) && durationsAreEqual(lhs.duration, rhs.duration)
+        let durationsAreEqual = durationsAreEqual(lhs.duration, rhs.duration)
+        
+        let result = (stringsAccuracy >= titlesComparationAccuracy) && durationsAreEqual
+        
+        Logger.write(
+            to: .tracksComparation,
+            "Tracks compared",
+            "Lhs: \(lhs.descriptionString)",
+            "Rhs: \(rhs.descriptionString)",
+            "lhsString: \(lhsString)",
+            "rhsString: \(rhsString)",
+            "stringsAccuracy: \(stringsAccuracy)",
+            "durationsAreEqual: \(durationsAreEqual)",
+            "result: \(result)"
+        )
+        
+        return result
     }
     
     private static func compareUsingInclusions(
@@ -114,16 +130,16 @@ enum TracksComparator {
     private static func durationsAreEqual(_ lhs: Int, _ rhs: Int) -> Bool {
         guard rhs != 0 else { return lhs == rhs }
         
-        return (Double(lhs) / Double(rhs) * 100.0
-        >= (1.0 - durationsComparationAccuracy) * 100.0)
-        && (Double(lhs) / Double(rhs) * 100.0
-        <= (1.0 - durationsComparationAccuracy) * 100.0)
+        let relation = Double(lhs) / Double(rhs)
+        
+        return 1.0 - durationsComparationInfelicity < relation
+        && relation < 1.0 + durationsComparationInfelicity
     }
 }
 
 extension SharedTrack {
     
-    var string: String {
+    var comparationString: String {
         let separator = " "
         return [
             artists.joined(separator: separator),
