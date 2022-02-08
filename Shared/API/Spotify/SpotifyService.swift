@@ -175,7 +175,6 @@ final class SpotifyService: APIService {
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
-                print("а это вообще можно сделать?")
 #endif
             }
         }
@@ -348,13 +347,6 @@ final class SpotifyService: APIService {
                         operation.likeSuboperation.completed = Date()
                         updateHandler(operation)
                         
-                        if !filtered.notFoundTracks.isEmpty {
-#if os(macOS)
-                            TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
-#else
-                            print("сделать таблички")
-#endif
-                        }
                         DispatchQueue.main.async {
                             self.progressViewModel.off()
                         }

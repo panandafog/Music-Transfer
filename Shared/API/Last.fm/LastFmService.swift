@@ -185,7 +185,6 @@ final class LastFmService: APIService {
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
-                print("а это вообще можно сделать?")
 #endif
             }
         }
@@ -437,13 +436,6 @@ final class LastFmService: APIService {
                 operation.likeSuboperation.completed = Date()
                 updateHandler(operation)
                 
-                if !operation.likeSuboperation.notFoundTracks.isEmpty {
-#if os(macOS)
-                    TracksTableViewDelegate.shared.open(tracks: operation.likeSuboperation.notFoundTracks, name: "Not found tracks")
-#else
-                    print("сделать таблички")
-#endif
-                }
                 DispatchQueue.main.async {
                     TransferManager.shared.off()
                 }

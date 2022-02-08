@@ -147,7 +147,6 @@ final class VKService: APIService {
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
-                print("а это вообще можно сделать?")
 #endif
             }
         }
@@ -326,20 +325,6 @@ final class VKService: APIService {
                             self.progressViewModel.off()
                         }
                         
-                        if !notFoundTracks.isEmpty {
-#if os(macOS)
-                            TracksTableViewDelegate.shared.open(tracks: notFoundTracks, name: "Not found tracks")
-#else
-                            print("сделать таблички")
-#endif
-                        }
-                        if !duplicates.isEmpty {
-#if os(macOS)
-                            TracksTableViewDelegate.shared.open(tracks: duplicates, name: "Duplicates")
-#else
-                            print("сделать таблички")
-#endif
-                        }
                         self.getSavedTracks()
                     }
                 )
