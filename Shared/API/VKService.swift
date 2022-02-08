@@ -279,6 +279,8 @@ final class VKService: APIService {
                 
                 operation.searchSuboperaion.completed = Date()
                 operation.likeSuboperation.started = Date()
+                operation.likeSuboperation.notFoundTracks = notFoundTracks
+                operation.likeSuboperation.duplicates = duplicates
                 operation.likeSuboperation.tracksToLike = filtered.tracksToAdd.map {
                     VKTrackToLike(
                         track: $0,
