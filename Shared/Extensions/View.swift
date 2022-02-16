@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     
     var defaultToolbarPadding: CGFloat {
-        1
+        20
     }
     
     @inlinable

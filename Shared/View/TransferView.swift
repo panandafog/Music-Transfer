@@ -46,7 +46,11 @@ struct TransferView: View {
             }
 #else
             ServiceView(serviceType: .primary)
+                .padding([.top], defaultToolbarPadding)
+                .padding([.horizontal], 20)
             ServiceView(serviceType: .secondary)
+                .padding([.top], 10)
+                .padding([.horizontal], 20)
 #endif
             
             Spacer()
