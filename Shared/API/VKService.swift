@@ -122,6 +122,15 @@ final class VKService: APIService {
         defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
     }
     
+    func removeTokensInfo() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "vk_access_token")
+        defaults.removeObject(forKey: "vk_token_expires_in")
+        defaults.removeObject(forKey: "vk_user_id")
+    }
+    
+    func logOut() {}
+    
     // MARK: - Tracks management methods
     
     // MARK: Saved tracks

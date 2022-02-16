@@ -48,6 +48,9 @@ final class LastFmService: APIService {
     private (set) var session: LastFmSession? {
         didSet {
             saveSession()
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
         }
     }
     
@@ -137,6 +140,19 @@ final class LastFmService: APIService {
         } else {
             return nil
         }
+    }
+    
+    private func removeSavedSession() {
+        let defaults = UserDefaults.standard
+        
+        defaults.removeObject(forKey: "last.fm_session_name")
+        defaults.removeObject(forKey: "last.fm_session_key")
+        defaults.removeObject(forKey: "last.fm_session_subscriber")
+    }
+    
+    func logOut() {
+        self.session = nil
+        removeSavedSession()
     }
     
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {

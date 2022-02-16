@@ -148,6 +148,11 @@ final class SpotifyService: APIService {
         )
     }
     
+    func logOut() {
+        self.tokensInfo = nil
+        self.isAuthorised = false
+    }
+    
     // MARK: - Tracks management methods
     
     // MARK: Saved tracks

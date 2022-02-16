@@ -70,15 +70,14 @@ struct ServiceView: View {
                     Text("Delete all tracks")
                 }
             )
-                .disabled(!service.gotTracks
-                          || model.operationInProgress)
+                .disabled(!service.gotTracks || model.operationInProgress)
         )
     }
     
     var logOutButton: some View {
         AnyView(
             Button(action: {
-                print("todo")
+                service.logOut()
             }, label: {
                 Text("Log out")
             })
@@ -101,6 +100,25 @@ struct ServiceView: View {
         )
     }
     
+    var authorizationButton: some View {
+        AnyView(
+            Button(action: {
+                var service = service
+                service.showingAuthorization = true
+            }, label: {
+                Text("Authorize")
+            })
+            #if !os(macOS)
+                .padding(10)
+                .background(Color.background)
+                .cornerRadius(10)
+            #endif
+                .sheet(isPresented: $model.services[selection].showingAuthorization) {
+                    AuthorizationView(service: $model.services[selection])
+                }
+        )
+    }
+    
     var toolsView: some View {
         AnyView(
             HStack {
@@ -114,23 +132,16 @@ struct ServiceView: View {
     
     var tracksPreview: some View {
         if !service.isAuthorised {
-            return AnyView(
-                Button(action: {
-                    var service = service
-                    service.showingAuthorization = true
-                }, label: {
-                    Text("Authorize")
-                })
-                    .sheet(isPresented: $model.services[selection].showingAuthorization) {
-                        AuthorizationView(service: $model.services[selection])
-                    }
-            )
+            return AnyView(authorizationButton)
         } else {
 #if os(macOS)
             return AnyView(
-                TracksTable(tracks: .init(get: {
-                    service.savedTracks
-                }, set: { _ in }), name: "Saved tracks:")
+                VStack {
+                    toolsView
+                    TracksTable(tracks: .init(get: {
+                        service.savedTracks
+                    }, set: { _ in }), name: "Saved tracks:")
+                }
             )
 #else
             return AnyView(
@@ -210,9 +221,6 @@ struct ServiceView: View {
 #endif
             }
             .padding([.bottom], 10)
-#if os(macOS)
-                toolsView
-#endif
             tracksPreview
 #if os(macOS)
             Spacer()

@@ -20,4 +20,5 @@ protocol APIService: ShowingAlerts {
     
     func getSavedTracks()
     func deleteAllTracks()
+    func logOut()
 }
