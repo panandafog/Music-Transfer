@@ -77,6 +77,14 @@ final class SpotifyService: APIService {
         }
     }
     
+    private (set) var refreshing = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var tokensAreRequested = false
     var tokensInfo: TokensInfo?
     
@@ -158,25 +166,13 @@ final class SpotifyService: APIService {
     // MARK: Saved tracks
     
     func getSavedTracks() {
-        DispatchQueue.main.async {
-            self.progressViewModel.operationInProgress = true
-        }
-        
-        self.gotTracks = false
-        self.savedTracks = [SharedTrack]()
-        
-        DispatchQueue.main.async {
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
-            self.progressViewModel.determinate = false
-            self.progressViewModel.active = true
-        }
+        refreshing = true
+        gotTracks = false
+        savedTracks = [SharedTrack]()
         
         requestTracks(offset: 0) {
+            self.refreshing = false
             DispatchQueue.main.async {
-                self.progressViewModel.off()
-                self.progressViewModel.operationInProgress = false
-                
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else

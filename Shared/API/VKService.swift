@@ -54,6 +54,14 @@ final class VKService: APIService {
         }
     }
     
+    private (set) var refreshing = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var tokensInfo: TokensInfo? {
         didSet {
             saveTokensInfo()

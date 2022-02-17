@@ -27,6 +27,8 @@ final class LastFmService: APIService {
         session != nil
     }
     
+    var savedTracks: [SharedTrack] = []
+    
     var showingAuthorization = false {
         didSet {
             DispatchQueue.main.async {
@@ -35,8 +37,13 @@ final class LastFmService: APIService {
         }
     }
     
-    var gotTracks = false
-    var savedTracks: [SharedTrack] = []
+    var gotTracks = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
     
     private (set) lazy var loginViewModel = LoginViewModel(
         service: self,
@@ -48,6 +55,14 @@ final class LastFmService: APIService {
     private (set) var session: LastFmSession? {
         didSet {
             saveSession()
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    private (set) var refreshing = false {
+        willSet {
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
@@ -179,25 +194,15 @@ final class LastFmService: APIService {
     }
     
     func getSavedTracks() {
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-        self.gotTracks = false
-        self.savedTracks = [SharedTrack]()
-        
-        DispatchQueue.main.async {
-            TransferManager.shared.off()
-            TransferManager.shared.processName = "Receiving tracks from \(Self.apiName)"
-            TransferManager.shared.determinate = false
-            TransferManager.shared.active = true
-        }
+        refreshing = true
+        gotTracks = false
+        savedTracks = [SharedTrack]()
         
         let completionHandler: () -> Void = {
             self.gotTracks = true
+            self.refreshing = false
             
             DispatchQueue.main.async {
-                TransferManager.shared.off()
-                TransferManager.shared.operationInProgress = false
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else

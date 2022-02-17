@@ -46,8 +46,7 @@ struct ServiceView: View {
             }, label: {
                 Text("Refresh saved tracks")
             })
-                .disabled(!service.isAuthorised
-                          || model.operationInProgress)
+                .disabled(!service.isAuthorised || model.operationInProgress)
         )
     }
     
@@ -119,6 +118,24 @@ struct ServiceView: View {
         )
     }
     
+    var getTracksButton: some View {
+        AnyView(
+            Button(action: {
+                DispatchQueue.global(qos: .background).async {
+                    service.getSavedTracks()
+                }
+            }, label: {
+                Text("Get tracks")
+                    .foregroundColor(.background)
+            })
+            #if !os(macOS)
+                .padding(10)
+                .background(Color.accentColor)
+                .cornerRadius(10)
+            #endif
+        )
+    }
+    
     var toolsView: some View {
         AnyView(
             HStack {
@@ -130,9 +147,21 @@ struct ServiceView: View {
         )
     }
     
+    var getTracksView: some View {
+        wrapInPreview(AnyView(getTracksButton))
+    }
+    
+    var refreshingView: some View {
+        wrapInPreview(AnyView(ProgressView()))
+    }
+    
     var tracksPreview: some View {
-        if !service.isAuthorised {
+        if service.refreshing {
+            return AnyView(refreshingView)
+        } else if !service.isAuthorised {
             return AnyView(authorizationButton)
+        } else if !service.gotTracks {
+            return AnyView(getTracksView)
         } else {
 #if os(macOS)
             return AnyView(
@@ -259,6 +288,22 @@ struct ServiceView: View {
                 secondaryButton: .cancel()
             )
         })
+    }
+    
+    func wrapInPreview(_ view: AnyView) -> some View {
+        AnyView(
+            HStack {
+                Spacer()
+                VStack {
+                    Spacer()
+                        view
+                    Spacer()
+                }
+                Spacer()
+            }
+                .background(Color.background)
+                .cornerRadius(10)
+        )
     }
 }
 
