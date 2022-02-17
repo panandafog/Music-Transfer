@@ -30,7 +30,9 @@ struct ToolsView: View {
                 showingAlert1 = true
             }, label: {
                 Text("Confirm")
+#if !os(macOS)
                     .foregroundColor(.background)
+#endif
             }
         )
             .padding(10)

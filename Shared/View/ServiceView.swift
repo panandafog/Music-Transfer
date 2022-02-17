@@ -126,7 +126,9 @@ struct ServiceView: View {
                 }
             }, label: {
                 Text("Get tracks")
+#if !os(macOS)
                     .foregroundColor(.background)
+#endif
             })
             #if !os(macOS)
                 .padding(10)
@@ -161,7 +163,11 @@ struct ServiceView: View {
         } else if !service.isAuthorised {
             return AnyView(authorizationButton)
         } else if !service.gotTracks {
+#if os(macOS)
+            return AnyView(getTracksButton)
+#else
             return AnyView(getTracksView)
+#endif
         } else {
 #if os(macOS)
             return AnyView(
