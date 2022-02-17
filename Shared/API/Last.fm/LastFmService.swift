@@ -166,8 +166,10 @@ final class LastFmService: APIService {
     }
     
     func logOut() {
-        self.session = nil
+        session = nil
         removeSavedSession()
+        savedTracks = []
+        gotTracks = false
     }
     
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
