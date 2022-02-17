@@ -192,6 +192,14 @@ struct ServiceView: View {
                 )
                     .background(Color.background)
                     .cornerRadius(10)
+                    .gesture(
+                        TapGesture()
+                            .onEnded { _ in
+                                if service.gotTracks && !model.operationInProgress {
+                                    tracksTableNavigationLinkIsActive = true
+                                }
+                            }
+                    )
             )
 #endif
         }
@@ -302,7 +310,7 @@ struct ServiceView: View {
                 Spacer()
                 VStack {
                     Spacer()
-                        view
+                    view
                     Spacer()
                 }
                 Spacer()
