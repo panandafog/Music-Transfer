@@ -30,6 +30,7 @@ struct ToolsView: View {
                 showingAlert1 = true
             }, label: {
                 Text("Confirm")
+                    .foregroundColor(.background)
             }
         )
             .padding(10)
