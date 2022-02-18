@@ -268,7 +268,7 @@ final class SpotifyService: APIService {
             self.progressViewModel.determinate = operation.searchSuboperaion.tracks.count > 10
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         var searchedTrackIndex = 0
@@ -294,7 +294,7 @@ final class SpotifyService: APIService {
                         self.progressViewModel.progressPercentage = 0.0
                         self.progressViewModel.determinate = false
                         self.progressViewModel.processName = "Processing search results"
-                        self.progressViewModel.active = true
+                        self.progressViewModel.progressActive = true
                     }
                 }
                 
@@ -543,7 +543,7 @@ final class SpotifyService: APIService {
             self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.determinate = self.savedTracks.count > 400
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         var packages = [[SharedTrack]]()

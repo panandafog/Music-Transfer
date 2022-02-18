@@ -33,6 +33,10 @@ struct ServiceView: View {
         }
     }
     
+    var actionsEnabled: Bool {
+        service.isAuthorised || service.refreshing || model.operationInProgress
+    }
+    
     @ObservedObject private var model = TransferManager.shared
     @State private var showingDeleteAlert = false
     @State private var tracksTableNavigationLinkIsActive = false
@@ -46,7 +50,7 @@ struct ServiceView: View {
             }, label: {
                 Text("Refresh saved tracks")
             })
-                .disabled(!service.isAuthorised || service.refreshing || model.operationInProgress)
+                .disabled(!actionsEnabled)
         )
     }
     
@@ -55,7 +59,7 @@ struct ServiceView: View {
             Button("View saved tracks") {
                 self.tracksTableNavigationLinkIsActive = true
             }
-                .disabled(!service.gotTracks || service.refreshing || model.operationInProgress)
+                .disabled(!actionsEnabled)
         )
     }
     
@@ -69,7 +73,7 @@ struct ServiceView: View {
                     Text("Delete all tracks")
                 }
             )
-                .disabled(!service.gotTracks || service.refreshing || model.operationInProgress)
+                .disabled(!actionsEnabled)
         )
     }
     
@@ -80,7 +84,7 @@ struct ServiceView: View {
             }, label: {
                 Text("Log out")
             })
-                .disabled(!model.services[selection].isAuthorised || service.refreshing)
+                .disabled(!actionsEnabled)
         )
     }
     
@@ -149,6 +153,15 @@ struct ServiceView: View {
         )
     }
     
+    var debugView: some View {
+        HStack {
+            Text(String(service.gotTracks))
+            Text(String(service.refreshing))
+            Text(String(model.operationInProgress))
+            Text(String(model.progressActive))
+        }
+    }
+    
     var getTracksView: some View {
         wrapInPreview(AnyView(getTracksButton))
     }
@@ -195,7 +208,7 @@ struct ServiceView: View {
                     .gesture(
                         TapGesture()
                             .onEnded { _ in
-                                if service.gotTracks && !model.operationInProgress {
+                                if service.gotTracks && !service.refreshing && !service.savedTracks.isEmpty {
                                     tracksTableNavigationLinkIsActive = true
                                 }
                             }

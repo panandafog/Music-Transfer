@@ -26,7 +26,7 @@ struct TransferView: View {
                     }
                 }
             } else {
-                if model.active {
+                if model.progressActive {
                     MainProgressView()
                         .padding()
                 } else {

@@ -328,7 +328,7 @@ final class LastFmService: APIService {
             TransferManager.shared.determinate = tracks.count > 10
             TransferManager.shared.progressPercentage = 0.0
             TransferManager.shared.processName = "Searching tracks in \(Self.apiName)"
-            TransferManager.shared.active = true
+            TransferManager.shared.progressActive = true
         }
         
         var currentTrack = 0
@@ -378,9 +378,7 @@ final class LastFmService: APIService {
             }
             .catch { error in
                 DispatchQueue.main.async {
-                    TransferManager.shared.progressPercentage = 0.0
-                    TransferManager.shared.determinate = false
-                    TransferManager.shared.active = false
+                    TransferManager.shared.off()
                 }
                 self.handleError(error)
             }
@@ -396,7 +394,7 @@ final class LastFmService: APIService {
                 TransferManager.shared.progressPercentage = 0.0
                 TransferManager.shared.determinate = false
                 TransferManager.shared.processName = "Processing search results"
-                TransferManager.shared.active = true
+                TransferManager.shared.progressActive = true
             }
         }
         let filteredSearchResults = filterTracks(searchResults: searchResults)
@@ -595,7 +593,7 @@ final class LastFmService: APIService {
             TransferManager.shared.progressPercentage = 0.0
             TransferManager.shared.determinate = self.savedTracks.count > self.determinateElementsCount
             TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
-            TransferManager.shared.active = true
+            TransferManager.shared.progressActive = true
         }
         
         var currentTrack = 0
