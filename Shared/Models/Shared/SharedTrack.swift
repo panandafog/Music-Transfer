@@ -22,23 +22,31 @@ struct SharedTrack: Identifiable {
     let title: String
     
     /// seconds
-    let duration: Int
+    let duration: Int?
     
     let servicesData: [SharedServicesData]
     
     var descriptionString: String {
-        [
+        let durationString: String
+        if let duration = duration {
+            durationString = [
+                ", duration:",
+                String(duration)
+            ].joined()
+        } else {
+            durationString = ""
+        }
+        return [
             artists.joined(separator: ", "),
             " – ",
             title,
-            ", duration:",
-            String(duration)
+            durationString
         ].joined()
     }
     
     // MARK: - Initializers
     
-    init(id: String, artists: [String], title: String, duration: Int, servicesData: [SharedServicesData]) {
+    init(id: String, artists: [String], title: String, duration: Int?, servicesData: [SharedServicesData]) {
         self.id = id
         self.artists = artists
         self.title = title
@@ -120,7 +128,7 @@ struct SharedTrack: Identifiable {
     init(from track: LastFmLovedTracks.Track) {
         self.artists = [track.artist.name]
         self.title = track.name
-        self.duration = 0
+        self.duration = nil
         
         self.servicesData = [
             .lastFM(track.id)
@@ -130,7 +138,7 @@ struct SharedTrack: Identifiable {
     init(from track: LastFmTrackSearchResult.Track) {
         self.artists = [track.artist]
         self.title = track.name
-        self.duration = 0
+        self.duration = nil
         
         self.servicesData = [
             .lastFM(track.id)
