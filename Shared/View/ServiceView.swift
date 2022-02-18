@@ -46,7 +46,7 @@ struct ServiceView: View {
             }, label: {
                 Text("Refresh saved tracks")
             })
-                .disabled(!service.isAuthorised || model.operationInProgress)
+                .disabled(!service.isAuthorised || service.refreshing || model.operationInProgress)
         )
     }
     
@@ -55,7 +55,7 @@ struct ServiceView: View {
             Button("View saved tracks") {
                 self.tracksTableNavigationLinkIsActive = true
             }
-                .disabled(!service.gotTracks || model.operationInProgress)
+                .disabled(!service.gotTracks || service.refreshing || model.operationInProgress)
         )
     }
     
@@ -69,7 +69,7 @@ struct ServiceView: View {
                     Text("Delete all tracks")
                 }
             )
-                .disabled(!service.gotTracks || model.operationInProgress)
+                .disabled(!service.gotTracks || service.refreshing || model.operationInProgress)
         )
     }
     
@@ -80,7 +80,7 @@ struct ServiceView: View {
             }, label: {
                 Text("Log out")
             })
-                .disabled(!model.services[selection].isAuthorised)
+                .disabled(!model.services[selection].isAuthorised || service.refreshing)
         )
     }
     
