@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
+    
     var localized: String {
         NSLocalizedString(self, comment: "")
     }
@@ -18,5 +19,10 @@ extension String {
     
     mutating func truncate(length: Int, trailing: String = "…") {
         self = self.truncating(length: length, trailing: trailing)
+    }
+    
+    subscript(index: Int) -> Character {
+        let index = self.index(startIndex, offsetBy: index)
+        return self[index]
     }
 }

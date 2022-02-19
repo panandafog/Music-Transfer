@@ -15,9 +15,11 @@ protocol APIService: ShowingAlerts {
     var isAuthorised: Bool { get }
     var showingAuthorization: Bool { get set }
     var gotTracks: Bool { get }
+    var refreshing: Bool { get }
     
     var savedTracks: [SharedTrack] { get }
     
     func getSavedTracks()
     func deleteAllTracks()
+    func logOut()
 }

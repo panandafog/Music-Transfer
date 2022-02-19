@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0B2C14C825A6781300ACB2C7"
-               BuildableName = "Music Transfer.app"
+               BuildableName = "Music Transfer (ext.).app"
                BlueprintName = "Music Transfer (macOS)"
                ReferencedContainer = "container:Music Transfer.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0B2C14C825A6781300ACB2C7"
-            BuildableName = "Music Transfer.app"
+            BuildableName = "Music Transfer (ext.).app"
             BlueprintName = "Music Transfer (macOS)"
             ReferencedContainer = "container:Music Transfer.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0B2C14C825A6781300ACB2C7"
-            BuildableName = "Music Transfer.app"
+            BuildableName = "Music Transfer (ext.).app"
             BlueprintName = "Music Transfer (macOS)"
             ReferencedContainer = "container:Music Transfer.xcodeproj">
          </BuildableReference>

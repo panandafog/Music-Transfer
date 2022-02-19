@@ -14,7 +14,7 @@ struct MainProgressView: View {
     var body: some View {
         HStack {
             Text(model.processName)
-            if model.active {
+            if model.progressActive {
                 if model.determinate {
                     ProgressView("",
                                  value: model.progressPercentage,
@@ -37,7 +37,7 @@ struct MainProgressView_Preview: PreviewProvider {
         let model = TransferManager.shared
         model.determinate = true
         model.processName = "Doing something important"
-        model.active = true
+        model.progressActive = true
         return model
     }()
     

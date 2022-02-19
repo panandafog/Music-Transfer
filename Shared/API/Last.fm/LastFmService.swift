@@ -27,6 +27,8 @@ final class LastFmService: APIService {
         session != nil
     }
     
+    var savedTracks: [SharedTrack] = []
+    
     var showingAuthorization = false {
         didSet {
             DispatchQueue.main.async {
@@ -35,8 +37,13 @@ final class LastFmService: APIService {
         }
     }
     
-    var gotTracks = false
-    var savedTracks: [SharedTrack] = []
+    var gotTracks = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
     
     private (set) lazy var loginViewModel = LoginViewModel(
         service: self,
@@ -48,6 +55,17 @@ final class LastFmService: APIService {
     private (set) var session: LastFmSession? {
         didSet {
             saveSession()
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    private (set) var refreshing = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
         }
     }
     
@@ -139,6 +157,21 @@ final class LastFmService: APIService {
         }
     }
     
+    private func removeSavedSession() {
+        let defaults = UserDefaults.standard
+        
+        defaults.removeObject(forKey: "last.fm_session_name")
+        defaults.removeObject(forKey: "last.fm_session_key")
+        defaults.removeObject(forKey: "last.fm_session_subscriber")
+    }
+    
+    func logOut() {
+        session = nil
+        removeSavedSession()
+        savedTracks = []
+        gotTracks = false
+    }
+    
     private func getSignature(from queryItems: [URLQueryItem]) -> URLQueryItem {
         let md5string = queryItems.map { $0.name + ($0.value ?? "") }.sorted().joined() + LastFmKeys.sharedSecret
         let data = md5string.data(using: .utf8) ?? Data()
@@ -163,29 +196,18 @@ final class LastFmService: APIService {
     }
     
     func getSavedTracks() {
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-        self.gotTracks = false
-        self.savedTracks = [SharedTrack]()
-        
-        DispatchQueue.main.async {
-            TransferManager.shared.off()
-            TransferManager.shared.processName = "Receiving tracks from \(Self.apiName)"
-            TransferManager.shared.determinate = false
-            TransferManager.shared.active = true
-        }
+        refreshing = true
+        gotTracks = false
+        savedTracks = [SharedTrack]()
         
         let completionHandler: () -> Void = {
             self.gotTracks = true
+            self.refreshing = false
             
             DispatchQueue.main.async {
-                TransferManager.shared.off()
-                TransferManager.shared.operationInProgress = false
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
-                print("а это вообще можно сделать?")
 #endif
             }
         }
@@ -306,7 +328,7 @@ final class LastFmService: APIService {
             TransferManager.shared.determinate = tracks.count > 10
             TransferManager.shared.progressPercentage = 0.0
             TransferManager.shared.processName = "Searching tracks in \(Self.apiName)"
-            TransferManager.shared.active = true
+            TransferManager.shared.progressActive = true
         }
         
         var currentTrack = 0
@@ -356,9 +378,7 @@ final class LastFmService: APIService {
             }
             .catch { error in
                 DispatchQueue.main.async {
-                    TransferManager.shared.progressPercentage = 0.0
-                    TransferManager.shared.determinate = false
-                    TransferManager.shared.active = false
+                    TransferManager.shared.off()
                 }
                 self.handleError(error)
             }
@@ -374,7 +394,7 @@ final class LastFmService: APIService {
                 TransferManager.shared.progressPercentage = 0.0
                 TransferManager.shared.determinate = false
                 TransferManager.shared.processName = "Processing search results"
-                TransferManager.shared.active = true
+                TransferManager.shared.progressActive = true
             }
         }
         let filteredSearchResults = filterTracks(searchResults: searchResults)
@@ -437,13 +457,6 @@ final class LastFmService: APIService {
                 operation.likeSuboperation.completed = Date()
                 updateHandler(operation)
                 
-                if !operation.likeSuboperation.notFoundTracks.isEmpty {
-#if os(macOS)
-                    TracksTableViewDelegate.shared.open(tracks: operation.likeSuboperation.notFoundTracks, name: "Not found tracks")
-#else
-                    print("сделать таблички")
-#endif
-                }
                 DispatchQueue.main.async {
                     TransferManager.shared.off()
                 }
@@ -580,7 +593,7 @@ final class LastFmService: APIService {
             TransferManager.shared.progressPercentage = 0.0
             TransferManager.shared.determinate = self.savedTracks.count > self.determinateElementsCount
             TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
-            TransferManager.shared.active = true
+            TransferManager.shared.progressActive = true
         }
         
         var currentTrack = 0
