@@ -42,9 +42,15 @@ enum TracksComparator {
         let rhsString = rhs.comparationString
         
         let stringsAccuracy = lhsString.levenshteinAccuracy(rhsString)
-        let durationsAreEqual = durationsAreEqual(lhs.duration, rhs.duration)
         
-        let result = (stringsAccuracy >= titlesComparationAccuracy) && durationsAreEqual
+        let durationsAreEqual: Bool?
+        if let lhsDuration = lhs.duration, let rhsDuration = rhs.duration {
+            durationsAreEqual = checkDurationsEquality(lhsDuration, rhsDuration)
+        } else {
+            durationsAreEqual = nil
+        }
+        
+        let result = (stringsAccuracy >= titlesComparationAccuracy) && (durationsAreEqual ?? true)
         
         Logger.write(
             to: .tracksComparation,
@@ -54,7 +60,7 @@ enum TracksComparator {
             "lhsString: \(lhsString)",
             "rhsString: \(rhsString)",
             "stringsAccuracy: \(stringsAccuracy)",
-            "durationsAreEqual: \(durationsAreEqual)",
+            "durationsAreEqual: \(String(describing: durationsAreEqual))",
             "result: \(result)"
         )
         
@@ -122,12 +128,17 @@ enum TracksComparator {
         
         let equalArtists = equalArtistsL || equalArtistsR
         
-        return equalArtists
-        && titlesAreEqual(lhs: lhs, rhs: rhs)
-        && durationsAreEqual(lhs.duration, rhs.duration)
+        let durationsAreEqual: Bool?
+        if let lhsDuration = lhs.duration, let rhsDuration = rhs.duration {
+            durationsAreEqual = checkDurationsEquality(lhsDuration, rhsDuration)
+        } else {
+            durationsAreEqual = nil
+        }
+        
+        return equalArtists && titlesAreEqual(lhs: lhs, rhs: rhs) && (durationsAreEqual ?? true)
     }
     
-    private static func durationsAreEqual(_ lhs: Int, _ rhs: Int) -> Bool {
+    private static func checkDurationsEquality(_ lhs: Int, _ rhs: Int) -> Bool {
         guard rhs != 0 else { return lhs == rhs }
         
         let relation = Double(lhs) / Double(rhs)

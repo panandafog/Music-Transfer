@@ -77,6 +77,14 @@ final class SpotifyService: APIService {
         }
     }
     
+    private (set) var refreshing = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var tokensAreRequested = false
     var tokensInfo: TokensInfo?
     
@@ -148,34 +156,28 @@ final class SpotifyService: APIService {
         )
     }
     
+    func logOut() {
+        tokensInfo = nil
+        isAuthorised = false
+        savedTracks = []
+        gotTracks = false
+    }
+    
     // MARK: - Tracks management methods
     
     // MARK: Saved tracks
     
     func getSavedTracks() {
-        DispatchQueue.main.async {
-            self.progressViewModel.operationInProgress = true
-        }
-        
-        self.gotTracks = false
-        self.savedTracks = [SharedTrack]()
-        
-        DispatchQueue.main.async {
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
-            self.progressViewModel.determinate = false
-            self.progressViewModel.active = true
-        }
+        refreshing = true
+        gotTracks = false
+        savedTracks = [SharedTrack]()
         
         requestTracks(offset: 0) {
+            self.refreshing = false
             DispatchQueue.main.async {
-                self.progressViewModel.off()
-                self.progressViewModel.operationInProgress = false
-                
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
-                print("а это вообще можно сделать?")
 #endif
             }
         }
@@ -266,7 +268,7 @@ final class SpotifyService: APIService {
             self.progressViewModel.determinate = operation.searchSuboperaion.tracks.count > 10
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         var searchedTrackIndex = 0
@@ -292,7 +294,7 @@ final class SpotifyService: APIService {
                         self.progressViewModel.progressPercentage = 0.0
                         self.progressViewModel.determinate = false
                         self.progressViewModel.processName = "Processing search results"
-                        self.progressViewModel.active = true
+                        self.progressViewModel.progressActive = true
                     }
                 }
                 
@@ -348,13 +350,6 @@ final class SpotifyService: APIService {
                         operation.likeSuboperation.completed = Date()
                         updateHandler(operation)
                         
-                        if !filtered.notFoundTracks.isEmpty {
-#if os(macOS)
-                            TracksTableViewDelegate.shared.open(tracks: filtered.notFoundTracks, name: "Not found tracks")
-#else
-                            print("сделать таблички")
-#endif
-                        }
                         DispatchQueue.main.async {
                             self.progressViewModel.off()
                         }
@@ -548,7 +543,7 @@ final class SpotifyService: APIService {
             self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.determinate = self.savedTracks.count > 400
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         var packages = [[SharedTrack]]()
