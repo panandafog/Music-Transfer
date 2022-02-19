@@ -20,7 +20,6 @@
 		0B0BC82C27AADB0B00AF2D09 /* Assets-iOS.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */; };
 		0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82E27AB507300AF2D09 /* VKKeys.swift */; };
 		0B0BC83027AB507300AF2D09 /* VKKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0BC82E27AB507300AF2D09 /* VKKeys.swift */; };
-		0B11651E2779DE7A0089C962 /* LastFmLovedTracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */; };
 		0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE82273708810024D4EC /* TransferOperation.swift */; };
 		0B1550982741C480000D0A38 /* VKSearchTracksSuboperationRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */; };
 		0B1550992741C483000D0A38 /* VKSearchTracksSuboperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */; };
@@ -513,8 +512,8 @@
 			isa = PBXGroup;
 			children = (
 				0B2C14C125A6781300ACB2C7 /* Music Transfer.app */,
-                0B2C14C925A6781300ACB2C7 /* Music Transfer (ext.).app */,
-                0B01BB1127AED2B900A556FF /* MusicTransferTests (iOS).xctest */,
+				0B2C14C925A6781300ACB2C7 /* Music Transfer (ext.).app */,
+				0B01BB1127AED2B900A556FF /* MusicTransferTests (iOS).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1358,29 +1357,7 @@
 				0BE13C6027ADFBEC00EC0EB7 /* SpotifySearchTracks.swift in Sources */,
 				0BE13C7C27ADFBEC00EC0EB7 /* VKUser.swift in Sources */,
 				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
-				0BE6DCAA27124A43003BEC3B /* Logger.swift in Sources */,
-				0B81BE6A27354E5C0024D4EC /* VKSearchedTrackRealm.swift in Sources */,
-				0B2C153B25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
-				0B81BE6527354D960024D4EC /* VKSearchedTrack.swift in Sources */,
-				0BCF5AE3271B84E30019C5B1 /* SharedTrackRealm.swift in Sources */,
-				0B42352B26E431A6007CAAB7 /* TransferManager.swift in Sources */,
-				0B2C14E325A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
-				0B3AD999277B59AA00BA692B /* LastFmTrackToLike.swift in Sources */,
-				0BC2634925BCE91000820FE0 /* TracksTable.swift in Sources */,
-				0B3AD99E277CA7B600BA692B /* AlertsManager.swift in Sources */,
-				0BE6DCAC27124A56003BEC3B /* LogType.swift in Sources */,
-				0BE6DCC027134CD8003BEC3B /* MTQueue.swift in Sources */,
-				0B3AD987277B187000BA692B /* LastFmSearchedTrackRealm.swift in Sources */,
-				0B17559A25BF304D0094E75C /* LoginViewModel.swift in Sources */,
-				0B27CE602783499D002A59BA /* DisplayableError.swift in Sources */,
-				0B2C155A25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
-				0BC2634425BCE90C00820FE0 /* TracksTableRow.swift in Sources */,
-				0B3AD99B277B5A5900BA692B /* LastFmTrackToLikeRealm.swift in Sources */,
 				0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */,
-				0B63AD4E25BB3241001252F2 /* MainProgressView.swift in Sources */,
-				0B81BE81273707460024D4EC /* SpotifyAddTracksOperation.swift in Sources */,
-				0B48CA88277F7B6A00878DE9 /* AuthorizationView.swift in Sources */,
-				0B8045AA27AC8641004E5B8F /* TracksComparator.swift in Sources */,
 				0BE13C3827ADFBEC00EC0EB7 /* MTQueue.swift in Sources */,
 				0BE13C8A27ADFBEC00EC0EB7 /* APIBrowser.swift in Sources */,
 				0BE13C4427ADFBEC00EC0EB7 /* Captcha.swift in Sources */,
@@ -1696,7 +1673,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1722,7 +1699,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1751,7 +1728,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer (ext.)";
 				SDKROOT = macosx;
@@ -1777,7 +1754,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "panandafog.Music-Transfer-extended";
 				PRODUCT_NAME = "Music Transfer (ext.)";
 				SDKROOT = macosx;
