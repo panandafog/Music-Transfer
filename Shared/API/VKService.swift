@@ -70,12 +70,15 @@ final class VKService: APIService {
     
     var savedTracks = [SharedTrack]()
     
-    private (set) lazy var loginViewModel = LoginViewModel(
-        service: self,
-        twoFactor: false,
-        captcha: nil,
-        completion: requestTokens(username:password:code:captcha:)
-    )
+    private var defaultLoginViewModel: LoginViewModel {
+        LoginViewModel(
+            service: self,
+            twoFactor: false,
+            captcha: nil,
+            completion: requestTokens(username:password:code:captcha:)
+        )
+    }
+    private (set) lazy var loginViewModel = defaultLoginViewModel
     
     var captchaViewModel: CaptchaViewModel?
     
@@ -234,7 +237,7 @@ final class VKService: APIService {
         guard let tokensInfo = tokensInfo else {
             return
         }
-
+        
         let defaults = UserDefaults.standard
         defaults.setValue(tokensInfo.access_token, forKey: "vk_access_token")
         defaults.setValue(tokensInfo.expires_in, forKey: "vk_token_expires_in")
@@ -248,30 +251,27 @@ final class VKService: APIService {
         defaults.removeObject(forKey: "vk_user_id")
     }
     
-    func logOut() {}
+    func logOut() {
+        tokensInfo = nil
+        removeTokensInfo()
+        savedTracks = []
+        gotTracks = false
+        isAuthorised = false
+        loginViewModel = defaultLoginViewModel
+    }
     
     // MARK: - Tracks management methods
     
     // MARK: Saved tracks
     
     func getSavedTracks() {
-        DispatchQueue.main.async {
-            TransferManager.shared.operationInProgress = true
-        }
-        self.gotTracks = false
-        self.savedTracks = [SharedTrack]()
-        
-        DispatchQueue.main.async {
-            self.progressViewModel.off()
-            self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
-            self.progressViewModel.determinate = false
-            self.progressViewModel.progressActive = true
-        }
+        refreshing = true
+        gotTracks = false
+        savedTracks = [SharedTrack]()
         
         requestTracks(offset: 0) {
+            self.refreshing = false
             DispatchQueue.main.async {
-                self.progressViewModel.off()
-                TransferManager.shared.operationInProgress = false
 #if os(macOS)
                 NSApp.requestUserAttention(.informationalRequest)
 #else
