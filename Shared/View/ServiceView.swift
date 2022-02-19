@@ -146,7 +146,9 @@ struct ServiceView: View {
         AnyView(
             HStack {
                 refreshButton
+#if !os(macOS)
                 viewSavedButton
+#endif
                 deleteAllButton
                 logOutButton
             }
@@ -172,7 +174,11 @@ struct ServiceView: View {
     
     var tracksPreview: some View {
         if service.refreshing {
+#if os(macOS)
+            return AnyView(ProgressView())
+#else
             return AnyView(refreshingView)
+#endif
         } else if !service.isAuthorised {
             return AnyView(authorizationButton)
         } else if !service.gotTracks {
@@ -286,6 +292,7 @@ struct ServiceView: View {
 #if !os(macOS)
         .background(Color.secondaryBackground)
 #endif
+#if !os(macOS)
         .cornerRadius(10)
         .background(
             NavigationLink(
@@ -301,7 +308,9 @@ struct ServiceView: View {
             ) {
                 EmptyView()
             }
+                .hidden()
         )
+#endif
         .alert(isPresented: $showingDeleteAlert, content: {
             Alert(
                 title: Text("Are you sure you want to delete all tracks?"),
