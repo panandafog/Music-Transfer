@@ -15,16 +15,21 @@ struct TracksTableRow: View {
     var body: some View {
         HStack {
             Text(track.strArtists() + " – " + track.title)
-            Spacer()
             
-            Text(getDuration())
+            if let duration = getDuration() {
+                Spacer()
+                Text(duration)
+            }
         }
     }
     
-    func getDuration() -> String {
-        let minutes = String(Int(track.duration / 60))
-        var seconds = String(track.duration % 60)
-        if track.duration % 60 < 10 {
+    func getDuration() -> String? {
+        guard let duration = track.duration else {
+            return nil
+        }
+        let minutes = String(Int(duration / 60))
+        var seconds = String(duration % 60)
+        if duration % 60 < 10 {
             seconds = "0" + seconds
         }
         return minutes + ":" + seconds

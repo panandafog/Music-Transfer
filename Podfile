@@ -1,5 +1,6 @@
 target 'Music Transfer (iOS)' do
   platform :ios, '14.0'
+  use_frameworks!
 
   pod 'AlertToast', '~> 1.3.7'
   pod "PromiseKit", '~> 6.15.3'
@@ -12,6 +13,7 @@ end
 
 target 'Music Transfer (macOS)' do
   platform :macos, '11.0'
+  use_frameworks!
 
   pod 'AlertToast', '~> 1.3.7'
   pod "PromiseKit", '~> 6.15.3'

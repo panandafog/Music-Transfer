@@ -88,7 +88,7 @@ class TransferManager: ManagingDatabase, ObservableObject {
         }
     }
     
-    @Published var active = false {
+    @Published var progressActive = false {
         willSet {
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
@@ -141,7 +141,8 @@ class TransferManager: ManagingDatabase, ObservableObject {
     func off() {
         self.progressPercentage = 0.0
         self.processName = ""
-        self.active = false
+        self.progressActive = false
+        self.operationInProgress = false
         self.determinate = false
     }
     

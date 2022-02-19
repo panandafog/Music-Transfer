@@ -12,7 +12,6 @@ class SharedTrackRealm: Object {
     
     @objc dynamic var id = ""
     @objc dynamic var title = ""
-    @objc dynamic var duration = 0
     
     @objc dynamic var spotifyID: String?
     
@@ -22,6 +21,7 @@ class SharedTrackRealm: Object {
     @objc dynamic var vkOwnerID: String?
     
     let artists = List<String>()
+    let duration = RealmProperty<Int?>()
     
     override class func primaryKey() -> String? {
         "id"
@@ -35,7 +35,7 @@ extension SharedTrackRealm {
             id: id,
             artists: Array(artists),
             title: title,
-            duration: duration,
+            duration: duration.value,
             servicesData: servicesData
         )
     }
@@ -63,7 +63,7 @@ extension SharedTrackRealm {
         
         id = sharedTrack.id
         title = sharedTrack.title
-        duration = sharedTrack.duration
+        duration.value = sharedTrack.duration
         artists.append(objectsIn: sharedTrack.artists)
     }
 }
