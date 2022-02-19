@@ -21,6 +21,7 @@ struct HistoryView: View {
 #else
         listView
             .navigationTitle("History")
+            .padding([.top], defaultToolbarPadding)
 #endif
     }
     

@@ -54,6 +54,14 @@ final class VKService: APIService {
         }
     }
     
+    private (set) var refreshing = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var tokensInfo: TokensInfo? {
         didSet {
             saveTokensInfo()
@@ -122,6 +130,15 @@ final class VKService: APIService {
         defaults.setValue(tokensInfo.user_id, forKey: "vk_user_id")
     }
     
+    func removeTokensInfo() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "vk_access_token")
+        defaults.removeObject(forKey: "vk_token_expires_in")
+        defaults.removeObject(forKey: "vk_user_id")
+    }
+    
+    func logOut() {}
+    
     // MARK: - Tracks management methods
     
     // MARK: Saved tracks
@@ -137,7 +154,7 @@ final class VKService: APIService {
             self.progressViewModel.off()
             self.progressViewModel.processName = "Receiving saved tracks from \(Self.apiName)"
             self.progressViewModel.determinate = false
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         requestTracks(offset: 0) {
@@ -234,7 +251,7 @@ final class VKService: APIService {
             self.progressViewModel.determinate = true
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.processName = "Searching tracks in \(Self.apiName)"
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         searchTracks(
@@ -263,7 +280,7 @@ final class VKService: APIService {
                         self.progressViewModel.progressPercentage = 0.0
                         self.progressViewModel.determinate = false
                         self.progressViewModel.processName = "Processing search results"
-                        self.progressViewModel.active = true
+                        self.progressViewModel.progressActive = true
                     }
                 }
                 
@@ -292,7 +309,7 @@ final class VKService: APIService {
                     self.progressViewModel.determinate = true
                     self.progressViewModel.progressPercentage = 0.0
                     self.progressViewModel.processName = "Adding tracks to \(Self.apiName)"
-                    self.progressViewModel.active = true
+                    self.progressViewModel.progressActive = true
                 }
                 
                 var tracksFailedToAdd = [VKSavedTracks.Item]()
@@ -338,7 +355,7 @@ final class VKService: APIService {
             self.progressViewModel.off()
             self.progressViewModel.determinate = false
             self.progressViewModel.processName = "Looking for already added tracks"
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         var filteredTracks = [SharedTrack]()
@@ -652,7 +669,7 @@ final class VKService: APIService {
             self.progressViewModel.processName = "Deleting tracks from \(Self.apiName)"
             self.progressViewModel.progressPercentage = 0.0
             self.progressViewModel.determinate = true
-            self.progressViewModel.active = true
+            self.progressViewModel.progressActive = true
         }
         
         deleteTracks(savedTracks,

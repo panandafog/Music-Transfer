@@ -16,7 +16,7 @@ struct BrowserView<Browser: APIBrowser>: View {
     @ObservedObject var browser: Browser
     @Environment(\.presentationMode) private var presentationMode
     
-    var body: some View {
+    var browserView: some View {
         VStack {
             self.browser
                 .onAppear {
@@ -27,9 +27,6 @@ struct BrowserView<Browser: APIBrowser>: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
-            Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
-            }
         }
         .modify {
 #if os(macOS)
@@ -41,5 +38,20 @@ struct BrowserView<Browser: APIBrowser>: View {
                 .ignoresSafeArea()
 #endif
         }
+        .toolbar {
+            Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
+    }
+    
+    var body: some View {
+#if os(macOS)
+        browserView
+#else
+        NavigationView {
+            browserView
+        }
+#endif
     }
 }
