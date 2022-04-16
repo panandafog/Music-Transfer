@@ -11,31 +11,46 @@ struct HistoryView: View {
     
     @ObservedObject private var model = TransferManager.shared
     
-    var body: some View {
-#if os(macOS)
-        NavigationView {
-            listView
+    var progressView: some View {
+        if model.updatingHistoryInProgress {
+            return AnyView(Text("Updating history..."))
+        } else if model.uploadingHistoryInProgress {
+            return AnyView(Text("Uploading history..."))
+        } else {
+            return AnyView(Button(
+                action: {
+                    model.updateRemoteOperationsHistory()
+                },
+                label: {
+                    Text("Update history")
+                }
+            ))
         }
-        .navigationTitle("History")
-        .padding([.top], defaultToolbarPadding)
-#else
-        listView
-            .navigationTitle("History")
-            .padding([.top], defaultToolbarPadding)
-#endif
     }
     
     var listView: some View {
         VStack {
-            List(model.operationsHistory, id: \.id) { operation in
-                NavigationLink(
-                    destination: TransferOperationTracksView(operation: operation)
-                ) {
-                    HistoryTableRow(operation: operation)
+            if model.mtService.isAuthorised {
+                List(model.remoteOperationsHistory, id: \.id) { historyEntry in
+                    NavigationLink(
+                        destination: TransferOperationTracksView(entryPreview: .entry(historyEntry))
+                    ) {
+                        HistoryTableRow(operation: .entry(historyEntry))
+                    }
+                }
+            } else {
+                List(model.savedOperationsHistory, id: \.id) { operation in
+                    NavigationLink(
+                        destination: TransferOperationTracksView(entryPreview: .operation(operation))
+                    ) {
+                        HistoryTableRow(operation: .operation(operation))
+                    }
                 }
             }
             if !model.mtService.isAuthorised {
                 authorizationRequestView
+            } else {
+                progressView
             }
         }
         .sheet(isPresented: $model.mtService.showingAuthorization) {
@@ -94,6 +109,20 @@ struct HistoryView: View {
                     print(model.mtService.showingAuthorization)
                 }
         )
+    }
+    
+    var body: some View {
+#if os(macOS)
+        NavigationView {
+            listView
+        }
+        .navigationTitle("History")
+        .padding([.top], defaultToolbarPadding)
+#else
+        listView
+            .navigationTitle("History")
+            .padding([.top], defaultToolbarPadding)
+#endif
     }
 }
 

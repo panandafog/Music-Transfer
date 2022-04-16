@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HistoryTableRow: View {
     
-    private let defaultString = "<UNKNOWN>"
+    private let defaultString = "unknown"
     private let titleLabelBottomOffset: CGFloat = 10
     private let secondaryLabelsLeadingOffset: CGFloat = 10
     private let secondaryLabelsSectionOffset: CGFloat = 10
     
-    var operation: TransferOperation
+    var operation: MTHistoryEntryPreview
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -25,9 +25,13 @@ struct HistoryTableRow: View {
                 Spacer()
                     .frame(width: secondaryLabelsLeadingOffset)
                 VStack(alignment: .leading) {
-                    Text("tracks count: \(getString(from: operation.tracksCount))")
-                    Spacer()
-                        .frame(height: secondaryLabelsLeadingOffset)
+                    switch operation {
+                    case .operation(let transferOperation):
+                        Text("tracks count: \(getString(from: transferOperation.tracksCount))")
+                        Spacer()
+                            .frame(height: secondaryLabelsLeadingOffset)
+                    default: Group { }
+                    }
                     Text("started: \(getString(from: operation.started))")
                     Text("completed: \(getString(from: operation.completed))")
                 }
@@ -37,14 +41,24 @@ struct HistoryTableRow: View {
     }
     
     func getName() -> String {
-        if (operation as? SpotifyAddTracksOperation) != nil {
-            return "Transfer to Spotify"
-        }
-        if (operation as? VKAddTracksOperation) != nil {
-            return "Transfer to VK"
-        }
-        if (operation as? LastFmAddTracksOperation) != nil {
-            return "Transfer to last.fm"
+        switch operation {
+        case .entry(let mtHistoryEntry):
+            switch mtHistoryEntry.type {
+            case .lastFm:
+                return "Transfer to last.fm"
+            case .vk:
+                return "Transfer to VK"
+            }
+        case .operation(let transferOperation):
+            if (transferOperation as? SpotifyAddTracksOperation) != nil {
+                return "Transfer to Spotify"
+            }
+            if (transferOperation as? VKAddTracksOperation) != nil {
+                return "Transfer to VK"
+            }
+            if (transferOperation as? LastFmAddTracksOperation) != nil {
+                return "Transfer to last.fm"
+            }
         }
         return defaultString
     }
@@ -52,7 +66,7 @@ struct HistoryTableRow: View {
     func getString(from date: Date?) -> String {
         if let date = date {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YY, MMM d, hh:mm"
+            dateFormatter.dateFormat = "MMM d, h:mm a"
             
             return dateFormatter.string(from: date)
         }

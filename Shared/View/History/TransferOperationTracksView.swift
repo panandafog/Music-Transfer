@@ -8,12 +8,26 @@
 import SwiftUI
 
 struct TransferOperationTracksView: View {
-    var operation: TransferOperation
+    var entryPreview: MTHistoryEntryPreview
+    var remoteOperation: TransferOperation?
+    
     @State private var selectedItem: Int = 0
     
-    var body: some View {
-        
-        List(getTracks(categoryIndex: selectedItem)) { track in
+    var mainView: some View {
+        switch entryPreview {
+        case .entry(let mtHistoryEntry):
+            if let remoteOperation = remoteOperation {
+                return AnyView(listOfTracks(operation: remoteOperation))
+            } else {
+                return AnyView(ProgressView())
+            }
+        case .operation(let transferOperation):
+            return AnyView(listOfTracks(operation: transferOperation))
+        }
+    }
+    
+    func listOfTracks(operation: TransferOperation) -> some View {
+        List(getTracks(categoryIndex: selectedItem, operation: operation)) { track in
             TracksTableRow(track: track)
         }
         .navigationTitle("Operation results")
@@ -25,6 +39,11 @@ struct TransferOperationTracksView: View {
             $0
 #endif
         }
+    }
+    
+    var body: some View {
+        
+        mainView
         .toolbar {
             ToolbarItem {
                 Picker("Choose", selection: $selectedItem) {
@@ -36,7 +55,7 @@ struct TransferOperationTracksView: View {
         }
     }
     
-    private func getTracks(categoryIndex: Int) -> [SharedTrack] {
+    private func getTracks(categoryIndex: Int, operation: TransferOperation) -> [SharedTrack] {
         var tracks = [SharedTrack]()
         if let category = TracksInfoCategory(rawValue: selectedItem) {
             tracks = operation.getTracks(category)

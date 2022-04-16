@@ -263,7 +263,7 @@ class MTService: APIService {
         saveOperation(operation, type: .lastFm, completion: completion)
     }
     
-    private func saveOperation<Body: Codable>(_ operation: Body, type: HistoryEntryType, completion: ((Swift.Result<Body, Error>) -> Void)?) {
+    private func saveOperation<Body: Codable>(_ operation: Body, type: MTHistoryEntryType, completion: ((Swift.Result<Body, Error>) -> Void)?) {
         guard let authorizationHeader = authorizationHeader else {
             return
         }
@@ -310,7 +310,7 @@ class MTService: APIService {
         getOperation(id: id, type: .lastFm, completion: completion)
     }
     
-    private func getOperation<Body: Codable>(id: Int, type: HistoryEntryType, completion: ((Swift.Result<Body, Error>) -> Void)?) {
+    private func getOperation<Body: Codable>(id: Int, type: MTHistoryEntryType, completion: ((Swift.Result<Body, Error>) -> Void)?) {
         guard let authorizationHeader = authorizationHeader else {
             return
         }
@@ -349,7 +349,7 @@ class MTService: APIService {
         )
     }
     
-    func getHistory(_ completion: ((Swift.Result<[HistoryEntry], Error>) -> Void)?) {
+    func getHistory(_ completion: ((Swift.Result<[MTHistoryEntry], Error>) -> Void)?) {
         guard let authorizationHeader = authorizationHeader else {
             return
         }
@@ -366,7 +366,7 @@ class MTService: APIService {
             return
         }
         
-        let resultHandler: (Swift.Result<[HistoryEntry], Error>, HTTPURLResponse?) -> Void = { result, _ in
+        let resultHandler: (Swift.Result<[MTHistoryEntry], Error>, HTTPURLResponse?) -> Void = { result, _ in
             TransferManager.shared.uploadingHistoryInProgress = false
             completion?(result)
         }
@@ -385,28 +385,6 @@ class MTService: APIService {
 }
 
 extension MTService {
-    
-    struct HistoryEntry: Codable {
-        
-        let id: Int
-        let started, completed: String
-        let type: HistoryEntryType
-    }
-
-    enum HistoryEntryType: String, Codable {
-        
-        case lastFm = "last_fm"
-        case vk = "vk"
-        
-        var endpoint: String {
-            switch self {
-            case .lastFm:
-                return "lastfm"
-            case .vk:
-                return "vk"
-            }
-        }
-    }
    
     private struct SignUpRequest: Codable {
         

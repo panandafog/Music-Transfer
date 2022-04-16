@@ -123,7 +123,23 @@ class TransferManager: ManagingDatabase, ObservableObject {
     
     // Operations data
     
-    @Published var operationsHistory: [TransferOperation] = [] {
+    @Published var savedOperationsHistory: [TransferOperation] = [] {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published var loadingRemoteOperationsHistory: Bool = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published var remoteOperationsHistory: [MTHistoryEntry] = [] {
         willSet {
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
@@ -145,13 +161,13 @@ class TransferManager: ManagingDatabase, ObservableObject {
         lastFmAddOperations = databaseManager.read()
         
         spotifyAddOperationsHistoryToken = spotifyAddOperations?.observe { [self] _ in
-            updateOperationsHistory()
+            updateSavedOperationsHistory()
         }
         vkAddOperationsHistoryToken = vkAddOperations?.observe { [self] _ in
-            updateOperationsHistory()
+            updateSavedOperationsHistory()
         }
         lastFmAddOperationsHistoryToken = lastFmAddOperations?.observe { [self] _ in
-            updateOperationsHistory()
+            updateSavedOperationsHistory()
         }
     }
     
@@ -277,7 +293,7 @@ class TransferManager: ManagingDatabase, ObservableObject {
         }
     }
     
-    private func updateOperationsHistory() {
+    private func updateSavedOperationsHistory() {
         var newHistory = [TransferOperation]()
         newHistory.append(
             contentsOf: spotifyAddOperations?.map {
@@ -294,37 +310,24 @@ class TransferManager: ManagingDatabase, ObservableObject {
                 $0.lastFmAddTracksOperation
             } ?? []
         )
-        operationsHistory = newHistory.sorted { lhs, rhs in
+        savedOperationsHistory = newHistory.sorted { lhs, rhs in
             lhs.started ?? Date.distantPast
                 > rhs.started ?? Date.distantPast
         }
     }
     
-    private func getSaved(operation: VKAddTracksOperation) -> VKAddTracksOperation? {
-        let operations = vkAddOperations?.map {
-            $0.vkAddTracksOperation
-        } ?? []
+    func updateRemoteOperationsHistory(errorHandler: ((Error) -> Void)? = nil) {
+        updatingHistoryInProgress = true
+        remoteOperationsHistory = []
         
-        for savedOperation in operations {
-            if savedOperation.id == operation.id {
-                return savedOperation
+        mtService.getHistory { [ weak self ] result in
+            self?.updatingHistoryInProgress = false
+            switch result {
+            case .success(let newEntries):
+                self?.remoteOperationsHistory = newEntries
+            case .failure(let error):
+                errorHandler?(error)
             }
         }
-        
-        return nil
-    }
-    
-    private func getSaved(operation: LastFmAddTracksOperation) -> LastFmAddTracksOperation? {
-        let operations = lastFmAddOperations?.map {
-            $0.lastFmAddTracksOperation
-        } ?? []
-        
-        for savedOperation in operations {
-            if savedOperation.id == operation.id {
-                return savedOperation
-            }
-        }
-        
-        return nil
     }
 }
