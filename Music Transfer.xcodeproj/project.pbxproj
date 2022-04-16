@@ -88,6 +88,52 @@
 		0B46E5552789C72E00181524 /* LastFmTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD988277B18C000BA692B /* LastFmTrackRealm.swift */; };
 		0B46E5562789C7A100181524 /* AlertsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3AD99D277CA7B600BA692B /* AlertsManager.swift */; };
 		0B48CA89277F7B6A00878DE9 /* AuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B48CA87277F7B6A00878DE9 /* AuthorizationView.swift */; };
+		0B55EF8E28076132001CDC99 /* MTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF8D28076132001CDC99 /* MTService.swift */; };
+		0B55EF8F2807637E001CDC99 /* MTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF8D28076132001CDC99 /* MTService.swift */; };
+		0B55EF9128080F34001CDC99 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9028080F34001CDC99 /* CreateAccountView.swift */; };
+		0B55EF9328080F56001CDC99 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9228080F56001CDC99 /* SignUpView.swift */; };
+		0B55EF9528081084001CDC99 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9428081084001CDC99 /* SignUpViewModel.swift */; };
+		0B55EF96280811BA001CDC99 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9428081084001CDC99 /* SignUpViewModel.swift */; };
+		0B55EF97280811BF001CDC99 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9028080F34001CDC99 /* CreateAccountView.swift */; };
+		0B55EF98280811C4001CDC99 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9228080F56001CDC99 /* SignUpView.swift */; };
+		0B55EF9A28081902001CDC99 /* AccountConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9928081902001CDC99 /* AccountConfirmationView.swift */; };
+		0B55EF9C2808193B001CDC99 /* EmailConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9B2808193B001CDC99 /* EmailConfirmationView.swift */; };
+		0B55EF9E2808198A001CDC99 /* EmailConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9D2808198A001CDC99 /* EmailConfirmationViewModel.swift */; };
+		0B55EF9F28081BF4001CDC99 /* EmailConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9D2808198A001CDC99 /* EmailConfirmationViewModel.swift */; };
+		0B55EFA028081BFF001CDC99 /* AccountConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9928081902001CDC99 /* AccountConfirmationView.swift */; };
+		0B55EFA128081C07001CDC99 /* EmailConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EF9B2808193B001CDC99 /* EmailConfirmationView.swift */; };
+		0B55EFA32808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA22808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift */; };
+		0B55EFA52808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA42808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift */; };
+		0B55EFA7280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA6280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift */; };
+		0B55EFA92808753E001CDC99 /* LastFmTrackToLikeServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA82808753E001CDC99 /* LastFmTrackToLikeServerModel.swift */; };
+		0B55EFAB2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAA2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift */; };
+		0B55EFAD280875A1001CDC99 /* LastFmTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAC280875A1001CDC99 /* LastFmTrackServerModel.swift */; };
+		0B55EFAF2808763B001CDC99 /* SharedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAE2808763B001CDC99 /* SharedTrackServerModel.swift */; };
+		0B55EFB028087793001CDC99 /* LastFmAddTracksOperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA22808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift */; };
+		0B55EFB128087795001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA42808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift */; };
+		0B55EFB228087798001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA6280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift */; };
+		0B55EFB32808779A001CDC99 /* LastFmTrackToLikeServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFA82808753E001CDC99 /* LastFmTrackToLikeServerModel.swift */; };
+		0B55EFB42808779D001CDC99 /* LastFmSearchedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAA2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift */; };
+		0B55EFB5280877A0001CDC99 /* LastFmTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAC280875A1001CDC99 /* LastFmTrackServerModel.swift */; };
+		0B55EFB62808792E001CDC99 /* SharedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFAE2808763B001CDC99 /* SharedTrackServerModel.swift */; };
+		0B55EFB82808797C001CDC99 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFB72808797C001CDC99 /* DateFormatter.swift */; };
+		0B55EFB9280879DD001CDC99 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFB72808797C001CDC99 /* DateFormatter.swift */; };
+		0B55EFBB28088826001CDC99 /* VKAddTracksOperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBA28088826001CDC99 /* VKAddTracksOperationServerModel.swift */; };
+		0B55EFBC2808882A001CDC99 /* VKAddTracksOperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBA28088826001CDC99 /* VKAddTracksOperationServerModel.swift */; };
+		0B55EFBE28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBD28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift */; };
+		0B55EFC028088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBF28088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift */; };
+		0B55EFC32808886C001CDC99 /* VKSearchedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC22808886C001CDC99 /* VKSearchedTrackServerModel.swift */; };
+		0B55EFC528088884001CDC99 /* VKTrackToLikeServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC428088884001CDC99 /* VKTrackToLikeServerModel.swift */; };
+		0B55EFC72808889E001CDC99 /* VKSavedItemServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC62808889E001CDC99 /* VKSavedItemServerModel.swift */; };
+		0B55EFC9280888AC001CDC99 /* VKAlbumServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC8280888AC001CDC99 /* VKAlbumServerModel.swift */; };
+		0B55EFCB280888C4001CDC99 /* VKArtistServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFCA280888C4001CDC99 /* VKArtistServerModel.swift */; };
+		0B55EFCC280888D0001CDC99 /* VKLikeTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBD28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift */; };
+		0B55EFCD280888D4001CDC99 /* VKSearchTracksSuboperationServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFBF28088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift */; };
+		0B55EFCE280888D6001CDC99 /* VKSearchedTrackServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC22808886C001CDC99 /* VKSearchedTrackServerModel.swift */; };
+		0B55EFCF280888D9001CDC99 /* VKTrackToLikeServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC428088884001CDC99 /* VKTrackToLikeServerModel.swift */; };
+		0B55EFD0280888DE001CDC99 /* VKAlbumServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC8280888AC001CDC99 /* VKAlbumServerModel.swift */; };
+		0B55EFD1280888E2001CDC99 /* VKArtistServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFCA280888C4001CDC99 /* VKArtistServerModel.swift */; };
+		0B55EFD228088C5F001CDC99 /* VKSavedItemServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B55EFC62808889E001CDC99 /* VKSavedItemServerModel.swift */; };
 		0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9DFB0F271CA63D008E3893 /* SpotifySearchedTrackRealm.swift */; };
 		0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */; };
 		0B8045AB27ADD86E004E5B8F /* TracksComparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8045A927AC8641004E5B8F /* TracksComparator.swift */; };
@@ -313,6 +359,29 @@
 		0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptchaRequestView.swift; sourceTree = "<group>"; };
 		0B46E5462784CB7A00181524 /* ShowingAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingAlerts.swift; sourceTree = "<group>"; };
 		0B48CA87277F7B6A00878DE9 /* AuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationView.swift; sourceTree = "<group>"; };
+		0B55EF8D28076132001CDC99 /* MTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTService.swift; sourceTree = "<group>"; };
+		0B55EF9028080F34001CDC99 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		0B55EF9228080F56001CDC99 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		0B55EF9428081084001CDC99 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		0B55EF9928081902001CDC99 /* AccountConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfirmationView.swift; sourceTree = "<group>"; };
+		0B55EF9B2808193B001CDC99 /* EmailConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailConfirmationView.swift; sourceTree = "<group>"; };
+		0B55EF9D2808198A001CDC99 /* EmailConfirmationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailConfirmationViewModel.swift; sourceTree = "<group>"; };
+		0B55EFA22808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmAddTracksOperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFA42808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmLikeTracksSuboperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFA6280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSearchTracksSuboperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFA82808753E001CDC99 /* LastFmTrackToLikeServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTrackToLikeServerModel.swift; sourceTree = "<group>"; };
+		0B55EFAA2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSearchedTrackServerModel.swift; sourceTree = "<group>"; };
+		0B55EFAC280875A1001CDC99 /* LastFmTrackServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTrackServerModel.swift; sourceTree = "<group>"; };
+		0B55EFAE2808763B001CDC99 /* SharedTrackServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTrackServerModel.swift; sourceTree = "<group>"; };
+		0B55EFB72808797C001CDC99 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		0B55EFBA28088826001CDC99 /* VKAddTracksOperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAddTracksOperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFBD28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKLikeTracksSuboperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFBF28088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchTracksSuboperationServerModel.swift; sourceTree = "<group>"; };
+		0B55EFC22808886C001CDC99 /* VKSearchedTrackServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrackServerModel.swift; sourceTree = "<group>"; };
+		0B55EFC428088884001CDC99 /* VKTrackToLikeServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKTrackToLikeServerModel.swift; sourceTree = "<group>"; };
+		0B55EFC62808889E001CDC99 /* VKSavedItemServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSavedItemServerModel.swift; sourceTree = "<group>"; };
+		0B55EFC8280888AC001CDC99 /* VKAlbumServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAlbumServerModel.swift; sourceTree = "<group>"; };
+		0B55EFCA280888C4001CDC99 /* VKArtistServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKArtistServerModel.swift; sourceTree = "<group>"; };
 		0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceView.swift; sourceTree = "<group>"; };
 		0B8045A927AC8641004E5B8F /* TracksComparator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksComparator.swift; sourceTree = "<group>"; };
 		0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchedTrack.swift; sourceTree = "<group>"; };
@@ -415,6 +484,7 @@
 				0BCF5AFA271BABAF0019C5B1 /* List.swift */,
 				0B9DFB04271C95DA008E3893 /* Object.swift */,
 				0BFB316627B3103F00DF3DF0 /* Color.swift */,
+				0B55EFB72808797C001CDC99 /* DateFormatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -541,10 +611,11 @@
 		0B2C150625A67E2700ACB2C7 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				0B55EF8C28075F9D001CDC99 /* MTService */,
+				0B55EF8928075DCD001CDC99 /* VK */,
 				0B0352C627655B2C00835F56 /* Last.fm */,
 				0BE6DCC527137E8C003BEC3B /* Spotify */,
 				0B2C150A25A67E6000ACB2C7 /* APIService.swift */,
-				0B2C152425A67EDA00ACB2C7 /* VKService.swift */,
 				0B2C150725A67E3900ACB2C7 /* Keys */,
 			);
 			path = API;
@@ -564,6 +635,8 @@
 			isa = PBXGroup;
 			children = (
 				0B17559925BF304D0094E75C /* LoginViewModel.swift */,
+				0B55EF9428081084001CDC99 /* SignUpViewModel.swift */,
+				0B55EF9D2808198A001CDC99 /* EmailConfirmationViewModel.swift */,
 				0BC8D85E260A890000AC204E /* CaptchaViewModel.swift */,
 				0B11651C2779DE6C0089C962 /* Last.fm */,
 				0B5DCA3F272F4D6400E30A8A /* Shared */,
@@ -626,6 +699,7 @@
 				0B11651D2779DE7A0089C962 /* LastFmLovedTracks.swift */,
 				0B3AD97E277B0F1000BA692B /* LastFmTrackSearchResult.swift */,
 				0B3AD988277B18C000BA692B /* LastFmTrackRealm.swift */,
+				0B55EFAC280875A1001CDC99 /* LastFmTrackServerModel.swift */,
 			);
 			path = "Tracks info";
 			sourceTree = "<group>";
@@ -644,6 +718,7 @@
 			children = (
 				0B3AD984277B17BC00BA692B /* LastFmSearchedTrack.swift */,
 				0B3AD986277B187000BA692B /* LastFmSearchedTrackRealm.swift */,
+				0B55EFAA2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift */,
 			);
 			path = SearchedTracks;
 			sourceTree = "<group>";
@@ -653,6 +728,7 @@
 			children = (
 				0B3AD981277B150A00BA692B /* LastFmSearchTracksSuboperation.swift */,
 				0B3AD98A277B1B4700BA692B /* LastFmSearchTracksSuboperationRealm.swift */,
+				0B55EFA6280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift */,
 			);
 			path = SearchTrack;
 			sourceTree = "<group>";
@@ -662,6 +738,7 @@
 			children = (
 				0B3AD98E277B2EC200BA692B /* LastFmLikeTracksSuboperation.swift */,
 				0B3AD990277B2F5E00BA692B /* LastFmLikeTracksSuboperationRealm.swift */,
+				0B55EFA42808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift */,
 			);
 			path = LikeTrack;
 			sourceTree = "<group>";
@@ -671,6 +748,7 @@
 			children = (
 				0B3AD993277B30C400BA692B /* LastFmAddTracksOperation.swift */,
 				0B3AD995277B34AE00BA692B /* LastFmAddTracksOperationRealm.swift */,
+				0B55EFA22808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -680,6 +758,7 @@
 			children = (
 				0B3AD998277B59AA00BA692B /* LastFmTrackToLike.swift */,
 				0B3AD99A277B5A5900BA692B /* LastFmTrackToLikeRealm.swift */,
+				0B55EFA82808753E001CDC99 /* LastFmTrackToLikeServerModel.swift */,
 			);
 			path = TracksToLike;
 			sourceTree = "<group>";
@@ -690,6 +769,22 @@
 				0B3AD99D277CA7B600BA692B /* AlertsManager.swift */,
 			);
 			path = Alerts;
+			sourceTree = "<group>";
+		};
+		0B55EF8928075DCD001CDC99 /* VK */ = {
+			isa = PBXGroup;
+			children = (
+				0B2C152425A67EDA00ACB2C7 /* VKService.swift */,
+			);
+			path = VK;
+			sourceTree = "<group>";
+		};
+		0B55EF8C28075F9D001CDC99 /* MTService */ = {
+			isa = PBXGroup;
+			children = (
+				0B55EF8D28076132001CDC99 /* MTService.swift */,
+			);
+			path = MTService;
 			sourceTree = "<group>";
 		};
 		0B5DCA38272F4C6C00E30A8A /* SearchTracks */ = {
@@ -755,6 +850,7 @@
 				0B2C153A25A67F5A00ACB2C7 /* SharedTrack.swift */,
 				0BCF5AE2271B84E30019C5B1 /* SharedTrackRealm.swift */,
 				0B0BC82827A5C9EF00AF2D09 /* SharedServicesData.swift */,
+				0B55EFAE2808763B001CDC99 /* SharedTrackServerModel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -797,6 +893,7 @@
 			children = (
 				0B81BE6427354D960024D4EC /* VKSearchedTrack.swift */,
 				0B81BE6927354E5C0024D4EC /* VKSearchedTrackRealm.swift */,
+				0B55EFC22808886C001CDC99 /* VKSearchedTrackServerModel.swift */,
 			);
 			path = SearchedTracks;
 			sourceTree = "<group>";
@@ -806,6 +903,7 @@
 			children = (
 				0B81BE6727354E180024D4EC /* VKSearchTracksSuboperation.swift */,
 				0B81BE73273570280024D4EC /* VKSearchTracksSuboperationRealm.swift */,
+				0B55EFBF28088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift */,
 			);
 			path = SearchTracks;
 			sourceTree = "<group>";
@@ -815,7 +913,9 @@
 			children = (
 				0B2C156025A67FE700ACB2C7 /* VKSavedTracks.swift */,
 				0B81BE6E273552660024D4EC /* VKAlbumRealm.swift */,
+				0B55EFC8280888AC001CDC99 /* VKAlbumServerModel.swift */,
 				0B81BE70273552780024D4EC /* VKArtistRealm.swift */,
+				0B55EFCA280888C4001CDC99 /* VKArtistServerModel.swift */,
 			);
 			path = "API responce models";
 			sourceTree = "<group>";
@@ -825,6 +925,7 @@
 			children = (
 				0B81BE6D273552330024D4EC /* API responce models */,
 				0B81BE6B27354E9C0024D4EC /* VKSavedItemRealm.swift */,
+				0B55EFC62808889E001CDC99 /* VKSavedItemServerModel.swift */,
 			);
 			path = SavedTracks;
 			sourceTree = "<group>";
@@ -834,6 +935,7 @@
 			children = (
 				0B81BE762735B0690024D4EC /* VKLikeTracksSuboperation.swift */,
 				0B81BE782735B0790024D4EC /* VKLikeTracksSuboperationRealm.swift */,
+				0B55EFBD28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift */,
 			);
 			path = LikeTracks;
 			sourceTree = "<group>";
@@ -843,6 +945,7 @@
 			children = (
 				0B81BE7B2735B2650024D4EC /* VKTrackToLike.swift */,
 				0B81BE7D2735B3130024D4EC /* VKTrackToLikeRealm.swift */,
+				0B55EFC428088884001CDC99 /* VKTrackToLikeServerModel.swift */,
 			);
 			path = TracksToLike;
 			sourceTree = "<group>";
@@ -861,6 +964,7 @@
 			children = (
 				0B81BE85273733510024D4EC /* VKAddTracksOperation.swift */,
 				0B81BE89273738E30024D4EC /* VKAddTracksOperationRealm.swift */,
+				0B55EFBA28088826001CDC99 /* VKAddTracksOperationServerModel.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -882,6 +986,8 @@
 				0B2C158125A6806800ACB2C7 /* ToolsView.swift */,
 				0B7D8AA1274ADA8B00E0321A /* ServiceView.swift */,
 				0B48CA87277F7B6A00878DE9 /* AuthorizationView.swift */,
+				0B55EF9028080F34001CDC99 /* CreateAccountView.swift */,
+				0B55EF9928081902001CDC99 /* AccountConfirmationView.swift */,
 				0B81BE8F273824210024D4EC /* History */,
 				0BC263C225BDA37B00820FE0 /* SecondaryViews */,
 			);
@@ -921,6 +1027,8 @@
 			children = (
 				0B2C159C25A680F700ACB2C7 /* BrowserView.swift */,
 				0B2C15BC25A681B300ACB2C7 /* LoginView.swift */,
+				0B55EF9228080F56001CDC99 /* SignUpView.swift */,
+				0B55EF9B2808193B001CDC99 /* EmailConfirmationView.swift */,
 				0B2C159025A680B400ACB2C7 /* MainProgressView.swift */,
 				0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */,
 				0B2C15AE25A6811E00ACB2C7 /* CaptchaView.swift */,
@@ -1262,13 +1370,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BE13C3427ADFBEC00EC0EB7 /* Logger.swift in Sources */,
+				0B55EFC528088884001CDC99 /* VKTrackToLikeServerModel.swift in Sources */,
+				0B55EFC72808889E001CDC99 /* VKSavedItemServerModel.swift in Sources */,
 				0BE13C5827ADFBEC00EC0EB7 /* TransferSuboperation.swift in Sources */,
+				0B55EF9A28081902001CDC99 /* AccountConfirmationView.swift in Sources */,
+				0B55EFAD280875A1001CDC99 /* LastFmTrackServerModel.swift in Sources */,
+				0B55EF9E2808198A001CDC99 /* EmailConfirmationViewModel.swift in Sources */,
 				0BE13C4C27ADFBEC00EC0EB7 /* SpotifyAddTracksOperation.swift in Sources */,
+				0B55EFAF2808763B001CDC99 /* SharedTrackServerModel.swift in Sources */,
 				0BE13C2E27ADFBEC00EC0EB7 /* MTTask.swift in Sources */,
 				0BE13C8527ADFBEC00EC0EB7 /* SpotifyLikeTracksSuboperation.swift in Sources */,
+				0B55EFA92808753E001CDC99 /* LastFmTrackToLikeServerModel.swift in Sources */,
 				0BE13C7B27ADFBEC00EC0EB7 /* SpotifyKeys.swift in Sources */,
 				0BE13C4D27ADFBEC00EC0EB7 /* NetworkClient.swift in Sources */,
 				0BE13C8327ADFBEC00EC0EB7 /* SharedServicesData.swift in Sources */,
+				0B55EF8E28076132001CDC99 /* MTService.swift in Sources */,
 				0BE13C7827ADFBEC00EC0EB7 /* VKTrackToLikeRealm.swift in Sources */,
 				0BE13C3F27ADFBEC00EC0EB7 /* LastFmAddTracksOperation.swift in Sources */,
 				0BE13C3C27ADFBEC00EC0EB7 /* CaptchaRequestView.swift in Sources */,
@@ -1276,13 +1392,16 @@
 				0BE13C7027ADFBEC00EC0EB7 /* SpotifySearchTracksSuboperation.swift in Sources */,
 				0BE13C4627ADFBEC00EC0EB7 /* ManagingDatabase.swift in Sources */,
 				0BE13C3B27ADFBEC00EC0EB7 /* TransferOperationTracksView.swift in Sources */,
+				0B55EFBE28088845001CDC99 /* VKLikeTracksSuboperationServerModel.swift in Sources */,
 				0BE13C5F27ADFBEC00EC0EB7 /* LastFmTrackToLikeRealm.swift in Sources */,
 				0BE13C8B27ADFBEC00EC0EB7 /* LastFmTrackRealm.swift in Sources */,
 				0BFB316727B3103F00DF3DF0 /* Color.swift in Sources */,
 				0BE13C3E27ADFBEC00EC0EB7 /* AuthorizationView.swift in Sources */,
 				0BE13C6627ADFBEC00EC0EB7 /* LastFmSearchedTrack.swift in Sources */,
+				0B55EFA32808742E001CDC99 /* LastFmAddTracksOperationServerModel.swift in Sources */,
 				0BE13C3927ADFBEC00EC0EB7 /* SpotifyTracksPackageToLikeRealm.swift in Sources */,
 				0BE13C4827ADFBEC00EC0EB7 /* VKAddTracksOperation.swift in Sources */,
+				0B55EF9C2808193B001CDC99 /* EmailConfirmationView.swift in Sources */,
 				0BE13C3627ADFBEC00EC0EB7 /* Music_TransferApp.swift in Sources */,
 				0BE13C6227ADFBEC00EC0EB7 /* LastFmLovedTracks.swift in Sources */,
 				0BE13C2827ADFBEC00EC0EB7 /* NetworkError.swift in Sources */,
@@ -1290,6 +1409,7 @@
 				0BE13C8427ADFBEC00EC0EB7 /* SpotifySavedItemRealm.swift in Sources */,
 				0BE13C4527ADFBEC00EC0EB7 /* BrowserView.swift in Sources */,
 				0BE13C2627ADFBEC00EC0EB7 /* CacheManager.swift in Sources */,
+				0B55EFC32808886C001CDC99 /* VKSearchedTrackServerModel.swift in Sources */,
 				0BE13C7A27ADFBEC00EC0EB7 /* LastFmLikeTracksSuboperationRealm.swift in Sources */,
 				0BE13C6327ADFBEC00EC0EB7 /* View.swift in Sources */,
 				0BE13C2D27ADFBEC00EC0EB7 /* TracksTableRow.swift in Sources */,
@@ -1300,6 +1420,7 @@
 				0BE13C7327ADFBEC00EC0EB7 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
 				0BE13C3727ADFBEC00EC0EB7 /* LogType.swift in Sources */,
 				0BE13C8227ADFBEC00EC0EB7 /* VKArtistRealm.swift in Sources */,
+				0B55EF9528081084001CDC99 /* SignUpViewModel.swift in Sources */,
 				0BE13C4227ADFBEC00EC0EB7 /* LastFmSession.swift in Sources */,
 				0BE13C8727ADFBEC00EC0EB7 /* DatabaseManager.swift in Sources */,
 				0BE13C2F27ADFBEC00EC0EB7 /* SpotifyBrowser.swift in Sources */,
@@ -1312,6 +1433,7 @@
 				0BE13C4327ADFBEC00EC0EB7 /* VKAlbumRealm.swift in Sources */,
 				0BE13C5E27ADFBEC00EC0EB7 /* AlertsManager.swift in Sources */,
 				0BE13C6827ADFBEC00EC0EB7 /* VKAddTrack.swift in Sources */,
+				0B55EFC9280888AC001CDC99 /* VKAlbumServerModel.swift in Sources */,
 				0BE13C4E27ADFBEC00EC0EB7 /* LastFmAddTracksOperationRealm.swift in Sources */,
 				0BE13C6C27ADFBEC00EC0EB7 /* LastFmError.swift in Sources */,
 				0BE13C7927ADFBEC00EC0EB7 /* CaptchaViewModel.swift in Sources */,
@@ -1324,10 +1446,13 @@
 				0BE13C4A27ADFBEC00EC0EB7 /* VKSavedItemRealm.swift in Sources */,
 				0BE13C8927ADFBEC00EC0EB7 /* LoginViewModel.swift in Sources */,
 				0BE13C2427ADFBEC00EC0EB7 /* HistoryTableRow.swift in Sources */,
+				0B55EF9328080F56001CDC99 /* SignUpView.swift in Sources */,
 				0BE13C2A27ADFBEC00EC0EB7 /* VKSearchedTrack.swift in Sources */,
 				0BE13C6427ADFBEC00EC0EB7 /* ToolsView.swift in Sources */,
+				0B55EFA7280874BC001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift in Sources */,
 				0BE13C6D27ADFBEC00EC0EB7 /* VKSearchTracksSuboperationRealm.swift in Sources */,
 				0BE13C5127ADFBEC00EC0EB7 /* LoginView.swift in Sources */,
+				0B55EFBB28088826001CDC99 /* VKAddTracksOperationServerModel.swift in Sources */,
 				0BE13C3127ADFBEC00EC0EB7 /* SpotifyArtistRealm.swift in Sources */,
 				0BE13C8127ADFBEC00EC0EB7 /* SpotifySavedTracks.swift in Sources */,
 				0BE13C7527ADFBEC00EC0EB7 /* SharedTrack.swift in Sources */,
@@ -1336,6 +1461,7 @@
 				0BE13C2B27ADFBEC00EC0EB7 /* LastFmSearchTracksSuboperationRealm.swift in Sources */,
 				0BE13C4927ADFBEC00EC0EB7 /* VKSearchedTrackRealm.swift in Sources */,
 				0BE13C4F27ADFBEC00EC0EB7 /* SharedTrackRealm.swift in Sources */,
+				0B55EF9128080F34001CDC99 /* CreateAccountView.swift in Sources */,
 				0BE13C4727ADFBEC00EC0EB7 /* VKService.swift in Sources */,
 				0BE13C7427ADFBEC00EC0EB7 /* VKAddTracksOperationRealm.swift in Sources */,
 				0BE13C3A27ADFBEC00EC0EB7 /* SpotifyAddTracksOperationRealm.swift in Sources */,
@@ -1355,18 +1481,23 @@
 				0BE13C5927ADFBEC00EC0EB7 /* ShowingAlerts.swift in Sources */,
 				0BE13C6727ADFBEC00EC0EB7 /* CaptchaView.swift in Sources */,
 				0BE13C6027ADFBEC00EC0EB7 /* SpotifySearchTracks.swift in Sources */,
+				0B55EFC028088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift in Sources */,
+				0B55EFB82808797C001CDC99 /* DateFormatter.swift in Sources */,
 				0BE13C7C27ADFBEC00EC0EB7 /* VKUser.swift in Sources */,
 				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
 				0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */,
 				0BE13C3827ADFBEC00EC0EB7 /* MTQueue.swift in Sources */,
+				0B55EFCB280888C4001CDC99 /* VKArtistServerModel.swift in Sources */,
 				0BE13C8A27ADFBEC00EC0EB7 /* APIBrowser.swift in Sources */,
 				0BE13C4427ADFBEC00EC0EB7 /* Captcha.swift in Sources */,
 				0BE13C8627ADFBEC00EC0EB7 /* DisplayableError.swift in Sources */,
 				0BE13C2927ADFBEC00EC0EB7 /* LastFmSearchTracksSuboperation.swift in Sources */,
 				0BE13C2C27ADFBEC00EC0EB7 /* SpotifySearchedItemRealm.swift in Sources */,
+				0B55EFA52808749C001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift in Sources */,
 				0BE13C5527ADFBEC00EC0EB7 /* LastFmTrackToLike.swift in Sources */,
 				0BE13C6A27ADFBEC00EC0EB7 /* SpotifyTracksPackageToLike.swift in Sources */,
 				0BE13C4B27ADFBEC00EC0EB7 /* TracksComparator.swift in Sources */,
+				0B55EFAB2808756A001CDC99 /* LastFmSearchedTrackServerModel.swift in Sources */,
 				0BE13C7E27ADFBEC00EC0EB7 /* VKTrackToLike.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1378,6 +1509,8 @@
 				0BB4F9A02725E6E3003C7CE5 /* SpotifyLikeTracksSuboperationRealm.swift in Sources */,
 				0BB4F9A32725E7B0003C7CE5 /* SpotifySearchedTrack.swift in Sources */,
 				0B46E54C2789C71100181524 /* LastFmLikeTracksSuboperationRealm.swift in Sources */,
+				0B55EFD228088C5F001CDC99 /* VKSavedItemServerModel.swift in Sources */,
+				0B55EFB5280877A0001CDC99 /* LastFmTrackServerModel.swift in Sources */,
 				0BCF5AF7271BA80A0019C5B1 /* SharedTrackRealm.swift in Sources */,
 				0BE6DCC3271355DE003BEC3B /* MTQueue.swift in Sources */,
 				0B2C156225A67FE700ACB2C7 /* VKSavedTracks.swift in Sources */,
@@ -1387,7 +1520,9 @@
 				0B46E5532789C72700181524 /* LastFmLovedTracks.swift in Sources */,
 				0B42353226E4D0F2007CAAB7 /* Captcha.swift in Sources */,
 				0B2C155425A67FB400ACB2C7 /* SpotifySearchTracks.swift in Sources */,
+				0B55EFD0280888DE001CDC99 /* VKAlbumServerModel.swift in Sources */,
 				0B1550A42741C4D6000D0A38 /* VKAlbumRealm.swift in Sources */,
+				0B55EFA028081BFF001CDC99 /* AccountConfirmationView.swift in Sources */,
 				0B2C152625A67EDA00ACB2C7 /* VKService.swift in Sources */,
 				0BCF5AF4271BA8000019C5B1 /* SpotifyArtistRealm.swift in Sources */,
 				0B46E54A2789C70B00181524 /* LastFmAddTracksOperationRealm.swift in Sources */,
@@ -1409,38 +1544,49 @@
 				0B27CE612783499D002A59BA /* DisplayableError.swift in Sources */,
 				0B02BC1D26EEA58000F395E6 /* BrowserViewDelegate.swift in Sources */,
 				0B1550A62741C4DC000D0A38 /* VKSavedItemRealm.swift in Sources */,
+				0B55EF96280811BA001CDC99 /* SignUpViewModel.swift in Sources */,
 				0B15509B2741C4A1000D0A38 /* SpotifyAddTracksOperationRealm.swift in Sources */,
 				0B02BC2126EEAF6000F395E6 /* View.swift in Sources */,
 				0B46E5502789C71E00181524 /* LastFmTrackToLikeRealm.swift in Sources */,
 				0B1550A82741C508000D0A38 /* HistoryTableRow.swift in Sources */,
 				0B9DFB0A271C9A16008E3893 /* List.swift in Sources */,
 				0B46E5522789C72400181524 /* LastFmSearchedTrackRealm.swift in Sources */,
+				0B55EFB228087798001CDC99 /* LastFmSearchTracksSuboperationServerModel.swift in Sources */,
 				0B46E54D2789C71400181524 /* LastFmSearchTracksSuboperation.swift in Sources */,
 				0B02BC1C26EEA4F400F395E6 /* LoginViewModel.swift in Sources */,
 				0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */,
+				0B55EFB62808792E001CDC99 /* SharedTrackServerModel.swift in Sources */,
 				0B2C15E125A682A000ACB2C7 /* Constants.swift in Sources */,
 				0B2C157025A6801400ACB2C7 /* VKErrors.swift in Sources */,
 				0B2C152D25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
 				0B9DFB09271C9A13008E3893 /* Object.swift in Sources */,
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
 				0B27CE6727835FFA002A59BA /* RequestMethod.swift in Sources */,
+				0B55EF97280811BF001CDC99 /* CreateAccountView.swift in Sources */,
 				0BE6DCC4271355E2003BEC3B /* MTTask.swift in Sources */,
 				0B0BC82A27A5C9EF00AF2D09 /* SharedServicesData.swift in Sources */,
+				0B55EFBC2808882A001CDC99 /* VKAddTracksOperationServerModel.swift in Sources */,
 				0B46E5492789C70800181524 /* LastFmAddTracksOperation.swift in Sources */,
+				0B55EFCE280888D6001CDC99 /* VKSearchedTrackServerModel.swift in Sources */,
 				0BCF5AF6271BA8080019C5B1 /* SpotifySavedItemRealm.swift in Sources */,
 				0B1550A12741C4CA000D0A38 /* VKSearchedTrackRealm.swift in Sources */,
 				0B0352D02765682B00835F56 /* LastFmSession.swift in Sources */,
 				0B15509D2741C4BC000D0A38 /* VKAddTracksOperationRealm.swift in Sources */,
+				0B55EFB42808779D001CDC99 /* LastFmSearchedTrackServerModel.swift in Sources */,
 				0B7D8AA3274ADA8B00E0321A /* ServiceView.swift in Sources */,
+				0B55EFB9280879DD001CDC99 /* DateFormatter.swift in Sources */,
+				0B55EFD1280888E2001CDC99 /* VKArtistServerModel.swift in Sources */,
 				0BC2635D25BD815300820FE0 /* HistoryView.swift in Sources */,
 				0B27CE5D27834682002A59BA /* LastFmError.swift in Sources */,
 				0B5DCA39272F4C7F00E30A8A /* SpotifySearchedTrackRealm.swift in Sources */,
 				0BC8D860260A890000AC204E /* CaptchaViewModel.swift in Sources */,
 				0BE6DCB927125705003BEC3B /* String.swift in Sources */,
 				0B2C154925A67FA100ACB2C7 /* SpotifySavedTracks.swift in Sources */,
+				0B55EFCD280888D4001CDC99 /* VKSearchTracksSuboperationServerModel.swift in Sources */,
 				0B0352C52765588500835F56 /* LastFmKeys.swift in Sources */,
 				0BE6DCB027124CBE003BEC3B /* Log.swift in Sources */,
 				0B2C158325A6806800ACB2C7 /* ToolsView.swift in Sources */,
+				0B55EFB028087793001CDC99 /* LastFmAddTracksOperationServerModel.swift in Sources */,
 				0B9DFB06271C99FD008E3893 /* SpotifySearchTracksSuboperationRealm.swift in Sources */,
 				0B46E5482784CB7A00181524 /* ShowingAlerts.swift in Sources */,
 				0BCF5AF5271BA8050019C5B1 /* SpotifySearchedItemRealm.swift in Sources */,
@@ -1456,6 +1602,7 @@
 				0B2C157725A6802800ACB2C7 /* VKAddTrack.swift in Sources */,
 				0B0352C2276557C000835F56 /* LastFmService.swift in Sources */,
 				0B46E54F2789C71B00181524 /* LastFmTrackToLike.swift in Sources */,
+				0B55EFB32808779A001CDC99 /* LastFmTrackToLikeServerModel.swift in Sources */,
 				0B2C15CC25A681EC00ACB2C7 /* TracksTable.swift in Sources */,
 				0B42352C26E431A6007CAAB7 /* TransferManager.swift in Sources */,
 				0BF0658B2752DF4B006A81F3 /* TransferOperationTracksView.swift in Sources */,
@@ -1467,23 +1614,30 @@
 				0B1550972741C468000D0A38 /* TransferOperation.swift in Sources */,
 				0B46E5512789C72100181524 /* LastFmSearchedTrack.swift in Sources */,
 				0B2C159E25A680F700ACB2C7 /* BrowserView.swift in Sources */,
+				0B55EFA128081C07001CDC99 /* EmailConfirmationView.swift in Sources */,
 				0B2C153C25A67F5A00ACB2C7 /* SharedTrack.swift in Sources */,
+				0B55EFCF280888D9001CDC99 /* VKTrackToLikeServerModel.swift in Sources */,
 				0B46E54E2789C71800181524 /* LastFmSearchTracksSuboperationRealm.swift in Sources */,
+				0B55EFCC280888D0001CDC99 /* VKLikeTracksSuboperationServerModel.swift in Sources */,
 				0B1550A72741C4F8000D0A38 /* ManagingDatabase.swift in Sources */,
+				0B55EF9F28081BF4001CDC99 /* EmailConfirmationViewModel.swift in Sources */,
 				0BE6DCB327124CC7003BEC3B /* NetworkClient.swift in Sources */,
 				0B0352CD276566F300835F56 /* LastFmAuthorizationResponse.swift in Sources */,
 				0BE6DCB627124D86003BEC3B /* NetworkError.swift in Sources */,
+				0B55EF98280811C4001CDC99 /* SignUpView.swift in Sources */,
 				0B2C14E425A6781400ACB2C7 /* Music_TransferApp.swift in Sources */,
 				0B2C155B25A67FCE00ACB2C7 /* VKUser.swift in Sources */,
 				0B15509E2741C4BE000D0A38 /* VKLikeTracksSuboperation.swift in Sources */,
 				0B27CE6427834A58002A59BA /* NetworkErrorType.swift in Sources */,
 				0BE6DCC827138FC3003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
 				0B1550A32741C4D0000D0A38 /* VKTrackToLikeRealm.swift in Sources */,
+				0B55EF8F2807637E001CDC99 /* MTService.swift in Sources */,
 				0BB4F9A62725ED76003C7CE5 /* SpotifyTracksPackageToLike.swift in Sources */,
 				0B15509F2741C4C1000D0A38 /* VKLikeTracksSuboperationRealm.swift in Sources */,
 				0B2C159225A680B400ACB2C7 /* MainProgressView.swift in Sources */,
 				0B15509C2741C4B9000D0A38 /* VKAddTracksOperation.swift in Sources */,
 				0B9DFB08271C9A06008E3893 /* SpotifySearchTracksSuboperation.swift in Sources */,
+				0B55EFB128087795001CDC99 /* LastFmLikeTracksSuboperationServerModel.swift in Sources */,
 				0B1550A52741C4D9000D0A38 /* VKArtistRealm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

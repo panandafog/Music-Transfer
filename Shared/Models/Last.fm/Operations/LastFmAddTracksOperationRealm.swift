@@ -13,6 +13,7 @@ import RealmSwift
 class LastFmAddTracksOperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var searchSuboperation: LastFmSearchTracksSuboperationRealm?
     @objc dynamic var likeSuboperation: LastFmLikeTracksSuboperationRealm?
@@ -26,6 +27,8 @@ extension LastFmAddTracksOperationRealm {
     
     var lastFmAddTracksOperation: LastFmAddTracksOperation {
         LastFmAddTracksOperation(
+            id: id,
+            serverID: serverID.value,
             searchSuboperaion: searchSuboperation!.lastFmSearchTracksSuboperation,
             likeSuboperation: likeSuboperation!.lastFmLikeTracksSuboperation
         )
@@ -35,6 +38,7 @@ extension LastFmAddTracksOperationRealm {
         self.init()
         
         id = lastFmAddTracksOperation.id
+        serverID.value = lastFmAddTracksOperation.serverID
         
         searchSuboperation = LastFmSearchTracksSuboperationRealm(
             lastFmAddTracksOperation.searchSuboperaion

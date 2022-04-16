@@ -61,6 +61,22 @@ final class SpotifyService: APIService {
         }
     }
     
+    var showingSignUp = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    var showingEmailConfirmation = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var isAuthorised = false {
         didSet {
             DispatchQueue.main.async {

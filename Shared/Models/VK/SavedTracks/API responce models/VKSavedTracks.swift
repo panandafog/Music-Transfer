@@ -22,12 +22,50 @@ enum VKSavedTracks {
     }
     
     // MARK: - Item
-    struct Item: Codable {
+    class Item: Codable {
         let artist: String
-        let id: Int
+        var id: String
+        let serverID: Int?
         let owner_id: Int
         let title: String
         let duration: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case artist
+            case id = "aaaaaaaaa"
+            case serverID = "id"
+            case owner_id
+            case title
+            case duration
+        }
+        
+        init(
+            artist: String,
+            id: String = NSUUID().uuidString,
+            serverID: Int?,
+            owner_id: Int,
+            title: String,
+            duration: Int
+        ) {
+            self.artist = artist
+            self.id = id
+            self.serverID = serverID
+            self.owner_id = owner_id
+            self.title = title
+            self.duration = duration
+        }
+        
+        required init(from decoder: Decoder) throws {
+            id = NSUUID().uuidString
+            
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            artist = try container.decode(String.self, forKey: .artist)
+            serverID = try container.decodeIfPresent(Int.self, forKey: .serverID)
+            owner_id = try container.decode(Int.self, forKey: .owner_id)
+            title = try container.decode(String.self, forKey: .title)
+            duration = try container.decode(Int.self, forKey: .duration)
+        }
     }
     
     // MARK: - Ads
@@ -39,6 +77,7 @@ enum VKSavedTracks {
     // MARK: - Album
     struct Album: Codable {
         let id: Int
+        var serverID: Int?
         let title: String
         let ownerID: Int
         let accessKey: String
@@ -55,6 +94,7 @@ enum VKSavedTracks {
     // MARK: - Artist
     struct Artist: Codable {
         let name, domain, id: String
+        var serverID: Int?
     }
     
     // MARK: - Profile

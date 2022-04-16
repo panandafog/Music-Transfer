@@ -11,6 +11,7 @@ import RealmSwift
 class VKLikeTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var started: NSDate?
     @objc dynamic var completed: NSDate?
@@ -28,6 +29,7 @@ extension VKLikeTracksSuboperationRealm {
     var vkLikeTracksSuboperation: VKLikeTracksSuboperation {
         VKLikeTracksSuboperation(
             id: id,
+            serverID: serverID.value,
             started: started as Date?,
             completed: completed as Date?,
             tracksToLike: tracksToLike.map { $0.trackToLike },
@@ -40,6 +42,7 @@ extension VKLikeTracksSuboperationRealm {
         self.init()
         
         id = vkLikeTracksSuboperation.id
+        serverID.value = vkLikeTracksSuboperation.serverID
         
         started = vkLikeTracksSuboperation.started as NSDate?
         completed = vkLikeTracksSuboperation.completed as NSDate?

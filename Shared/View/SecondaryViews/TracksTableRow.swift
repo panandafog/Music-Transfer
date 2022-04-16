@@ -39,6 +39,6 @@ struct TracksTableRow: View {
 // swiftlint:disable type_name
 struct TracksTableRowView_Preview: PreviewProvider {
     static var previews: some View {
-        TracksTableRow(track: SharedTrack(id: "1488", artists: ["Rammstein", "Nietsmmar"], title: "Sonne", duration: 355, servicesData: []))
+        TracksTableRow(track: SharedTrack(id: "1488", serverID: nil, artists: ["Rammstein", "Nietsmmar"], title: "Sonne", duration: 355, servicesData: []))
     }
 }

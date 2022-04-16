@@ -11,6 +11,8 @@ import RealmSwift
 
 class VKTrackToLikeRealm: Object {
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
+    
     @objc dynamic var liked = false
     
     @objc dynamic var track: VKSavedItemRealm?
@@ -24,6 +26,7 @@ extension VKTrackToLikeRealm {
     var trackToLike: VKTrackToLike {
         VKTrackToLike(
             id: id,
+            serverID: serverID.value,
             track: track!.vkSavedItem,
             liked: liked
         )
@@ -33,6 +36,8 @@ extension VKTrackToLikeRealm {
         self.init()
         
         id = trackToLike.id
+        serverID.value = trackToLike.serverID
+        
         track = VKSavedItemRealm(trackToLike.track)
         liked = trackToLike.liked
     }

@@ -9,6 +9,7 @@ import Foundation
 
 struct LastFmSearchedTrack {
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var trackToSearch: SharedTrack
     var foundTracks: [LastFmTrackSearchResult.Track]?

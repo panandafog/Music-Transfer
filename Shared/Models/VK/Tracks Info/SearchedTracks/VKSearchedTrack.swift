@@ -9,6 +9,7 @@ import Foundation
 
 struct VKSearchedTrack {
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var trackToSearch: SharedTrack
     var foundTracks: [VKSavedTracks.Item]?

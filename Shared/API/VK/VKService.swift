@@ -38,6 +38,22 @@ final class VKService: APIService {
         }
     }
     
+    var showingSignUp = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    var showingEmailConfirmation = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var isAuthorised = false {
         didSet {
             DispatchQueue.main.async {
@@ -684,12 +700,19 @@ final class VKService: APIService {
             return
         }
         
+        let audioID: String
+        if let serverID = tracks[0].serverID {
+            audioID = String(serverID)
+        } else {
+            audioID = ""
+        }
+        
         var tmp = VKService.baseURL
         tmp.path = "/method/audio.add"
         tmp.queryItems = [
             URLQueryItem(name: "access_token", value: access_token),
             URLQueryItem(name: "v", value: VKService.apiVersion),
-            URLQueryItem(name: "audio_id", value: String(tracks[0].id)),
+            URLQueryItem(name: "audio_id", value: audioID),
             URLQueryItem(name: "owner_id", value: String(tracks[0].owner_id))
         ]
         

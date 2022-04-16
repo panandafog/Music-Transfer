@@ -100,6 +100,7 @@ enum NetworkClient {
         var requestBodyString = "none"
         if let body = requestInfo.body, let decoded = String(data: body, encoding: .utf8) {
             requestBodyString = decoded
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         }
         
         for header in requestInfo.headers {
@@ -209,7 +210,9 @@ enum NetworkClient {
             }
 
             if let data = data {
-                if let decoded = try? JSONDecoder().decode(dataType.self, from: data) {
+                let decoded = (try? JSONDecoder().decode(dataType.self, from: data)) ?? (String(data: data, encoding: .utf8) as? DataType)
+                
+                if let decoded = decoded {
                     dataCompletion?(.success(decoded), response)
                 } else {
                     Logger.write(

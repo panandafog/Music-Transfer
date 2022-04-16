@@ -10,6 +10,7 @@ import Foundation
 class VKAddTracksOperation: TransferOperation {
     
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var searchSuboperaion: VKSearchTracksSuboperation
     var likeSuboperation: VKLikeTracksSuboperation
@@ -27,9 +28,13 @@ class VKAddTracksOperation: TransferOperation {
     }
     
     init(
+        id: String = NSUUID().uuidString,
+        serverID: Int?,
         searchSuboperaion: VKSearchTracksSuboperation,
         likeSuboperation: VKLikeTracksSuboperation
     ) {
+        self.id = id
+        self.serverID = serverID
         self.searchSuboperaion = searchSuboperaion
         self.likeSuboperation = likeSuboperation
     }

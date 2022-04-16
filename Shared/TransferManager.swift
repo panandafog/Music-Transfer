@@ -22,6 +22,7 @@ class TransferManager: ManagingDatabase, ObservableObject {
     // MARK: - Constants
     
     var services: [APIService] = [SpotifyService(), VKService(), LastFmService()]
+    var mtService = MTService()
     let objectWillChange = ObservableObjectPublisher()
     
     // MARK: - Services choosing
@@ -45,6 +46,22 @@ class TransferManager: ManagingDatabase, ObservableObject {
     // MARK: - Operation state
     
     @Published var operationInProgress = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published var uploadingHistoryInProgress = false {
+        willSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    @Published var updatingHistoryInProgress = false {
         willSet {
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
@@ -186,10 +203,35 @@ class TransferManager: ManagingDatabase, ObservableObject {
         }
         
         if let vkService = destinationService as? VKService {
-            var tracksToAdd = vkService.filterTracksToAdd(departureService.savedTracks)
+            let tracksToAdd = vkService.filterTracksToAdd(departureService.savedTracks)
             let operation = VKAddTracksOperation(tracksToAdd: tracksToAdd)
-            let operationUpdateHandler: VKAddTracksOperationHandler = { [self] operation in
-                save(operation)
+            let operationUpdateHandler: VKAddTracksOperationHandler = { [self] updatedOperation in
+                let updatedOperation = updatedOperation
+
+                let savedOperation: VKAddTracksOperation? = readOperation(id: updatedOperation.id)
+                let serverID = savedOperation?.serverID
+//                let serverID = getSaved(operation: updatedOperation)?.serverID
+                if let serverID = serverID {
+                    updatedOperation.serverID = serverID
+                }
+                save(updatedOperation)
+                mtService.saveOperation(
+                    VKAddTracksOperationServerModel.init(clientModel: updatedOperation),
+                    completion: { result in
+                        switch result {
+                        case .success(let serverModel):
+//                            if serverID == nil {
+//                                let savedModel = self.readOperation(serverID: serverModel.clientModel.serverID) ?? serverModel.clientModel
+//                                savedModel.serverID = serverModel.id
+//                                self.save(savedModel)
+//                            }
+                            let clientModel = serverModel.clientModel
+                            clientModel.id = updatedOperation.id
+                            self.save(clientModel)
+                        default:
+                            break
+                        }
+                })
             }
             
             vkService.addTracks(
@@ -200,9 +242,33 @@ class TransferManager: ManagingDatabase, ObservableObject {
         
         if let lastFmService = destinationService as? LastFmService {
             let operation = LastFmAddTracksOperation(tracksToAdd: departureService.savedTracks)
-            let operationUpdateHandler: LastFmAddTracksOperationHandler = { [self] operation in
-                save(operation)
-                
+            let operationUpdateHandler: LastFmAddTracksOperationHandler = { [self] updatedOperation in
+                let updatedOperation = updatedOperation
+                let savedOperation: LastFmAddTracksOperation? = readOperation(id: updatedOperation.id)
+                let serverID = savedOperation?.serverID
+//                let serverID = getSaved(operation: updatedOperation)?.serverID
+                if let serverID = serverID {
+                    updatedOperation.serverID = serverID
+                }
+                save(updatedOperation)
+                mtService.saveOperation(
+                    LastFmAddTracksOperationServerModel.init(clientModel: updatedOperation),
+                    completion: { result in
+                        switch result {
+                        case .success(let serverModel):
+//                            if serverID == nil {
+//                                let savedModel = self.readOperation(serverID: serverModel.clientModel.serverID) ?? serverModel.clientModel
+//                                savedModel.serverID = serverModel.id
+//                                savedModel.id = updatedOperation.id
+//                                self.save(savedModel)
+//                            }
+                            let clientModel = serverModel.clientModel
+                            clientModel.id = updatedOperation.id
+                            self.save(clientModel)
+                        default:
+                            break
+                        }
+                })
             }
             lastFmService.addTracks(
                 operation: operation,
@@ -232,5 +298,33 @@ class TransferManager: ManagingDatabase, ObservableObject {
             lhs.started ?? Date.distantPast
                 > rhs.started ?? Date.distantPast
         }
+    }
+    
+    private func getSaved(operation: VKAddTracksOperation) -> VKAddTracksOperation? {
+        let operations = vkAddOperations?.map {
+            $0.vkAddTracksOperation
+        } ?? []
+        
+        for savedOperation in operations {
+            if savedOperation.id == operation.id {
+                return savedOperation
+            }
+        }
+        
+        return nil
+    }
+    
+    private func getSaved(operation: LastFmAddTracksOperation) -> LastFmAddTracksOperation? {
+        let operations = lastFmAddOperations?.map {
+            $0.lastFmAddTracksOperation
+        } ?? []
+        
+        for savedOperation in operations {
+            if savedOperation.id == operation.id {
+                return savedOperation
+            }
+        }
+        
+        return nil
     }
 }

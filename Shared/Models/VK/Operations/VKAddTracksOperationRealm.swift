@@ -13,6 +13,7 @@ import RealmSwift
 class VKAddTracksOperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var searchSuboperaion: VKSearchTracksSuboperationRealm?
     @objc dynamic var likeSuboperation: VKLikeTracksSuboperationRealm?
@@ -25,6 +26,8 @@ class VKAddTracksOperationRealm: Object {
 extension VKAddTracksOperationRealm {
     var vkAddTracksOperation: VKAddTracksOperation {
         VKAddTracksOperation(
+            id: id,
+            serverID: serverID.value,
             searchSuboperaion: searchSuboperaion!.vkSearchTracksSuboperation,
             likeSuboperation: likeSuboperation!.vkLikeTracksSuboperation
         )
@@ -34,6 +37,7 @@ extension VKAddTracksOperationRealm {
         self.init()
         
         id = vkAddTracksOperation.id
+        serverID.value = vkAddTracksOperation.serverID
         
         searchSuboperaion = VKSearchTracksSuboperationRealm(
             vkAddTracksOperation.searchSuboperaion

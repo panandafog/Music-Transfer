@@ -26,13 +26,74 @@ struct HistoryView: View {
     }
     
     var listView: some View {
-        List(model.operationsHistory, id: \.id) { operation in
-            NavigationLink(
-                destination: TransferOperationTracksView(operation: operation)
-            ) {
-                HistoryTableRow(operation: operation)
+        VStack {
+            List(model.operationsHistory, id: \.id) { operation in
+                NavigationLink(
+                    destination: TransferOperationTracksView(operation: operation)
+                ) {
+                    HistoryTableRow(operation: operation)
+                }
+            }
+            if !model.mtService.isAuthorised {
+                authorizationRequestView
             }
         }
+        .sheet(isPresented: $model.mtService.showingAuthorization) {
+            AuthorizationView(service:
+                    .init(
+                        get: {
+                            model.mtService
+                        },
+                        set: { service in
+                            if let mtService = service as? MTService {
+                                model.mtService = mtService
+                            }
+                        }
+                    )
+            )
+        }
+        .sheet(isPresented: $model.mtService.showingSignUp) {
+            CreateAccountView(service:
+                    .init(
+                        get: {
+                            model.mtService
+                        },
+                        set: { service in
+                            if let mtService = service as? MTService {
+                                model.mtService = mtService
+                            }
+                        }
+                    )
+            )
+        }
+        .sheet(isPresented: $model.mtService.showingEmailConfirmation) {
+            AccountConfirmationView(service: .init(
+                get: {
+                    model.mtService
+                },
+                set: { service in
+                    if let mtService = service as? MTService {
+                        model.mtService = mtService
+                    }
+                }
+            ))
+        }
+    }
+    
+    var authorizationRequestView: some View {
+        ZStack {
+            Color.orange
+            Text("Log in Music Transfer to upload history")
+                .foregroundColor(.white)
+        }
+        .frame(height: 40)
+        .gesture(
+            TapGesture()
+                .onEnded { _ in
+                    model.mtService.showingAuthorization.toggle()
+                    print(model.mtService.showingAuthorization)
+                }
+        )
     }
 }
 

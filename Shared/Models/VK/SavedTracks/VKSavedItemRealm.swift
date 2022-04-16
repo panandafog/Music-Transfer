@@ -10,7 +10,9 @@ import RealmSwift
 
 class VKSavedItemRealm: Object {
     
-    @objc dynamic var id = 0
+    @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
+    
     @objc dynamic var title = ""
     @objc dynamic var artist = ""
     @objc dynamic var ownerID = 0
@@ -27,6 +29,7 @@ extension VKSavedItemRealm {
         VKSavedTracks.Item(
             artist: artist,
             id: id,
+            serverID: serverID.value,
             owner_id: ownerID,
             title: title,
             duration: duration
@@ -37,6 +40,7 @@ extension VKSavedItemRealm {
         self.init()
         
         id = vkSavedItem.id
+        serverID.value = vkSavedItem.serverID
         title = vkSavedItem.title
         artist = vkSavedItem.artist
         ownerID = vkSavedItem.owner_id

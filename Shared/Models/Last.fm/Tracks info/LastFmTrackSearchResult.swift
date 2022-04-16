@@ -48,6 +48,7 @@ extension LastFmTrackSearchResult {
 
     class Track: Codable {
         let id: String
+        var serverID: Int?
         
         let name, artist: String
         let url: String
@@ -58,6 +59,7 @@ extension LastFmTrackSearchResult {
         
         init(
             id: String? = nil,
+            serverID: Int?,
             name: String,
             artist: String,
             url: String,
@@ -67,6 +69,7 @@ extension LastFmTrackSearchResult {
             mbid: String
         ) {
             self.id = id ?? NSUUID().uuidString
+            self.serverID = serverID
             
             self.name = name
             self.artist = artist

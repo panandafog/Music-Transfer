@@ -37,6 +37,22 @@ final class LastFmService: APIService {
         }
     }
     
+    var showingSignUp = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
+    var showingEmailConfirmation = false {
+        didSet {
+            DispatchQueue.main.async {
+                TransferManager.shared.objectWillChange.send()
+            }
+        }
+    }
+    
     var gotTracks = false {
         willSet {
             DispatchQueue.main.async {

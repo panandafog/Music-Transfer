@@ -33,10 +33,13 @@ struct LoginView: View {
                         cancel()
                     }
                     Spacer(minLength: 10)
-                    Button("Apply") {
+                    Button("Confirm") {
                         model.complete()
                     }
                     .disabled(!model.credentialsAreValid)
+                }
+                if model.accountCreatingEnabled {
+                    createAccountView
                 }
             }
             .padding()
@@ -90,6 +93,16 @@ struct LoginView: View {
                 return AlertsManager.makeAlert(error: error)
             } else {
                 return Alert(title: Text("Unknown error"))
+            }
+        }
+    }
+    
+    var createAccountView: some View {
+        VStack {
+            Text("or")
+            Button("Create new account") {
+                model.service.showingAuthorization = false
+                model.service.showingSignUp = true
             }
         }
     }

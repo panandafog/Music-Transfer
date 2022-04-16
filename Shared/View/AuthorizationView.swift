@@ -21,6 +21,9 @@ struct AuthorizationView: View {
         if let spotifyService = service as? SpotifyService {
             return AnyView(spotifyService.authorizationView)
         }
+        if let mtService = service as? MTService {
+            return AnyView(LoginView(model: mtService.loginViewModel))
+        }
         return AnyView(EmptyView())
     }
     

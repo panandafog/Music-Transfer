@@ -10,6 +10,7 @@ import Foundation
 class LastFmAddTracksOperation: TransferOperation {
     
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var searchSuboperaion: LastFmSearchTracksSuboperation
     var likeSuboperation: LastFmLikeTracksSuboperation
@@ -26,9 +27,13 @@ class LastFmAddTracksOperation: TransferOperation {
     }
     
     init(
+        id: String = NSUUID().uuidString,
+        serverID: Int?,
         searchSuboperaion: LastFmSearchTracksSuboperation,
         likeSuboperation: LastFmLikeTracksSuboperation
     ) {
+        self.id = id
+        self.serverID = serverID
         self.searchSuboperaion = searchSuboperaion
         self.likeSuboperation = likeSuboperation
     }

@@ -9,6 +9,8 @@ import RealmSwift
 
 class LastFmTrackToLikeRealm: Object {
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
+    
     @objc dynamic var liked = false
     
     @objc dynamic var track: LastFmTrackRealm?
@@ -22,6 +24,7 @@ extension LastFmTrackToLikeRealm {
     var trackToLike: LastFmTrackToLike {
         LastFmTrackToLike(
             id: id,
+            serverID: serverID.value,
             track: track!.lastFmTrack,
             liked: liked
         )
@@ -31,6 +34,7 @@ extension LastFmTrackToLikeRealm {
         self.init()
         
         id = track.id
+        serverID.value = track.serverID
         self.track = LastFmTrackRealm(track.track)
         liked = track.liked
     }

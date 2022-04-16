@@ -9,6 +9,7 @@ import Foundation
 
 protocol TransferOperation {
     var id: String { get }
+    var serverID: Int? { get set }
     var suboperations: [TransferSuboperation] { get }
     
     var started: Date? { get }

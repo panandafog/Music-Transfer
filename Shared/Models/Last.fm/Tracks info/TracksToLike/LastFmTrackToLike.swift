@@ -9,6 +9,7 @@ import Foundation
 
 struct LastFmTrackToLike {
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var track: LastFmTrackSearchResult.Track
     var liked: Bool

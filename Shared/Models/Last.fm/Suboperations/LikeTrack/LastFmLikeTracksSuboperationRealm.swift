@@ -11,6 +11,7 @@ import RealmSwift
 class LastFmLikeTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var started: NSDate?
     @objc dynamic var completed: NSDate?
@@ -27,6 +28,7 @@ extension LastFmLikeTracksSuboperationRealm {
     var lastFmLikeTracksSuboperation: LastFmLikeTracksSuboperation {
         LastFmLikeTracksSuboperation(
             id: id,
+            serverID: serverID.value,
             started: started as Date?,
             completed: completed as Date?,
             tracksToLike: tracksToLike.map { $0.trackToLike },
@@ -38,6 +40,7 @@ extension LastFmLikeTracksSuboperationRealm {
         self.init()
         
         id = lastFmLikeTracksSuboperation.id
+        serverID.value = lastFmLikeTracksSuboperation.serverID
         
         started = lastFmLikeTracksSuboperation.started as NSDate?
         completed = lastFmLikeTracksSuboperation.completed as NSDate?

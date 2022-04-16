@@ -14,6 +14,8 @@ protocol APIService: ShowingAlerts {
     
     var isAuthorised: Bool { get }
     var showingAuthorization: Bool { get set }
+    var showingSignUp: Bool { get set }
+    var showingEmailConfirmation: Bool { get set }
     var gotTracks: Bool { get }
     var refreshing: Bool { get }
     

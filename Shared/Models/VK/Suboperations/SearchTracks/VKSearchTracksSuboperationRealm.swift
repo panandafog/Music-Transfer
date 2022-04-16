@@ -11,6 +11,7 @@ import RealmSwift
 class VKSearchTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var started: NSDate?
     @objc dynamic var completed: NSDate?
@@ -26,6 +27,7 @@ extension VKSearchTracksSuboperationRealm {
     var vkSearchTracksSuboperation: VKSearchTracksSuboperation {
         VKSearchTracksSuboperation(
             id: id,
+            serverID: serverID.value,
             started: started as Date?,
             completed: completed as Date?,
             tracks: tracks.map { $0.searchedTrack }
@@ -36,6 +38,7 @@ extension VKSearchTracksSuboperationRealm {
         self.init()
         
         id = vkSearchTracksSuboperation.id
+        serverID.value = vkSearchTracksSuboperation.serverID
         
         started = vkSearchTracksSuboperation.started as NSDate?
         completed = vkSearchTracksSuboperation.completed as NSDate?

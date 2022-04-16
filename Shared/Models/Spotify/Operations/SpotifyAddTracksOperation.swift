@@ -10,6 +10,7 @@ import Foundation
 class SpotifyAddTracksOperation: TransferOperation {
     
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var searchSuboperaion: SpotifySearchTracksSuboperation
     var likeSuboperation: SpotifyLikeTracksSuboperation

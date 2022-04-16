@@ -11,6 +11,7 @@ import RealmSwift
 class LastFmSearchTracksSuboperationRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
     
     @objc dynamic var started: NSDate?
     @objc dynamic var completed: NSDate?
@@ -26,6 +27,7 @@ extension LastFmSearchTracksSuboperationRealm {
     var lastFmSearchTracksSuboperation: LastFmSearchTracksSuboperation {
         LastFmSearchTracksSuboperation(
             id: id,
+            serverID: serverID.value,
             started: started as Date?,
             completed: completed as Date?,
             tracks: tracks.map { $0.searchedTrack }
@@ -36,6 +38,7 @@ extension LastFmSearchTracksSuboperationRealm {
         self.init()
         
         id = lastFmSearchTracksSuboperation.id
+        serverID.value = lastFmSearchTracksSuboperation.serverID
         
         started = lastFmSearchTracksSuboperation.started as NSDate?
         completed = lastFmSearchTracksSuboperation.completed as NSDate?

@@ -11,6 +11,8 @@ import RealmSwift
 class VKArtistRealm: Object {
     
     @objc dynamic var id = ""
+    let serverID = RealmProperty<Int?>()
+    
     @objc dynamic var name = ""
     @objc dynamic var domain = ""
     
@@ -29,6 +31,8 @@ extension VKArtistRealm {
         self.init()
         
         id = vkSavedArtist.id
+        serverID.value = vkSavedArtist.serverID
+        
         name = vkSavedArtist.name
         domain = vkSavedArtist.domain
     }

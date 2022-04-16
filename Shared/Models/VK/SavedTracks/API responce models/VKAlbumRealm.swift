@@ -11,6 +11,8 @@ import RealmSwift
 class VKAlbumRealm: Object {
     
     @objc dynamic var id = 0
+    let serverID = RealmProperty<Int?>()
+    
     @objc dynamic var title = ""
     @objc dynamic var ownerID = 0
     @objc dynamic var accessKey = ""
@@ -27,6 +29,7 @@ extension VKAlbumRealm {
     var vkSavedAlbum: VKSavedTracks.Album {
         VKSavedTracks.Album(
             id: id,
+            serverID: serverID.value,
             title: title,
             ownerID: ownerID,
             accessKey: accessKey,
@@ -38,6 +41,8 @@ extension VKAlbumRealm {
         self.init()
         
         id = vkSavedAlbum.id
+        serverID.value = vkSavedAlbum.serverID
+        
         title = vkSavedAlbum.title
         ownerID = vkSavedAlbum.ownerID
         accessKey = vkSavedAlbum.accessKey

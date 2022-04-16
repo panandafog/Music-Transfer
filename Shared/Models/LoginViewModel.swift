@@ -23,6 +23,8 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    let accountCreatingEnabled: Bool
+    
     @Published var login = ""
     @Published var password = ""
     @Published var code = ""
@@ -49,6 +51,7 @@ class LoginViewModel: ObservableObject {
         login: String? = nil,
         password: String? = nil,
         code: String? = nil,
+        accountCreatingEnabled: Bool = false,
         completion: @escaping CredentialsHandler
     ) {
         self.service = service
@@ -57,6 +60,7 @@ class LoginViewModel: ObservableObject {
         self.code = code ?? ""
         self.twoFactor = twoFactor
         self.captcha = captcha
+        self.accountCreatingEnabled = accountCreatingEnabled
         self.completion = completion
     }
     

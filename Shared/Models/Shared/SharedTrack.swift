@@ -18,6 +18,8 @@ struct SharedTrack: Identifiable {
     // MARK: - Instance properties
     
     var id = NSUUID().uuidString
+    var serverID: Int?
+    
     let artists: [String]
     let title: String
     
@@ -46,8 +48,9 @@ struct SharedTrack: Identifiable {
     
     // MARK: - Initializers
     
-    init(id: String, artists: [String], title: String, duration: Int?, servicesData: [SharedServicesData]) {
+    init(id: String = NSUUID().uuidString, serverID: Int?, artists: [String], title: String, duration: Int?, servicesData: [SharedServicesData]) {
         self.id = id
+        self.serverID = serverID
         self.artists = artists
         self.title = title
         self.duration = duration
@@ -80,14 +83,18 @@ struct SharedTrack: Identifiable {
         self.title = track.title
         self.duration = track.duration
         
-        self.servicesData = [
-            .vk(
-                SharedServicesData.VKTrackData(
-                    id: String(track.id),
-                    ownerID: String(track.owner_id)
+        if let serverID = track.serverID {
+            self.servicesData = [
+                .vk(
+                    SharedServicesData.VKTrackData(
+                        id: String(serverID),
+                        ownerID: String(track.owner_id)
+                    )
                 )
-            )
-        ]
+            ]
+        } else {
+            self.servicesData = [ ]
+        }
     }
     
     init(from track: SpotifySavedTracks.Track) {

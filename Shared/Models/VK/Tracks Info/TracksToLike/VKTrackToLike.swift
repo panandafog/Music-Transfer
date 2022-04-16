@@ -9,6 +9,7 @@ import Foundation
 
 struct VKTrackToLike {
     var id = NSUUID().uuidString
+    var serverID: Int?
     
     var track: VKSavedTracks.Item
     var liked: Bool
