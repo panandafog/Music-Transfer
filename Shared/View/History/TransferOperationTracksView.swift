@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct TransferOperationTracksView: View {
-    var entryPreview: MTHistoryEntryPreview
-    var remoteOperation: TransferOperation?
     
+    var entryPreview: MTHistoryEntryPreview
+    
+    @State var remoteOperation: TransferOperation?
+    @State var downloadingRemoteOperation: Bool = false
+    
+    @ObservedObject private var model = TransferManager.shared
     @State private var selectedItem: Int = 0
     
     var mainView: some View {
@@ -53,6 +57,16 @@ struct TransferOperationTracksView: View {
                 }
             }
         }
+        .modify {
+            switch entryPreview {
+            case .entry:
+                $0.task {
+                    downloadOperationDetails()
+                }
+            case .operation:
+                $0
+            }
+        }
     }
     
     private func getTracks(categoryIndex: Int, operation: TransferOperation) -> [SharedTrack] {
@@ -61,5 +75,54 @@ struct TransferOperationTracksView: View {
             tracks = operation.getTracks(category)
         }
         return tracks
+    }
+    
+    private func downloadOperationDetails() {
+        let entry: MTHistoryEntry
+        
+        switch entryPreview {
+        case .entry(let historyEntry):
+            entry = historyEntry
+        default:
+            return
+        }
+        
+        guard !downloadingRemoteOperation else { return }
+        downloadingRemoteOperation = true
+        
+        let resultHandler: ((Result<TransferOperation, Error>) -> Void) = { result in
+            self.downloadingRemoteOperation = false
+            switch result {
+            case .success(let operation):
+                self.remoteOperation = operation
+            case .failure(let error):
+                break
+            }
+        }
+        
+        let vkResultHandler: ((Result<VKAddTracksOperationServerModel, Error>) -> Void) = { result in
+            switch result {
+            case .success(let operation):
+                resultHandler(.success(operation.clientModel))
+            case .failure(let error):
+                resultHandler(.failure(error))
+            }
+        }
+        
+        let lastFmResultHandler: ((Result<LastFmAddTracksOperationServerModel, Error>) -> Void) = { result in
+            switch result {
+            case .success(let operation):
+                resultHandler(.success(operation.clientModel))
+            case .failure(let error):
+                resultHandler(.failure(error))
+            }
+        }
+        
+        switch entry.type {
+        case .vk:
+            model.mtService.getOperation(entry.id, completion: vkResultHandler)
+        case .lastFm:
+            model.mtService.getOperation(entry.id, completion: lastFmResultHandler)
+        }
     }
 }

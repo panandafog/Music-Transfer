@@ -100,11 +100,118 @@ class MTService: APIService {
         completion: confirmEmail(token:)
     )
     
-    func getSavedTracks() { }
+    func getSavedTracks() {
+        guard let authorizationHeader = authorizationHeader else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.determinate = false
+            TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
+            TransferManager.shared.progressActive = true
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "http"
+        tmp.host = "localhost"
+        tmp.port = 8080
+        tmp.path = "/library"
+        
+        guard let url = tmp.url else {
+            handleError(NetworkError(type: .encoding, message: "Cannot make url"))
+            return
+        }
+        
+        let resultHandler: (Swift.Result<Array<SharedTrackServerModel>, Error>, HTTPURLResponse?) -> Void = { result, _ in
+            DispatchQueue.main.async {
+                TransferManager.shared.operationInProgress = false
+                TransferManager.shared.progressPercentage = 0.0
+                TransferManager.shared.determinate = false
+                TransferManager.shared.progressActive = false
+            }
+            switch result {
+            case .success(let trackModels):
+                self.savedTracks = trackModels.map { $0.clientModel }
+                self.gotTracks = true
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.handleError(error)
+                }
+            }
+        }
+        
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .get,
+                body: nil,
+                headers: [authorizationHeader]
+            ),
+            errorType: LastFmError.self,
+            completion: resultHandler
+        )
+    }
     
-    func deleteAllTracks() { }
+    func deleteAllTracks() {
+        guard let authorizationHeader = authorizationHeader else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.determinate = false
+            TransferManager.shared.processName = "Removing tracks from \(Self.apiName)"
+            TransferManager.shared.progressActive = true
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "http"
+        tmp.host = "localhost"
+        tmp.port = 8080
+        tmp.path = "/library"
+        
+        guard let url = tmp.url else {
+            handleError(NetworkError(type: .encoding, message: "Cannot make url"))
+            return
+        }
+        
+        let resultHandler: (Swift.Result<String, Error>, HTTPURLResponse?) -> Void = { result, _ in
+            DispatchQueue.main.async {
+                TransferManager.shared.operationInProgress = false
+                TransferManager.shared.progressPercentage = 0.0
+                TransferManager.shared.determinate = false
+                TransferManager.shared.progressActive = false
+            }
+            switch result {
+            case .success:
+                self.savedTracks = []
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.handleError(error)
+                }
+            }
+        }
+        
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .delete,
+                body: nil,
+                headers: [authorizationHeader]
+            ),
+            errorType: LastFmError.self,
+            completion: resultHandler
+        )
+    }
     
-    func logOut() { }
+    func logOut() {
+        token = nil
+        gotTracks = false
+        savedTracks = []
+    }
     
     // MARK: - Authorization methods
     

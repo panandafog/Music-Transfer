@@ -21,6 +21,7 @@ struct Captcha {
     init(errorMessage: VKCaptcha.ErrorMessage, solveCompletion: @escaping Captcha.CaptchaSolveCompletion) {
         self.errorMessage = errorMessage
         self.solveCompletion = solveCompletion
+        print("-=-=- \(errorMessage.error.captcha_img)")
     }
 }
 
