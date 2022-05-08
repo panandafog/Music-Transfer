@@ -12,7 +12,7 @@ import RealmSwift
 import SwiftUI
 
 class MTService: APIService {
-    static var apiName: String = "MusicTransfer"
+    static var apiName: String = "Music Transfer"
     
     var isAuthorised: Bool {
         !(token == nil)
@@ -26,8 +26,15 @@ class MTService: APIService {
         }
     }
     
+    private let defaults = UserDefaults.standard
+    private let tokenDefaultsKey = "MTAuthToken"
+    
     private var token: String? {
-        didSet {
+        get {
+            defaults.string(forKey: tokenDefaultsKey)
+        }
+        set {
+            defaults.set(newValue, forKey: tokenDefaultsKey)
             DispatchQueue.main.async {
                 TransferManager.shared.objectWillChange.send()
             }
