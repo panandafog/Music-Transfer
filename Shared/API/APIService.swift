@@ -24,4 +24,25 @@ protocol APIService: ShowingAlerts {
     func getSavedTracks()
     func deleteAllTracks()
     func logOut()
+    func exportLibrary() -> String?
+}
+
+extension APIService {
+    
+    // MARK: - Export
+    
+    func exportLibrary() -> String? {
+        guard gotTracks, !savedTracks.isEmpty else {
+            return nil
+        }
+        
+        return exportTracks(tracks: savedTracks)
+    }
+    
+    private func exportTracks(tracks: [SharedTrack]) -> String {
+        tracks.map {
+            $0.artists.joined(separator: ", ") + " – " + $0.title
+        }
+        .joined(separator: "\n")
+    }
 }

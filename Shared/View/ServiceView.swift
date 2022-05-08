@@ -40,6 +40,7 @@ struct ServiceView: View {
     @ObservedObject private var model = TransferManager.shared
     @State private var showingDeleteAlert = false
     @State private var tracksTableNavigationLinkIsActive = false
+    @State private var activityViewController = SwiftUIActivityViewController()
     
     var refreshButton: some View {
         AnyView(
@@ -77,6 +78,29 @@ struct ServiceView: View {
         )
     }
     
+    var exportButton: some View {
+        AnyView(
+            Button(
+                action: {
+                    guard let item = service.exportLibrary() else {
+                        return
+                    }
+                    activityViewController.share(.init(
+                        activityItems: [item],
+                        applicationActivities: nil,
+                        excludedActivityTypes: nil
+                    ))
+                },
+                label: {
+                    ZStack {
+                        Text("Export library")
+                    }
+                }
+            )
+                .disabled(!actionsEnabled)
+        )
+    }
+    
     var logOutButton: some View {
         AnyView(
             Button(action: {
@@ -95,6 +119,7 @@ struct ServiceView: View {
 #if !os(macOS)
                 viewSavedButton
 #endif
+                exportButton
                 deleteAllButton
                 logOutButton
             } label: {
@@ -224,7 +249,7 @@ struct ServiceView: View {
         }
     }
     
-    var body: some View {
+    var contentView: some View {
         // swiftlint:disable trailing_closure
         VStack(spacing: nil) {
             // swiftlint:enable trailing_closure
@@ -324,6 +349,14 @@ struct ServiceView: View {
                 secondaryButton: .cancel()
             )
         })
+    }
+    
+    var body: some View {
+        ZStack {
+            contentView
+            activityViewController
+                .frame(width: 0, height: 0, alignment: .center)
+        }
     }
     
     func wrapInPreview(_ view: AnyView) -> some View {
