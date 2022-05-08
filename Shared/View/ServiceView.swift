@@ -40,7 +40,9 @@ struct ServiceView: View {
     @ObservedObject private var model = TransferManager.shared
     @State private var showingDeleteAlert = false
     @State private var tracksTableNavigationLinkIsActive = false
+#if !os(macOS)
     @State private var activityViewController = SwiftUIActivityViewController()
+#endif
     
     var refreshButton: some View {
         AnyView(
@@ -49,18 +51,25 @@ struct ServiceView: View {
                     service.getSavedTracks()
                 }
             }, label: {
+                Image(systemName: "arrow.clockwise")
                 Text("Refresh saved tracks")
             })
-                .disabled(!actionsEnabled)
+            .disabled(!actionsEnabled)
         )
     }
     
     var viewSavedButton: some View {
         AnyView(
-            Button("View saved tracks") {
-                self.tracksTableNavigationLinkIsActive = true
-            }
-                .disabled(!actionsEnabled)
+            Button(
+                action: {
+                    self.tracksTableNavigationLinkIsActive = true
+                },
+                label: {
+                    Image(systemName: "line.3.horizontal.circle")
+                    Text("View saved tracks")
+                }
+            )
+            .disabled(!actionsEnabled)
         )
     }
     
@@ -71,10 +80,11 @@ struct ServiceView: View {
                     showingDeleteAlert = true
                 },
                 label: {
+                    Image(systemName: "trash")
                     Text("Delete all tracks")
                 }
             )
-                .disabled(!actionsEnabled)
+            .disabled(!actionsEnabled)
         )
     }
     
@@ -82,22 +92,32 @@ struct ServiceView: View {
         AnyView(
             Button(
                 action: {
-                    guard let item = service.exportLibrary() else {
+                    guard let stringToExport = service.exportLibrary() else {
                         return
                     }
+#if os(macOS)
+                    
+                    guard let fileURL = MTFileManager.saveLibraryURL() else {
+                        return
+                    }
+                    MTFileManager.saveToFile(stringToExport, fileURL: fileURL)
+                    
+#else
+                    
                     activityViewController.share(.init(
-                        activityItems: [item],
+                        activityItems: [stringToExport],
                         applicationActivities: nil,
                         excludedActivityTypes: nil
                     ))
+                    
+#endif
                 },
                 label: {
-                    ZStack {
-                        Text("Export library")
-                    }
+                    Image(systemName: "arrow.down.doc")
+                    Text("Save to file")
                 }
             )
-                .disabled(!actionsEnabled)
+            .disabled(!actionsEnabled)
         )
     }
     
@@ -106,9 +126,10 @@ struct ServiceView: View {
             Button(action: {
                 service.logOut()
             }, label: {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
                 Text("Log out")
             })
-                .disabled(!actionsEnabled)
+            .disabled(!actionsEnabled)
         )
     }
     
@@ -174,6 +195,7 @@ struct ServiceView: View {
 #if !os(macOS)
                 viewSavedButton
 #endif
+                exportButton
                 deleteAllButton
                 logOutButton
             }
@@ -234,16 +256,16 @@ struct ServiceView: View {
                     name: "Saved tracks:",
                     compact: true
                 )
-                    .background(Color.background)
-                    .cornerRadius(10)
-                    .gesture(
-                        TapGesture()
-                            .onEnded { _ in
-                                if service.gotTracks && !service.refreshing && !service.savedTracks.isEmpty {
-                                    tracksTableNavigationLinkIsActive = true
-                                }
+                .background(Color.background)
+                .cornerRadius(10)
+                .gesture(
+                    TapGesture()
+                        .onEnded { _ in
+                            if service.gotTracks && !service.refreshing && !service.savedTracks.isEmpty {
+                                tracksTableNavigationLinkIsActive = true
                             }
-                    )
+                        }
+                )
             )
 #endif
         }
@@ -354,8 +376,10 @@ struct ServiceView: View {
     var body: some View {
         ZStack {
             contentView
+#if !os(macOS)
             activityViewController
                 .frame(width: 0, height: 0, alignment: .center)
+#endif
         }
     }
     

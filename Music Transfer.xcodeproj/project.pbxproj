@@ -69,8 +69,9 @@
 		0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15D825A6822800ACB2C7 /* TracksTableViewDelegate.swift */; };
 		0B2C15E125A682A000ACB2C7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C15DF25A682A000ACB2C7 /* Constants.swift */; };
 		0B2C160925A6843000ACB2C7 /* SpotifyKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2C160725A6843000ACB2C7 /* SpotifyKeys.swift */; };
-		0B2E02182827E31700250B00 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2E02172827E31700250B00 /* ActivityViewController.swift */; };
 		0B2E021A2827E6A400250B00 /* SwiftUIActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2E02192827E6A400250B00 /* SwiftUIActivityViewController.swift */; };
+		0B2E021E2828162C00250B00 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2E021D2828162C00250B00 /* ActivityViewController.swift */; };
+		0B2E02232828203400250B00 /* MTFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2E022128281D7200250B00 /* MTFileManager.swift */; };
 		0B42352C26E431A6007CAAB7 /* TransferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42352A26E431A6007CAAB7 /* TransferManager.swift */; };
 		0B42353226E4D0F2007CAAB7 /* Captcha.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353026E4D0F2007CAAB7 /* Captcha.swift */; };
 		0B42353626E96A6A007CAAB7 /* CaptchaRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B42353426E96A69007CAAB7 /* CaptchaRequestView.swift */; };
@@ -349,8 +350,9 @@
 		0B2C15D825A6822800ACB2C7 /* TracksTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksTableViewDelegate.swift; sourceTree = "<group>"; };
 		0B2C15DF25A682A000ACB2C7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0B2C160725A6843000ACB2C7 /* SpotifyKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyKeys.swift; sourceTree = "<group>"; };
-		0B2E02172827E31700250B00 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		0B2E02192827E6A400250B00 /* SwiftUIActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIActivityViewController.swift; sourceTree = "<group>"; };
+		0B2E021D2828162C00250B00 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		0B2E022128281D7200250B00 /* MTFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTFileManager.swift; sourceTree = "<group>"; };
 		0B3AD97E277B0F1000BA692B /* LastFmTrackSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmTrackSearchResult.swift; sourceTree = "<group>"; };
 		0B3AD981277B150A00BA692B /* LastFmSearchTracksSuboperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSearchTracksSuboperation.swift; sourceTree = "<group>"; };
 		0B3AD984277B17BC00BA692B /* LastFmSearchedTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmSearchedTrack.swift; sourceTree = "<group>"; };
@@ -576,13 +578,13 @@
 				0B9DFB0B271C9C6B008E3893 /* Database */,
 				0B02BC1E26EEADEC00F395E6 /* Extensions */,
 				0BE6DCA6271249D0003BEC3B /* Logging */,
+				0B2E022028281D5C00250B00 /* Managing Files */,
 				0B2C153925A67F3B00ACB2C7 /* Models */,
 				0BE6DCAD27124B1B003BEC3B /* Network */,
 				0B0352C727655F3D00835F56 /* Security */,
 				0B8045A827AC862A004E5B8F /* Service */,
 				0BE6DCBE27134CB4003BEC3B /* TasksManagement */,
 				0B9D64A025B8AED800A0B0C8 /* View */,
-				0B2E02162827E2F500250B00 /* ViewController */,
 				0B2C15DF25A682A000ACB2C7 /* Constants.swift */,
 				0B2C14BA25A6781300ACB2C7 /* Music_TransferApp.swift */,
 				0B0BC82B27AADB0B00AF2D09 /* Assets-iOS.xcassets */,
@@ -605,9 +607,9 @@
 		0B2C14C325A6781300ACB2C7 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0BC8D854260A029200AC204E /* Model */,
-				0B63ACB425BA08DD001252F2 /* View */,
 				0B2C14C425A6781300ACB2C7 /* Info.plist */,
+				0B2E02192827E6A400250B00 /* SwiftUIActivityViewController.swift */,
+				0B2E021D2828162C00250B00 /* ActivityViewController.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -706,13 +708,12 @@
 			path = SecondaryViews;
 			sourceTree = "<group>";
 		};
-		0B2E02162827E2F500250B00 /* ViewController */ = {
+		0B2E022028281D5C00250B00 /* Managing Files */ = {
 			isa = PBXGroup;
 			children = (
-				0B2E02172827E31700250B00 /* ActivityViewController.swift */,
-				0B2E02192827E6A400250B00 /* SwiftUIActivityViewController.swift */,
+				0B2E022128281D7200250B00 /* MTFileManager.swift */,
 			);
-			path = ViewController;
+			path = "Managing Files";
 			sourceTree = "<group>";
 		};
 		0B3AD97D277B0ECE00BA692B /* Tracks info */ = {
@@ -889,13 +890,6 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		0B63ACB425BA08DD001252F2 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		0B8045A827AC862A004E5B8F /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -1070,13 +1064,6 @@
 				0B2C15D125A6821500ACB2C7 /* TracksTableRow.swift */,
 			);
 			path = SecondaryViews;
-			sourceTree = "<group>";
-		};
-		0BC8D854260A029200AC204E /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		0BE6DCA6271249D0003BEC3B /* Logging */ = {
@@ -1518,7 +1505,6 @@
 				0BE13C3527ADFBEC00EC0EB7 /* VKLikeTracksSuboperationRealm.swift in Sources */,
 				0BE13C5927ADFBEC00EC0EB7 /* ShowingAlerts.swift in Sources */,
 				0BE13C6727ADFBEC00EC0EB7 /* CaptchaView.swift in Sources */,
-				0B2E02182827E31700250B00 /* ActivityViewController.swift in Sources */,
 				0BE13C6027ADFBEC00EC0EB7 /* SpotifySearchTracks.swift in Sources */,
 				0B55EFC028088857001CDC99 /* VKSearchTracksSuboperationServerModel.swift in Sources */,
 				0B55EFB82808797C001CDC99 /* DateFormatter.swift in Sources */,
@@ -1526,6 +1512,7 @@
 				0BE6DCC727137FB7003BEC3B /* SpotifyTracksRequestTask.swift in Sources */,
 				0B0BC82F27AB507300AF2D09 /* VKKeys.swift in Sources */,
 				0BE13C3827ADFBEC00EC0EB7 /* MTQueue.swift in Sources */,
+				0B2E021E2828162C00250B00 /* ActivityViewController.swift in Sources */,
 				0B55EFCB280888C4001CDC99 /* VKArtistServerModel.swift in Sources */,
 				0BE13C8A27ADFBEC00EC0EB7 /* APIBrowser.swift in Sources */,
 				0BE13C4427ADFBEC00EC0EB7 /* Captcha.swift in Sources */,
@@ -1600,6 +1587,7 @@
 				0B2C157025A6801400ACB2C7 /* VKErrors.swift in Sources */,
 				0B2C152D25A67EF400ACB2C7 /* SpotifyService.swift in Sources */,
 				0B9DFB09271C9A13008E3893 /* Object.swift in Sources */,
+				0B2E02232828203400250B00 /* MTFileManager.swift in Sources */,
 				0B2C15DA25A6822800ACB2C7 /* TracksTableViewDelegate.swift in Sources */,
 				0B27CE6727835FFA002A59BA /* RequestMethod.swift in Sources */,
 				0B55EF97280811BF001CDC99 /* CreateAccountView.swift in Sources */,
