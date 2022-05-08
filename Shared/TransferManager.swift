@@ -226,7 +226,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
 
                 let savedOperation: VKAddTracksOperation? = readOperation(id: updatedOperation.id)
                 let serverID = savedOperation?.serverID
-//                let serverID = getSaved(operation: updatedOperation)?.serverID
                 if let serverID = serverID {
                     updatedOperation.serverID = serverID
                 }
@@ -236,11 +235,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
                     completion: { result in
                         switch result {
                         case .success(let serverModel):
-//                            if serverID == nil {
-//                                let savedModel = self.readOperation(serverID: serverModel.clientModel.serverID) ?? serverModel.clientModel
-//                                savedModel.serverID = serverModel.id
-//                                self.save(savedModel)
-//                            }
                             let clientModel = serverModel.clientModel
                             clientModel.id = updatedOperation.id
                             self.save(clientModel)
@@ -262,7 +256,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
                 let updatedOperation = updatedOperation
                 let savedOperation: LastFmAddTracksOperation? = readOperation(id: updatedOperation.id)
                 let serverID = savedOperation?.serverID
-//                let serverID = getSaved(operation: updatedOperation)?.serverID
                 if let serverID = serverID {
                     updatedOperation.serverID = serverID
                 }
@@ -272,12 +265,6 @@ class TransferManager: ManagingDatabase, ObservableObject {
                     completion: { result in
                         switch result {
                         case .success(let serverModel):
-//                            if serverID == nil {
-//                                let savedModel = self.readOperation(serverID: serverModel.clientModel.serverID) ?? serverModel.clientModel
-//                                savedModel.serverID = serverModel.id
-//                                savedModel.id = updatedOperation.id
-//                                self.save(savedModel)
-//                            }
                             let clientModel = serverModel.clientModel
                             clientModel.id = updatedOperation.id
                             self.save(clientModel)
@@ -290,6 +277,10 @@ class TransferManager: ManagingDatabase, ObservableObject {
                 operation: operation,
                 updateHandler: operationUpdateHandler
             )
+        }
+        
+        if let mtService = destinationService as? MTService {
+            mtService.addTracks(departureService.savedTracks)
         }
     }
     

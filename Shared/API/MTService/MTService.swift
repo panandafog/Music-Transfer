@@ -154,6 +154,65 @@ class MTService: APIService {
         )
     }
     
+    func addTracks(_ tracks: [SharedTrack]) {
+        guard let authorizationHeader = authorizationHeader else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            TransferManager.shared.operationInProgress = true
+            TransferManager.shared.progressPercentage = 0.0
+            TransferManager.shared.determinate = false
+            TransferManager.shared.processName = "Adding tracks to \(Self.apiName)"
+            TransferManager.shared.progressActive = true
+        }
+        
+        var tmp = URLComponents()
+        tmp.scheme = "http"
+        tmp.host = "localhost"
+        tmp.port = 8080
+        tmp.path = "/library"
+        
+        guard let url = tmp.url else {
+            handleError(NetworkError(type: .encoding, message: "Cannot make url"))
+            return
+        }
+        
+        guard let bodyData = try? JSONEncoder().encode(tracks.map({ SharedTrackServerModel(clientModel: $0) })) else {
+            handleError(NetworkError(type: .encoding, message: "Cannot send request"))
+            return
+        }
+        
+        let resultHandler: (Swift.Result<Array<SharedTrackServerModel>, Error>, HTTPURLResponse?) -> Void = { result, _ in
+            DispatchQueue.main.async {
+                TransferManager.shared.operationInProgress = false
+                TransferManager.shared.progressPercentage = 0.0
+                TransferManager.shared.determinate = false
+                TransferManager.shared.progressActive = false
+            }
+            switch result {
+            case .success(let newTracks):
+                self.savedTracks = newTracks.map { $0.clientModel }
+                self.gotTracks = true
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.handleError(error)
+                }
+            }
+        }
+        
+        NetworkClient.perform(
+            request: .init(
+                url: url,
+                method: .post,
+                body: bodyData,
+                headers: [authorizationHeader]
+            ),
+            errorType: LastFmError.self,
+            completion: resultHandler
+        )
+    }
+    
     func deleteAllTracks() {
         guard let authorizationHeader = authorizationHeader else {
             return
